@@ -1,5 +1,9 @@
 <script setup>
 import ImgSrc from '@components/ImgSrc.vue'
+
+import { globalStore } from '@stores/global.js'
+
+const global = globalStore()
 </script>
 
 <template>
@@ -15,9 +19,9 @@ import ImgSrc from '@components/ImgSrc.vue'
     </h1>
     <nav class="mb-[9px] w-full absolute bottom-full text-center">
       <ul class="menu flex justify-center items-center">
-        <li class="px-[30px]"><button class="menu-link design cursor-pointer text-[#ff0] text-[18px]" data-theme="design">01. <span class="text-[#fff] tracking-[3px] transition-all duration-300 ease-in-out">[設計作品]</span></button></li>
-        <li class="px-[30px]"><button class="menu-link about cursor-pointer text-[#ff0] text-[18px]" data-theme="about">02. <span class="text-[#fff] tracking-[3px] transition-all duration-300 ease-in-out">[關於我]</span></button></li>
-        <li class="px-[30px]"><button class="menu-link skill cursor-pointer text-[#ff0] text-[18px]" data-theme="skill">03. <span class="text-[#fff] tracking-[3px] transition-all duration-300 ease-in-out">[專長技能]</span></button></li>
+        <li class="px-[30px]"><button class="menu-link design cursor-pointer text-[#ff0] text-[18px]">01. <span class="text-[#fff] tracking-[3px] transition-all duration-300 ease-in-out" @click="global.changeTheme('f2e')">[設計作品]</span></button></li>
+        <li class="px-[30px]"><button class="menu-link about cursor-pointer text-[#ff0] text-[18px]">02. <span class="text-[#fff] tracking-[3px] transition-all duration-300 ease-in-out" @click="global.changeTheme('about')">[關於我]</span></button></li>
+        <li class="px-[30px]"><button class="menu-link skill cursor-pointer text-[#ff0] text-[18px]">03. <span class="text-[#fff] tracking-[3px] transition-all duration-300 ease-in-out" @click="global.changeTheme('skill')">[專長技能]</span></button></li>
       </ul>
     </nav>
   </header>

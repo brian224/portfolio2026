@@ -1,7 +1,10 @@
 <script setup>
 import ImgSrc from '@components/ImgSrc.vue'
 
-import { onBeforeMount, onMounted, ref } from 'vue'
+import { onBeforeMount, onMounted, ref, computed } from 'vue'
+import { globalStore } from '@stores/global.js'
+
+const global = globalStore()
 
 const datas = [
   {
@@ -17,7 +20,7 @@ const datas = [
         webDesc: '好房網',
       },
       {
-        CaseName: '好房網市場週報',
+        CaseName: '好房網<br>市場週報',
         CaseID: '29',
         CaseType: 'web',
         CoverImg: 'web_29.png',
@@ -583,6 +586,48 @@ const datas = [
   },
 ]
 const currentType = ref(0)
+const amount = 14 // 一頁幾筆作品
+const sliderRef = ref(null)
+const currentPage = ref(0)
+
+const chunkArrayWithFill = (array, size) => {
+  const groups = Array.from(
+    { length: Math.ceil(array.length / size) },
+    (_, index) => array.slice(index * size, index * size + size)
+  )
+
+  // 補滿每一組
+  return groups.map(group => {
+    if (group.length < size) {
+      return [
+        ...group,
+        ...Array(size - group.length).fill(null)
+      ]
+    }
+    return group
+  })
+}
+
+const caseGroups = computed(() =>
+  chunkArrayWithFill(datas[currentType.value].case, amount)
+)
+
+const goPage = page => {
+  currentPage.value = Math.max(0, Math.min(page, caseGroups.value.length - 1))
+
+  sliderRef.value?.scrollTo({
+    left: sliderRef.value.clientWidth * currentPage.value,
+    behavior: 'smooth'
+  })
+}
+
+const prevPage = () => {
+  goPage(currentPage.value - 1)
+}
+
+const nextPage = () => {
+  goPage(currentPage.value + 1)
+}
 
 onBeforeMount(() => {
   // console.log(datas)
@@ -593,12 +638,12 @@ onMounted(() => {})
 
 <template>
   <div class="l-cnt pt-[75px]">
-    <div class="mainWrap design flex flex-col items-center justify-center">
+    <div class="flex flex-col items-center justify-center" v-if="global.theme === 'f2e'">
       <h2
-        class="mb-[8px] flex w-[546px] items-end justify-center border-b-[2px] border-solid border-[#acd1ee] pb-[9px] text-center text-[18px] tracking-[2px] text-[#fff]"
+        class="mb-[10px] flex w-[546px] items-end justify-center border-b-[2px] border-solid border-[#acd1ee] pb-[9px] text-center text-[18px] tracking-[2px] text-[#fff]"
       >
         <span>01.</span>
-        <em class="mx-[8px] mb-[-5px] text-[30px]"
+        <em class="mx-[8px] mb-[-5px] text-[30px] tracking-[-1px]"
           >Design & <span class="text-[#accaee]">Works</span></em
         >
         <span>設計作品</span>
@@ -610,36 +655,60 @@ onMounted(() => {})
           class="px-[14px] leading-[1em]"
           :class="index === 0 ? '' : 'border-l-[1px] border-solid border-[#fff]'"
         >
-          <button class="text-[#fff]">{{ item.type }}</button>
+          <button class="text-[#fff] hover:text-[#accaee] transition-all duration-300 ease-in-out">{{ item.type }}</button>
         </li>
       </ul>
       <div class="mt-[48px]">
-        <div class="slider relative h-[426px] w-[1162px] overflow-hidden px-[45px]">
-          <ul class="flex flex-wrap items-center justify-center">
-            <li
-              v-for="(item, index) in datas[currentType].case"
-              :key="item.CaseID"
-              class="flex w-[152px] flex-col items-center justify-center px-[8px]"
-            >
-              <ImgSrc
-                :src="`home/${item.CaseType}/${item.CoverImg}`"
-                :setClass="{
-                  main: 'flex-shrink-0 border-[3px] border-[#98cbe1] border-solid m-[5px] px-[1px] bg-[#4e5ca5]',
-                  img: 'w-full',
-                }"
-              />
-              <em class="text-center text-[#fff]" v-html="item.CaseName"></em>
-            </li>
-          </ul>
-          <!-- <span class="arrow left hide-text">向左</span>
-          <span class="arrow right hide-text">向右</span> -->
+        <div class="relative h-[426px] w-[1162px] px-[45px]">
+          <div
+            ref="sliderRef"
+            class="overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar"
+          >
+            <div class="flex">
+              <ul
+                v-for="(caseGroup, groupIndex) in caseGroups"
+                :key="groupIndex"
+                class="snap-start shrink-0 w-full flex flex-wrap items-start justify-center"
+              >
+                <li
+                  v-for="(item, index) in caseGroup"
+                  :key="`${groupIndex}-${index}`"
+                  class="flex w-[152px] flex-col items-center justify-center px-[8px]"
+                  :class="{ 'pointer-events-none': !item }"
+                >
+                  <ImgSrc
+                    :src="item ? `home/${item.CaseType}/${item.CoverImg}` : ''"
+                    :setClass="{
+                      main: 'shadow-md flex-shrink-0 flex items-center justify-center w-[126px] h-[126px] border-[4px] border-[#98cbe1] border-solid m-[5px] px-[1px] bg-[#4e5ca5]',
+                      img: 'w-full',
+                    }"
+                  />
+
+                  <em
+                    class="text-center text-[#fff] text-[18px] tracking-[2px] leading-[1.5em] mb-[8px]"
+                    v-html="item?.CaseName || ''"
+                  ></em>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <button class="ico-arrow left absolute top-1/2 -translate-y-1/2 left-0" @click="prevPage"><span class="sr-only">上一頁</span></button>
+          <button class="ico-arrow right absolute top-1/2 -translate-y-1/2 right-0" @click="nextPage"><span class="sr-only">下一頁</span></button>
         </div>
       </div>
     </div>
-    <!-- <div class="mainWrap about">
-      <h2 class="main_title">02.<em class="highlight hide-text">About Me</em>關於我</h2>
-      <div class="mainContent both">
-        <div class="leftPart both">
+    <div class="flex flex-col items-center justify-center" v-if="global.theme === 'about'">
+      <h2
+        class="mb-[10px] flex w-[546px] items-end justify-center border-b-[2px] border-solid border-[#acd1ee] pb-[9px] text-center text-[18px] tracking-[2px] text-[#fff]"
+      >
+        <span>02.</span>
+        <em class="mx-[8px] mb-[-5px] text-[30px] tracking-[-1px]"
+          >About <span class="text-[#accaee]">Me</span></em
+        >
+        <span>關於我</span>
+      </h2>
+      <div class="flex items-center justify-center w-[810px] mt-[60px]">
+        <div class="w-[275px] mr-[39px] whitespace-nowrap">
           <ul class="info">
             <li class="list"><span class="photo"><img src="https://cdn.rawgit.com/brian224/portfolio/master/img/pc/photo.gif" alt="Brian Lin`s photo"></span></li>
             <li class="list myName">Brian Lin (1984.02.24)</li>
@@ -675,54 +744,107 @@ onMounted(() => {})
         </ul>
       </div>
     </div>
-    <div class="mainWrap skill">
-      <h2 class="main_title">03.<em class="highlight hide-text">Specialty &amp; Skill</em>專長技能</h2>
-      <div class="mainContent both">
-        <ul class="skill_list">
-          <li class="title"><h3 class="category">技術專長</h3></li>
-          <li class="list">
-            <h4 class="subCatalog">程式撰寫</h4>
-            <span class="item">Html、CSS、JavaScript、jQuery、AngularJS、JSON、AJAX、SCSS、SVG</span>
+    <div class="flex flex-col items-center justify-center" v-if="global.theme === 'skill'">
+      <h2
+        class="mb-[10px] flex w-[546px] items-end justify-center border-b-[2px] border-solid border-[#acd1ee] pb-[9px] text-center text-[18px] tracking-[2px] text-[#fff]"
+      >
+        <span>03.</span>
+        <em class="mx-[8px] mb-[-5px] text-[30px] tracking-[-1px]"
+          >Specialty & <span class="text-[#accaee]">Skill</span></em
+        >
+        <span>專長技能</span>
+      </h2>
+      <div class="mt-[68px] flex items-start justify-center w-[990px]">
+        <ul class="mr-[30px] w-1/2">
+          <li class="mb-[15px] flex items-center justify-center"><h3 class="text-[#ff0] text-[20px] tracking-[3px]">技術專長</h3></li>
+          <li class="flex flex-col items-start">
+            <h4 class="px-[5px] bg-[#fff] text-[#5894DD] font-bold">程式撰寫</h4>
+            <span class="desc pt-[8px] pb-[15px] text-[#fff] text-[18px] leading-[1.5em]">Html、CSS / SCSS / Tailwind CSS、JavaScript、Vue.js、jQuery、JSON / JSON-LD、SVG</span>
           </li>
-          <li class="list">
-            <h4 class="subCatalog">網頁技術應用</h4>
-            <span class="item">Git / SVN、Compass、Facebook API、<br>Google Map API、HighCharts、Lazy-load、<br>User Experience、User Interface、Bootstrap、Google Analytics、CSS sprites、Web fonts</span>
+          <li class="flex flex-col items-start">
+            <h4 class="px-[5px] bg-[#fff] text-[#5894DD] font-bold">網頁技術應用</h4>
+            <span class="desc pt-[8px] pb-[15px] text-[#fff] text-[18px] leading-[1.5em]">Git / GitLab / GitHub / SVN、Compass、Facebook API、Line Liff API、Google Map API、User Experience、User Interface、Google Analytics、CSS sprites、Web Fonts</span>
           </li>
-          <li class="list">
-            <h4 class="subCatalog">開發軟體</h4>
-            <span class="item">SublimeText、SourceTree / TortoiseSVN、Chrome Developer Tools、Photoshop、Apache、Illustrator、Flash、Premiere、3dsMax</span>
+          <li class="flex flex-col items-start">
+            <h4 class="px-[5px] bg-[#fff] text-[#5894DD] font-bold">慣用開發軟體</h4>
+            <span class="desc pt-[8px] pb-[15px] text-[#fff] text-[18px] leading-[1.5em]">Visual Studio Code、TortoiseSVN、Chrome Developer Tools、Photoshop、Illustrator、Figma、Sketch、Slack</span>
           </li>
         </ul>
-        <ul class="skill_list">
-          <li class="title"><h3 class="category">實際應用經驗</h3></li>
-          <li class="list">
-            <h4 class="subCatalog">前端 / 網頁設計</h4>
-            <span class="item">網頁設計(單頁式網頁 / 無障礙網頁 / 手機網頁 / 自適應網頁)、網站優化(檔案合併 / 文檔最小化 / CDN)、搜尋引擎最佳化 SEO、跨瀏覽器製作</span>
+        <ul class="w-1/2">
+          <li class="mb-[15px] flex items-center justify-center"><h3 class="text-[#ff0] text-[20px] tracking-[3px]">實際應用經驗</h3></li>
+          <li class="flex flex-col items-start">
+            <h4 class="px-[5px] bg-[#fff] text-[#5894DD] font-bold">前端 / 網頁設計</h4>
+            <span class="desc pt-[8px] pb-[15px] text-[#fff] text-[18px] leading-[1.5em]">網頁製作 ( 單頁式網頁 / 無障礙網頁 / 手機網頁 / 自適應網頁 )、網站優化 ( 檔案合併 / 文檔最小化 / CDN )、搜尋引擎最佳化 SEO、跨瀏覽器製作</span>
           </li>
-          <li class="list">
-            <h4 class="subCatalog">介面設計</h4>
-            <span class="item">行動裝置 Apps 開發、Mobile Web 製作</span>
+          <li class="flex flex-col items-start">
+            <h4 class="px-[5px] bg-[#fff] text-[#5894DD] font-bold">介面設計</h4>
+            <span class="desc pt-[8px] pb-[15px] text-[#fff] text-[18px] leading-[1.5em]">行動裝置 Apps 開發、Mobile Web 製作</span>
           </li>
-          <li class="list">
-            <h4 class="subCatalog">平面設計</h4>
-            <span class="item">海報 / DM / EDM / 易拉展 / 名片 / 賀卡 / CI 設計</span>
-          </li>
-          <li class="list">
-            <h4 class="subCatalog">數位影像與動畫製作</h4>
-            <span class="item">影像處理、Flash 動畫設計、3D 影像製作、<br />數位影片剪輯、環場 &amp; 環物虛擬實境</span>
+          <li class="flex flex-col items-start">
+            <h4 class="px-[5px] bg-[#fff] text-[#5894DD] font-bold">平面設計</h4>
+            <span class="desc pt-[8px] pb-[15px] text-[#fff] text-[18px] leading-[1.5em]">海報 / DM / EDM / 易拉展 / 名片 / 賀卡 / CI 設計</span>
           </li>
         </ul>
       </div>
     </div>
-    <div class="mainWrap detail">
+    <div class="flex flex-col items-center justify-center" v-if="global.theme === 'detail'">
       <div class="mainContent">
         <div class="showcase">
           <ul class="box"></ul>
         </div>
         <ul class="tab"></ul>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
-<style lang="postcss"></style>
+<style lang="postcss">
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ico-arrow {
+    @apply px-[15px] py-[30px] w-[11px] h-[20px];
+
+    &::before, &::after {
+      @apply content-default w-[3px] h-[12px] bg-[#fff] absolute left-1/2;
+    }
+
+    &::before {
+      @apply mb-[-1px] bottom-1/2;
+    }
+
+    &::after {
+      @apply mt-[-1px] top-1/2;
+    }
+
+    &.left {
+      &::before {
+        @apply rotate-[30deg];
+      }
+
+      &::after {
+        @apply rotate-[-30deg];
+      }
+    }
+
+    &.right {
+      &::before {
+        @apply rotate-[-30deg];
+      }
+
+      &::after {
+        @apply rotate-[30deg];
+      }
+    }
+  }
+
+  .desc {
+    text-shadow: 0 0 10px #5894DD;
+  }
+</style>
