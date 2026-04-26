@@ -20,7 +20,7 @@ const datas = [
         webDesc: '好房網',
       },
       {
-        CaseName: '好房網<br>市場週報',
+        CaseName: '好房網市場週報',
         CaseID: '29',
         CaseType: 'web',
         CoverImg: 'web_29.png',
@@ -612,6 +612,10 @@ const caseGroups = computed(() =>
   chunkArrayWithFill(datas[currentType.value].case, amount)
 )
 
+const switchType = (i) => {
+  currentType.value = i
+}
+
 const goPage = page => {
   currentPage.value = Math.max(0, Math.min(page, caseGroups.value.length - 1))
 
@@ -644,9 +648,9 @@ onMounted(() => {})
       >
         <span>01.</span>
         <em class="mx-[8px] mb-[-5px] text-[30px] tracking-[-1px]"
-          >Design & <span class="text-[#accaee]">Works</span></em
+          >Works & <span class="text-[#accaee]">Design</span></em
         >
-        <span>設計作品</span>
+        <span>過往作品</span>
       </h2>
       <ul class="flex items-center justify-center text-center">
         <li
@@ -655,11 +659,11 @@ onMounted(() => {})
           class="px-[14px] leading-[1em]"
           :class="index === 0 ? '' : 'border-l-[1px] border-solid border-[#fff]'"
         >
-          <button class="text-[#fff] hover:text-[#accaee] transition-all duration-300 ease-in-out">{{ item.type }}</button>
+          <button class="text-[#fff] hover:text-[#accaee] transition-all duration-300 ease-in-out" @click="switchType(index)">{{ item.type }}</button>
         </li>
       </ul>
       <div class="mt-[48px]">
-        <div class="relative h-[426px] w-[1162px] px-[45px]">
+        <div class="relative w-[1162px] px-[45px]">
           <div
             ref="sliderRef"
             class="overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar"
@@ -685,7 +689,7 @@ onMounted(() => {})
                   />
 
                   <em
-                    class="text-center text-[#fff] text-[18px] tracking-[2px] leading-[1.5em] mb-[8px]"
+                    class="text-center text-[#fff] text-[18px] tracking-[2px] leading-[1.5em] mb-[8px] whitespace-nowrap"
                     v-html="item?.CaseName || ''"
                   ></em>
                 </li>

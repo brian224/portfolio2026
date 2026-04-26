@@ -5,7 +5,8 @@ import { ref } from 'vue'
 // import { getOS } from '@js/_prototype.js'
 
 export const globalStore = defineStore('global', () => {
-  const theme = ref(localStorage.getItem('theme') || 'f2e')
+  const theme = ref(localStorage.getItem('theme') || 'f2e') // 當前頁面
+  const worksType = ref('f2e') // 作品類型
   const changeTheme = (newTheme) => {
     theme.value = newTheme
     localStorage.setItem('theme', newTheme)
@@ -13,6 +14,7 @@ export const globalStore = defineStore('global', () => {
 
   return {
     theme,
+    worksType,
     changeTheme,
   }
 })
