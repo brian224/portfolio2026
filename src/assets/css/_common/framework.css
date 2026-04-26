@@ -1,0 +1,105 @@
+html,
+body {
+  font-family: 'Century Gothic', 'Noto Sans TC', '微軟正黑體',
+    'Microsoft JhengHei', 'Heiti TC', '黑體', Helvetica, sans-serif;
+  text-size-adjust: none;
+
+  @apply bg-[#5894DD] font-normal text-[12px] leading-[1.6em];
+}
+
+html {
+  height: -webkit-fill-available;
+}
+
+body {
+  min-height: 100dvh;
+  @apply flex flex-col;
+}
+
+[data-v-app] {
+  @apply flex flex-grow flex-col;
+}
+
+* {
+  @apply max-h-[999999px];
+}
+
+a, a:hover {
+  @apply no-underline;
+}
+
+button {
+  @apply text-[inherit];
+
+  @apply bg-transparent;
+}
+
+a,
+button,
+input,
+textarea,
+select {
+  outline: 0;
+  resize: none;
+  @apply appearance-none;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &::-ms-expand {
+    @apply hidden;
+  }
+}
+
+small {
+  @apply text-[100%] leading-[inherit];
+}
+
+em,
+i {
+  @apply not-italic;
+}
+
+input {
+  &[type='search']::-webkit-search-cancel-button {
+    @apply hidden;
+  }
+}
+
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.sr-only {
+  @apply whitespace-nowrap overflow-hidden indent-[300%];
+}
+
+@screen pMax {
+  html,
+  body {
+    @apply text-[16px] leading-[1.44];
+  }
+}
+
+@screen pMin {
+  html,
+  body {
+    @apply text-vmp leading-[1.44];
+  }
+}
+
+@screen t {
+  html,
+  body {
+    @apply text-vmt leading-[1.44];
+  }
+}
+
+@screen m {
+  html,
+  body {
+    @apply text-vmm leading-[1.44];
+  }
+}

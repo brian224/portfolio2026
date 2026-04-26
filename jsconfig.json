@@ -1,0 +1,29 @@
+{
+  "include": [
+    // 加入前端環境與全域定義型別，視為同一個專案
+    "src/**/*",
+    "*.config.js",
+    "*.function.js"
+  ],
+  "exclude": ["node_modules", "dist", "build"],
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "allowJs": true,
+    "paths": {
+      // 前端全域路徑配置 (與 vite.config.js alias 配置保持一致)
+      "@js/*": ["src/scripts/*"],
+      "@css/*": ["src/assets/css/*"],
+      "@imgs/*": ["src/assets/img/*"],
+      "@fonts/*": ["src/assets/fonts/*"],
+      "@stores/*": ["src/stores/*"],
+      "@stores": ["src/stores/index"],
+      "@views/*": ["src/views/*"],
+      "@router/*": ["src/router/*"],
+      "@router": ["src/router/index"],
+      "@container/*": ["src/container/*"],
+      "@components/*": ["src/components/*"],
+      "@/*": ["src/*"]
+    }
+  }
+}
