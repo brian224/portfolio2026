@@ -659,7 +659,7 @@ onMounted(() => {})
           class="px-[14px] leading-[1em]"
           :class="index === 0 ? '' : 'border-l-[1px] border-solid border-[#fff]'"
         >
-          <button class="text-[#fff] hover:text-[#accaee] transition-all duration-300 ease-in-out" @click="switchType(index)">{{ item.type }}</button>
+          <button class="hover:text-[#accaee] transition-all duration-300 ease-in-out" :class=" currentType === index ? 'text-[#ff0] pointer-events-none': 'text-[#fff]' " @click="switchType(index)">{{ item.type }}</button>
         </li>
       </ul>
       <div class="mt-[48px]">
@@ -678,16 +678,16 @@ onMounted(() => {})
                   v-for="(item, index) in caseGroup"
                   :key="`${groupIndex}-${index}`"
                   class="flex w-[152px] flex-col items-center justify-center px-[8px]"
-                  :class="{ 'pointer-events-none': !item }"
                 >
                   <ImgSrc
-                    :src="item ? `home/${item.CaseType}/${item.CoverImg}` : ''"
+                    :src="`home/${item.CaseType}/${item.CoverImg}`"
                     :setClass="{
                       main: 'shadow-md flex-shrink-0 flex items-center justify-center w-[126px] h-[126px] border-[4px] border-[#98cbe1] border-solid m-[5px] px-[1px] bg-[#4e5ca5]',
                       img: 'w-full',
                     }"
+                    v-if="item"
                   />
-
+                  <div class="shadow-md flex-shrink-0 flex items-center justify-center w-[126px] h-[126px] border-[4px] border-[#98cbe1] border-solid m-[5px] px-[1px] bg-[#addee3]" v-else><i class="cross relative w-[116px] h-[116px] border-solid border-[1px] border-[#6ba6e0] overflow-hidden"></i></div>
                   <em
                     class="text-center text-[#fff] text-[18px] tracking-[2px] leading-[1.5em] mb-[8px] whitespace-nowrap"
                     v-html="item?.CaseName || ''"
@@ -711,39 +711,43 @@ onMounted(() => {})
         >
         <span>關於我</span>
       </h2>
-      <div class="flex items-center justify-center w-[810px] mt-[60px]">
+      <div class="flex items-center justify-center w-[810px] mt-[48px]">
         <div class="w-[275px] mr-[39px] whitespace-nowrap">
           <ul class="info">
-            <li class="list"><span class="photo"><img src="https://cdn.rawgit.com/brian224/portfolio/master/img/pc/photo.gif" alt="Brian Lin`s photo"></span></li>
-            <li class="list myName">Brian Lin (1984.02.24)</li>
-            <li class="list school">淡江大學企管系畢業</li>
-            <li class="list school">資策會網頁互動設計菁英養成班</li>
+            <li class="">
+              <img class="w-[200px]" src="../../assets/img/about/photo.gif" alt="Brian Lin`s photo">
+            </li>
+            <li class="my-[9px] pb-[9px] border-b-[1px] border-[#fff] border-dashed text-[#fff] text-[16px] leading-[1.5em] tracking-[1px]">Brian Lin (1984.02.24)</li>
+            <li class="text-[#fff] text-[16px] leading-[1.5em] tracking-[1px]">淡江大學企管系畢業</li>
+            <li class="text-[#fff] text-[16px] leading-[1.5em] tracking-[1px]">資策會網頁互動設計菁英養成班</li>
           </ul>
-          <ul class="community">
-            <li class="list"><a class="link github hide-text" href="https://github.com/brian224" target="_blank">github</a></li>
-            <li class="list"><a class="link linkedin hide-text" href="http://tw.linkedin.com/in/brianlin224" target="_blank">linkedin</a></li>
-            <li class="list"><a class="link instagram hide-text" href="https://instagram.com/brianlin224/" target="_blank">instagram</a></li>
-            <li class="list"><a class="link facebook hide-text" href="https://www.facebook.com/brian224" target="_blank">facebook</a></li>
+          <ul class="flex items-center justify-center">
+            <li class="list"><a class="link github" href="https://github.com/brian224" target="_blank">github</a></li>
+            <li class="list"><a class="link linkedin" href="http://tw.linkedin.com/in/brianlin224" target="_blank">linkedin</a></li>
+            <li class="list"><a class="link instagram" href="https://instagram.com/brianlin224/" target="_blank">instagram</a></li>
+            <li class="list"><a class="link facebook" href="https://www.facebook.com/brian224" target="_blank">facebook</a></li>
           </ul>
         </div>
-        <ul class="rightPart">
-          <li class="subdivisions exp">
-            <h3 class="title hide-text">Experience</h3>
-            <ul class="expConp">
-              <li class="list"><span class="time">2015.12~NOW</span>方形糖創意數位</li>
-              <li class="list"><span class="time">2013.04~2015.11</span>永慶房產集團</li>
-              <li class="list"><span class="time">2012.08~2013.03</span>安捷達顧問</li>
-              <li class="list"><span class="time">2012.03~2012.07</span>學學文創志業</li>
-              <li class="list"><span class="time">2009.12~2012.03</span>華藝數位</li>
-              <li class="list"><span class="time">2009.03~2009.07</span>玉馬門創意設計</li>
-              <li class="list"><span class="time">2008.05~2009.01</span>詩米亞媒體</li>
+        <ul class="">
+          <li class="">
+            <h3 class="mb-[6px] text-[24px] text-[#accaee]">Experience</h3>
+            <ul class="text-[#fff] text-[16px] leading-[1.5em] tracking-[1px]">
+              <li class="flex items-stretch"><span class="min-w-[10em]">2015.12~NOW</span>方形糖創意數位</li>
+              <li class="flex items-stretch"><span class="min-w-[10em]">2013.04~2015.11</span>永慶房產集團</li>
+              <li class="flex items-stretch"><span class="min-w-[10em]">2012.08~2013.03</span>安捷達顧問</li>
+              <li class="flex items-stretch"><span class="min-w-[10em]">2012.03~2012.07</span>學學文創志業</li>
+              <li class="flex items-stretch"><span class="min-w-[10em]">2009.12~2012.03</span>華藝數位</li>
+              <li class="flex items-stretch"><span class="min-w-[10em]">2009.03~2009.07</span>玉馬門創意設計</li>
+              <li class="flex items-stretch"><span class="min-w-[10em]">2008.05~2009.01</span>詩米亞媒體</li>
             </ul>
           </li>
-          <li class="subdivisions auto">
-            <h3 class="title hide-text">Autobiography</h3>
-            <p class="bio">從空間設計、平面設計到網頁設計，然後再鑽研介面設計與前端技術；從業務、專案負責人、設計再到開發者。</p>
-            <p class="bio">七年的職涯裡，我嘗試在各領域提升自己、尋找喜好與定位，並一步步調整工作的方向與發展目標。</p>
-            <p class="bio">2012年，透過進修、接案與求職，得到不少同行朋友的分享與前輩的指導下，不僅在網頁程式的專業能力有大幅成長，也在職涯方向獲得許多建議，因而確認出我的職涯新目標--前端工程師。</p>
+          <li class="mt-[20px]">
+            <h3 class="mb-[6px] text-[24px] text-[#accaee]">Autobiography</h3>
+            <article class="text-[#fff] text-[16px] leading-[1.5em] tracking-[1px]">
+              <p class="">從空間設計、平面設計到網頁設計，然後再鑽研介面設計與前端技術；從業務、專案負責人、設計再到開發者。</p>
+              <p class="">七年的職涯裡，我嘗試在各領域提升自己、尋找喜好與定位，並一步步調整工作的方向與發展目標。</p>
+              <p class="">2012 年，透過進修、接案與求職，得到不少同行朋友的分享與前輩的指導下，不僅在網頁程式的專業能力有大幅成長，也在職涯方向獲得許多建議，因而確認出我的職涯新目標--前端工程師。</p>
+            </article>
           </li>
         </ul>
       </div>
@@ -758,7 +762,7 @@ onMounted(() => {})
         >
         <span>專長技能</span>
       </h2>
-      <div class="mt-[68px] flex items-start justify-center w-[990px]">
+      <div class="skill-wrap mt-[48px] bg-no-repeat bg-center flex items-start justify-center w-[990px]">
         <ul class="mr-[30px] w-1/2">
           <li class="mb-[15px] flex items-center justify-center"><h3 class="text-[#ff0] text-[20px] tracking-[3px]">技術專長</h3></li>
           <li class="flex flex-col items-start">
@@ -846,6 +850,25 @@ onMounted(() => {})
         @apply rotate-[30deg];
       }
     }
+  }
+
+  .cross {
+    &::before, &::after {
+      @apply content-default w-[164px] h-[1px] bg-[#fff] absolute;
+    }
+
+    &::before {
+      @apply rotate-[45deg] top-0 left-0 origin-top-left;
+    }
+
+    &::after {
+      @apply rotate-[-45deg] top-0 right-0 origin-top-right;
+    }
+  }
+
+  .skill-wrap {
+    background-image: url('@imgs/skill/skill_bg.png');
+    background-size: 696px auto;
   }
 
   .desc {
