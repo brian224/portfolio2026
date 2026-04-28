@@ -585,43 +585,39 @@ const datas = [
     ],
   },
 ]
-const currentType = ref(0)
+const currentType = ref(0) // 目前在哪個分類 f2e / about / skill / detail
 const amount = 14 // 一頁幾筆作品
 const sliderRef = ref(null)
-const currentPage = ref(0)
+const currentPage = ref(0) // 作品有多頁時 目前是哪一頁
+const currentIndex = ref(0) // 當前選取作品 index
 
 const chunkArrayWithFill = (array, size) => {
-  const groups = Array.from(
-    { length: Math.ceil(array.length / size) },
-    (_, index) => array.slice(index * size, index * size + size)
+  const groups = Array.from({ length: Math.ceil(array.length / size) }, (_, index) =>
+    array.slice(index * size, index * size + size)
   )
 
   // 補滿每一組
-  return groups.map(group => {
+  return groups.map((group) => {
     if (group.length < size) {
-      return [
-        ...group,
-        ...Array(size - group.length).fill(null)
-      ]
+      return [...group, ...Array(size - group.length).fill(null)]
     }
     return group
   })
 }
 
-const caseGroups = computed(() =>
-  chunkArrayWithFill(datas[currentType.value].case, amount)
-)
+const caseGroups = computed(() => chunkArrayWithFill(datas[currentType.value].case, amount))
 
+// 切換分類 f2e / about / skill / detail
 const switchType = (i) => {
   currentType.value = i
 }
 
-const goPage = page => {
+const goPage = (page) => {
   currentPage.value = Math.max(0, Math.min(page, caseGroups.value.length - 1))
 
   sliderRef.value?.scrollTo({
     left: sliderRef.value.clientWidth * currentPage.value,
-    behavior: 'smooth'
+    behavior: 'smooth',
   })
 }
 
@@ -637,9 +633,12 @@ const totalPages = computed(() => caseGroups.value.length)
 
 const hasPrev = computed(() => currentPage.value > 0)
 
-const hasNext = computed(() =>
-  currentPage.value < totalPages.value - 1
-)
+const hasNext = computed(() => currentPage.value < totalPages.value - 1)
+
+const toDetail = (idx) => {
+  global.theme = 'detail'
+  currentIndex.value = idx
+}
 
 onBeforeMount(() => {
   // console.log(datas)
@@ -667,45 +666,75 @@ onMounted(() => {})
           class="px-[14px] leading-[1em]"
           :class="index === 0 ? '' : 'border-l-[1px] border-solid border-[#fff]'"
         >
-          <button class="hover:text-[#accaee] transition-all duration-300 ease-in-out" :class=" currentType === index ? 'text-[#ff0] pointer-events-none': 'text-[#fff]' " @click="switchType(index)">{{ item.type }}</button>
+          <button
+            class="transition-all duration-300 ease-in-out hover:text-[#accaee]"
+            :class="currentType === index ? 'pointer-events-none text-[#ff0]' : 'text-[#fff]'"
+            @click="switchType(index)"
+          >
+            {{ item.type }}
+          </button>
         </li>
       </ul>
       <div class="mt-[48px]">
         <div class="relative w-[1162px] px-[45px]">
           <div
             ref="sliderRef"
-            class="overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar"
+            class="no-scrollbar snap-x snap-mandatory overflow-x-auto scroll-smooth"
           >
             <div class="flex">
               <ul
                 v-for="(caseGroup, groupIndex) in caseGroups"
                 :key="groupIndex"
-                class="snap-start shrink-0 w-full flex flex-wrap items-start justify-center"
+                class="flex w-full shrink-0 snap-start flex-wrap items-start justify-center"
               >
                 <li
                   v-for="(item, index) in caseGroup"
                   :key="`${groupIndex}-${index}`"
                   class="flex w-[152px] flex-col items-center justify-center px-[8px]"
                 >
-                  <ImgSrc
-                    :src="`home/${item.CaseType}/${item.CoverImg}`"
-                    :setClass="{
-                      main: 'shadow-md flex-shrink-0 flex items-center justify-center w-[126px] h-[126px] border-[4px] border-[#98cbe1] border-solid m-[5px] px-[1px] bg-[#4e5ca5]',
-                      img: 'w-full',
-                    }"
-                    v-if="item"
-                  />
-                  <div class="shadow-md flex-shrink-0 flex items-center justify-center w-[126px] h-[126px] border-[4px] border-[#98cbe1] border-solid m-[5px] px-[1px] bg-[#addee3]" v-else><i class="cross relative w-[116px] h-[116px] border-solid border-[1px] border-[#6ba6e0] overflow-hidden"></i></div>
-                  <em
-                    class="text-center text-[#fff] text-[18px] tracking-[2px] leading-[1.5em] mb-[8px] whitespace-nowrap"
-                    v-html="item?.CaseName || ''"
-                  ></em>
+                  <button
+                    class="text-[#fff] transition-all duration-300 ease-in-out hover:text-[#accaee]"
+                    @click="toDetail(index, item.CaseID)"
+                  >
+                    <ImgSrc
+                      :src="`home/${item.CaseType}/${item.CoverImg}`"
+                      :setClass="{
+                        main: 'shadow-md flex-shrink-0 flex items-center justify-center w-[126px] h-[126px] border-[4px] border-[#98cbe1] border-solid m-[5px] px-[1px] bg-[#4e5ca5]',
+                        img: 'w-full',
+                      }"
+                      v-if="item"
+                    />
+                    <div
+                      class="m-[5px] flex h-[126px] w-[126px] flex-shrink-0 items-center justify-center border-[4px] border-solid border-[#98cbe1] bg-[#addee3] px-[1px] shadow-md"
+                      v-else
+                    >
+                      <i
+                        class="cross relative h-[116px] w-[116px] overflow-hidden border-[1px] border-solid border-[#6ba6e0]"
+                      ></i>
+                    </div>
+                    <em
+                      class="mb-[8px] whitespace-nowrap text-center text-[18px] leading-[1.5em] tracking-[2px]"
+                      v-html="item?.CaseName || ''"
+                    ></em>
+                  </button>
                 </li>
               </ul>
             </div>
           </div>
-          <button class="ico-arrow left absolute top-1/2 -translate-y-1/2 left-0" @click="prevPage" v-if="hasPrev"><span class="sr-only">上一頁</span></button>
-          <button class="ico-arrow right absolute top-1/2 -translate-y-1/2 right-0" @click="nextPage" v-if="hasNext"><span class="sr-only">下一頁</span></button>
+          <button
+            class="ico-arrow left absolute left-0 top-1/2 -translate-y-1/2"
+            @click="prevPage"
+            v-if="hasPrev"
+          >
+            <span class="sr-only">上一頁</span>
+          </button>
+          <button
+            class="ico-arrow right absolute right-0 top-1/2 -translate-y-1/2"
+            @click="nextPage"
+            v-if="hasNext"
+          >
+            <span class="sr-only">下一頁</span>
+          </button>
         </div>
       </div>
     </div>
@@ -719,33 +748,75 @@ onMounted(() => {})
         >
         <span>關於我</span>
       </h2>
-      <div class="flex items-center justify-center w-[810px] mt-[48px]">
+      <div class="mt-[48px] flex w-[810px] items-center justify-center">
         <div class="mr-[39px] whitespace-nowrap">
           <ul class="">
             <li class="">
-              <img class="w-[200px]" src="../../assets/img/about/photo.gif" alt="Brian Lin`s photo">
+              <img
+                class="w-[200px]"
+                src="../../assets/img/about/photo.gif"
+                alt="Brian Lin`s photo"
+              />
             </li>
-            <li class="my-[9px] pb-[9px] border-b-[1px] border-[#fff] border-dashed text-[#fff] text-[16px] leading-[1.5em] tracking-[1px]">Brian Lin (1984.02.24)</li>
-            <li class="text-[#fff] text-[16px] leading-[1.5em] tracking-[1px]">淡江大學企管系畢業</li>
-            <li class="text-[#fff] text-[16px] leading-[1.5em] tracking-[1px]">資策會網頁互動設計菁英養成班</li>
+            <li
+              class="my-[9px] border-b-[1px] border-dashed border-[#fff] pb-[9px] text-[16px] leading-[1.5em] tracking-[1px] text-[#fff]"
+            >
+              Brian Lin (1984.02.24)
+            </li>
+            <li class="text-[16px] leading-[1.5em] tracking-[1px] text-[#fff]">
+              淡江大學企管系畢業
+            </li>
+            <li class="text-[16px] leading-[1.5em] tracking-[1px] text-[#fff]">
+              資策會網頁互動設計菁英養成班
+            </li>
           </ul>
           <ul class="mt-[20px] flex items-center justify-between">
             <li class="">
-              <a class="text-[#333] hover:text-[#000]" href="https://github.com/brian224" target="_blank">
-                <SvgIcon icon="ico-github" class="h-[48px] w-[48px] transition-all ease-in-out duration-300" />
+              <a
+                class="text-[#333] hover:text-[#000]"
+                href="https://github.com/brian224"
+                target="_blank"
+              >
+                <SvgIcon
+                  icon="ico-github"
+                  class="h-[48px] w-[48px] transition-all duration-300 ease-in-out"
+                />
               </a>
             </li>
             <li class="">
-              <a class="text-[#00649d] hover:text-[#00456e]" href="http://tw.linkedin.com/in/brianlin224" target="_blank">
-                <SvgIcon icon="ico-linkin" class="h-[48px] w-[48px] transition-all ease-in-out duration-300" />
-              </a></li>
+              <a
+                class="text-[#00649d] hover:text-[#00456e]"
+                href="http://tw.linkedin.com/in/brianlin224"
+                target="_blank"
+              >
+                <SvgIcon
+                  icon="ico-linkin"
+                  class="h-[48px] w-[48px] transition-all duration-300 ease-in-out"
+                />
+              </a>
+            </li>
             <li class="">
-              <a class="text-[#ed4856] hover:text-[#a6333c]" href="https://instagram.com/brianlin224/" target="_blank">
-                <SvgIcon icon="ico-ig" class="h-[48px] w-[48px] transition-all ease-in-out duration-300" />
-              </a></li>
+              <a
+                class="text-[#ed4856] hover:text-[#a6333c]"
+                href="https://instagram.com/brianlin224/"
+                target="_blank"
+              >
+                <SvgIcon
+                  icon="ico-ig"
+                  class="h-[48px] w-[48px] transition-all duration-300 ease-in-out"
+                />
+              </a>
+            </li>
             <li class="">
-              <a class="text-[#375596] hover:text-[#273e70]" href="https://www.facebook.com/brian224" target="_blank">
-                <SvgIcon icon="ico-fb" class="h-[48px] w-[48px] transition-all ease-in-out duration-300" />
+              <a
+                class="text-[#375596] hover:text-[#273e70]"
+                href="https://www.facebook.com/brian224"
+                target="_blank"
+              >
+                <SvgIcon
+                  icon="ico-fb"
+                  class="h-[48px] w-[48px] transition-all duration-300 ease-in-out"
+                />
               </a>
             </li>
           </ul>
@@ -753,22 +824,43 @@ onMounted(() => {})
         <ul class="">
           <li class="">
             <h3 class="mb-[6px] text-[24px] text-[#accaee]">Experience</h3>
-            <ul class="text-[#fff] text-[16px] leading-[1.5em] tracking-[1px]">
-              <li class="flex items-stretch"><span class="min-w-[10em]">2015.12~NOW</span>方形糖創意數位</li>
-              <li class="flex items-stretch"><span class="min-w-[10em]">2013.04~2015.11</span>永慶房產集團</li>
-              <li class="flex items-stretch"><span class="min-w-[10em]">2012.08~2013.03</span>安捷達顧問</li>
-              <li class="flex items-stretch"><span class="min-w-[10em]">2012.03~2012.07</span>學學文創志業</li>
-              <li class="flex items-stretch"><span class="min-w-[10em]">2009.12~2012.03</span>華藝數位</li>
-              <li class="flex items-stretch"><span class="min-w-[10em]">2009.03~2009.07</span>玉馬門創意設計</li>
-              <li class="flex items-stretch"><span class="min-w-[10em]">2008.05~2009.01</span>詩米亞媒體</li>
+            <ul class="text-[16px] leading-[1.5em] tracking-[1px] text-[#fff]">
+              <li class="flex items-stretch">
+                <span class="min-w-[10em]">2015.12~NOW</span>方形糖創意數位
+              </li>
+              <li class="flex items-stretch">
+                <span class="min-w-[10em]">2013.04~2015.11</span>永慶房產集團
+              </li>
+              <li class="flex items-stretch">
+                <span class="min-w-[10em]">2012.08~2013.03</span>安捷達顧問
+              </li>
+              <li class="flex items-stretch">
+                <span class="min-w-[10em]">2012.03~2012.07</span>學學文創志業
+              </li>
+              <li class="flex items-stretch">
+                <span class="min-w-[10em]">2009.12~2012.03</span>華藝數位
+              </li>
+              <li class="flex items-stretch">
+                <span class="min-w-[10em]">2009.03~2009.07</span>玉馬門創意設計
+              </li>
+              <li class="flex items-stretch">
+                <span class="min-w-[10em]">2008.05~2009.01</span>詩米亞媒體
+              </li>
             </ul>
           </li>
           <li class="mt-[20px]">
             <h3 class="mb-[6px] text-[24px] text-[#accaee]">Autobiography</h3>
-            <article class="text-[#fff] text-[16px] leading-[1.5em] tracking-[1px]">
-              <p class="">從空間設計、平面設計到網頁設計，然後再鑽研介面設計與前端技術；從業務、專案負責人、設計再到開發者。</p>
-              <p class="">七年的職涯裡，我嘗試在各領域提升自己、尋找喜好與定位，並一步步調整工作的方向與發展目標。</p>
-              <p class="">2012 年，透過進修、接案與求職，得到不少同行朋友的分享與前輩的指導下，不僅在網頁程式的專業能力有大幅成長，也在職涯方向獲得許多建議，因而確認出我的職涯新目標--前端工程師。</p>
+            <article class="text-[16px] leading-[1.5em] tracking-[1px] text-[#fff]">
+              <p class="">
+                從空間設計、平面設計到網頁設計，然後再鑽研介面設計與前端技術；從業務、專案負責人、設計再到開發者。
+              </p>
+              <p class="">
+                七年的職涯裡，我嘗試在各領域提升自己、尋找喜好與定位，並一步步調整工作的方向與發展目標。
+              </p>
+              <p class="">
+                2012
+                年，透過進修、接案與求職，得到不少同行朋友的分享與前輩的指導下，不僅在網頁程式的專業能力有大幅成長，也在職涯方向獲得許多建議，因而確認出我的職涯新目標--前端工程師。
+              </p>
             </article>
           </li>
         </ul>
@@ -784,116 +876,188 @@ onMounted(() => {})
         >
         <span>專長技能</span>
       </h2>
-      <div class="skill-wrap mt-[48px] bg-no-repeat bg-center flex items-start justify-center w-[990px]">
+      <div
+        class="skill-wrap mt-[48px] flex w-[990px] items-start justify-center bg-center bg-no-repeat"
+      >
         <ul class="mr-[30px] w-1/2">
-          <li class="mb-[15px] flex items-center justify-center"><h3 class="text-[#ff0] text-[20px] tracking-[3px]">技術專長</h3></li>
-          <li class="flex flex-col items-start">
-            <h4 class="px-[5px] bg-[#fff] text-[#5894DD] font-bold">程式撰寫</h4>
-            <span class="desc pt-[8px] pb-[15px] text-[#fff] text-[18px] leading-[1.5em]">Html、CSS / SCSS / Tailwind CSS、JavaScript、Vue.js、jQuery、JSON / JSON-LD、SVG</span>
+          <li class="mb-[15px] flex items-center justify-center">
+            <h3 class="text-[20px] tracking-[3px] text-[#ff0]">技術專長</h3>
           </li>
           <li class="flex flex-col items-start">
-            <h4 class="px-[5px] bg-[#fff] text-[#5894DD] font-bold">網頁技術應用</h4>
-            <span class="desc pt-[8px] pb-[15px] text-[#fff] text-[18px] leading-[1.5em]">Git / GitLab / GitHub / SVN、Compass、Facebook API、Line Liff API、Google Map API、User Experience、User Interface、Google Analytics、CSS sprites、Web Fonts</span>
+            <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD]">程式撰寫</h4>
+            <span class="desc pb-[15px] pt-[8px] text-[18px] leading-[1.5em] text-[#fff]"
+              >Html、CSS / SCSS / Tailwind CSS、JavaScript、Vue.js、jQuery、JSON /
+              JSON-LD、SVG</span
+            >
           </li>
           <li class="flex flex-col items-start">
-            <h4 class="px-[5px] bg-[#fff] text-[#5894DD] font-bold">慣用開發軟體</h4>
-            <span class="desc pt-[8px] pb-[15px] text-[#fff] text-[18px] leading-[1.5em]">Visual Studio Code、TortoiseSVN、Chrome Developer Tools、Photoshop、Illustrator、Figma、Sketch、Slack</span>
+            <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD]">網頁技術應用</h4>
+            <span class="desc pb-[15px] pt-[8px] text-[18px] leading-[1.5em] text-[#fff]"
+              >Git / GitLab / GitHub / SVN、Compass、Facebook API、Line Liff API、Google Map
+              API、User Experience、User Interface、Google Analytics、CSS sprites、Web Fonts</span
+            >
+          </li>
+          <li class="flex flex-col items-start">
+            <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD]">慣用開發軟體</h4>
+            <span class="desc pb-[15px] pt-[8px] text-[18px] leading-[1.5em] text-[#fff]"
+              >Visual Studio Code、TortoiseSVN、Chrome Developer
+              Tools、Photoshop、Illustrator、Figma、Sketch、Slack</span
+            >
           </li>
         </ul>
         <ul class="w-1/2">
-          <li class="mb-[15px] flex items-center justify-center"><h3 class="text-[#ff0] text-[20px] tracking-[3px]">實際應用經驗</h3></li>
-          <li class="flex flex-col items-start">
-            <h4 class="px-[5px] bg-[#fff] text-[#5894DD] font-bold">前端 / 網頁設計</h4>
-            <span class="desc pt-[8px] pb-[15px] text-[#fff] text-[18px] leading-[1.5em]">網頁製作 ( 單頁式網頁 / 無障礙網頁 / 手機網頁 / 自適應網頁 )、網站優化 ( 檔案合併 / 文檔最小化 / CDN )、搜尋引擎最佳化 SEO、跨瀏覽器製作</span>
+          <li class="mb-[15px] flex items-center justify-center">
+            <h3 class="text-[20px] tracking-[3px] text-[#ff0]">實際應用經驗</h3>
           </li>
           <li class="flex flex-col items-start">
-            <h4 class="px-[5px] bg-[#fff] text-[#5894DD] font-bold">介面設計</h4>
-            <span class="desc pt-[8px] pb-[15px] text-[#fff] text-[18px] leading-[1.5em]">行動裝置 Apps 開發、Mobile Web 製作</span>
+            <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD]">前端 / 網頁設計</h4>
+            <span class="desc pb-[15px] pt-[8px] text-[18px] leading-[1.5em] text-[#fff]"
+              >網頁製作 ( 單頁式網頁 / 無障礙網頁 / 手機網頁 / 自適應網頁 )、網站優化 ( 檔案合併 /
+              文檔最小化 / CDN )、搜尋引擎最佳化 SEO、跨瀏覽器製作</span
+            >
           </li>
           <li class="flex flex-col items-start">
-            <h4 class="px-[5px] bg-[#fff] text-[#5894DD] font-bold">平面設計</h4>
-            <span class="desc pt-[8px] pb-[15px] text-[#fff] text-[18px] leading-[1.5em]">海報 / DM / EDM / 易拉展 / 名片 / 賀卡 / CI 設計</span>
+            <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD]">介面設計</h4>
+            <span class="desc pb-[15px] pt-[8px] text-[18px] leading-[1.5em] text-[#fff]"
+              >行動裝置 Apps 開發、Mobile Web 製作</span
+            >
+          </li>
+          <li class="flex flex-col items-start">
+            <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD]">平面設計</h4>
+            <span class="desc pb-[15px] pt-[8px] text-[18px] leading-[1.5em] text-[#fff]"
+              >海報 / DM / EDM / 易拉展 / 名片 / 賀卡 / CI 設計</span
+            >
           </li>
         </ul>
       </div>
     </div>
     <div class="flex flex-col items-center justify-center" v-if="global.theme === 'detail'">
-      <div class="mainContent">
-        <div class="showcase">
-          <ul class="box"></ul>
+      <div class="relative h-[552px] w-[843px]">
+        <div
+          class="wrap-shadow relative z-[1] h-full overflow-hidden border-[4px] border-solid border-[#98cbe1] bg-[#4e5ca5]"
+        >
+          <ul class="">
+            <li
+              v-for="index in parseInt(caseGroups[0][currentIndex].PhotoCount, 10)"
+              :key="`${index}`"
+              class="flex h-full w-full flex-col items-center justify-center"
+            >
+              <ImgSrc
+                :src="`home/${caseGroups[0][currentIndex].CaseType}/detail/${caseGroups[0][currentIndex].CaseType}${caseGroups[0][currentIndex].CaseID}_0${index}.png`"
+                :setClass="{
+                  main: 'flex-shrink-0 flex items-center justify-center h-[544px] w-[835px]',
+                  img: 'max-w-full max-h-full object-contain',
+                }"
+                v-if="caseGroups[0][currentIndex]"
+              />
+            </li>
+          </ul>
         </div>
-        <ul class="tab"></ul>
+        <ul class="absolute left-full top-[6px] z-[0] flex w-[75px] flex-col">
+          <li
+            class="ml-[-23px] w-[75px] border-[1px] border-solid border-[#4c82d5] bg-[#fff] transition-all duration-300 ease-in-out hover:ml-[-1px]"
+          >
+            <button
+              class="flex h-[33px] w-full items-center justify-end pr-[9px] text-right text-[13px] text-[#00adee]"
+              @click=""
+            >
+              BACK
+            </button>
+          </li>
+          <li
+            v-for="index in parseInt(caseGroups[0][currentIndex].PhotoCount, 10)"
+            :key="`${index}`"
+            class="ml-[-42px] mt-[8px] h-[33px] w-[75px] border-[1px] border-solid border-[#4c82d5] bg-[#fff] transition-all duration-300 ease-in-out hover:ml-[-23px]"
+          >
+            <button
+              class="flex h-[33px] w-full items-center justify-end pr-[9px] text-right text-[13px] text-[#00adee]"
+              @click=""
+            >
+              {{ index }}
+            </button>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="postcss">
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.ico-arrow {
+  @apply h-[20px] w-[11px] px-[15px] py-[30px];
+
+  &::before,
+  &::after {
+    @apply absolute left-1/2 h-[12px] w-[3px] bg-[#fff] content-default;
   }
 
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
+  &::before {
+    @apply bottom-1/2 mb-[-1px];
   }
 
-  .ico-arrow {
-    @apply px-[15px] py-[30px] w-[11px] h-[20px];
+  &::after {
+    @apply top-1/2 mt-[-1px];
+  }
 
-    &::before, &::after {
-      @apply content-default w-[3px] h-[12px] bg-[#fff] absolute left-1/2;
-    }
-
+  &.left {
     &::before {
-      @apply mb-[-1px] bottom-1/2;
+      @apply rotate-[30deg];
     }
 
     &::after {
-      @apply mt-[-1px] top-1/2;
-    }
-
-    &.left {
-      &::before {
-        @apply rotate-[30deg];
-      }
-
-      &::after {
-        @apply rotate-[-30deg];
-      }
-    }
-
-    &.right {
-      &::before {
-        @apply rotate-[-30deg];
-      }
-
-      &::after {
-        @apply rotate-[30deg];
-      }
+      @apply rotate-[-30deg];
     }
   }
 
-  .cross {
-    &::before, &::after {
-      @apply content-default w-[164px] h-[1px] bg-[#fff] absolute;
-    }
-
+  &.right {
     &::before {
-      @apply rotate-[45deg] top-0 left-0 origin-top-left;
+      @apply rotate-[-30deg];
     }
 
     &::after {
-      @apply rotate-[-45deg] top-0 right-0 origin-top-right;
+      @apply rotate-[30deg];
     }
   }
+}
 
-  .skill-wrap {
-    background-image: url('@imgs/skill/skill_bg.png');
-    background-size: 696px auto;
+.cross {
+  &::before,
+  &::after {
+    @apply absolute h-[1px] w-[164px] bg-[#fff] content-default;
   }
 
-  .desc {
-    text-shadow: 1px 1px 3px #5894DD, 1px -1px 3px #5894DD, -1px 1px 3px #5894DD, -1px -1px 3px #5894DD;
+  &::before {
+    @apply left-0 top-0 origin-top-left rotate-[45deg];
   }
+
+  &::after {
+    @apply right-0 top-0 origin-top-right rotate-[-45deg];
+  }
+}
+
+.wrap-shadow {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.skill-wrap {
+  background-image: url('@imgs/skill/skill_bg.png');
+  background-size: 696px auto;
+}
+
+.desc {
+  text-shadow:
+    1px 1px 3px #5894dd,
+    1px -1px 3px #5894dd,
+    -1px 1px 3px #5894dd,
+    -1px -1px 3px #5894dd;
+}
 </style>
