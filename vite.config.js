@@ -12,7 +12,7 @@ import VueDevTools from 'vite-plugin-vue-devtools'
 
 import { imageMinimizerSharpPlugin } from './plugins/vite-plugin-image-minimizer-sharp'
 
-const SPRITEMAP_ROUTE_URL = `/${CONFIG.imgs}/svg/spritemap.svg`
+const SPRITEMAP_ROUTE_URL = '/__spritemap'
 
 function ignoreSpecBlock() {
   return {
@@ -68,7 +68,7 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
-    base: process.env.VITE_BASE_URL,
+    base: process.env.VITE_BASE_URL || '/',
     cacheDir: 'node_modules/.vite',
     plugins: [
       vue(),
@@ -91,16 +91,13 @@ export default defineConfig(({ mode }) => {
         svgo: false,
         oxvg: false,
         idify: (name) => name,
-        route: {
-          url: SPRITEMAP_ROUTE_URL,
-          name: 'assets-img-svg-spritemap',
-        },
+        route: SPRITEMAP_ROUTE_URL,
         output: {
           filename: 'img/svg/spritemap.svg',
           name: 'spritemap.svg',
-          use: true,
-          view: true,
         },
+        use: true,
+        view: true,
       }),
       imageMinimizerSharpPlugin({
         rules: [

@@ -633,6 +633,14 @@ const nextPage = () => {
   goPage(currentPage.value + 1)
 }
 
+const totalPages = computed(() => caseGroups.value.length)
+
+const hasPrev = computed(() => currentPage.value > 0)
+
+const hasNext = computed(() =>
+  currentPage.value < totalPages.value - 1
+)
+
 onBeforeMount(() => {
   // console.log(datas)
 })
@@ -696,8 +704,8 @@ onMounted(() => {})
               </ul>
             </div>
           </div>
-          <button class="ico-arrow left absolute top-1/2 -translate-y-1/2 left-0" @click="prevPage"><span class="sr-only">上一頁</span></button>
-          <button class="ico-arrow right absolute top-1/2 -translate-y-1/2 right-0" @click="nextPage"><span class="sr-only">下一頁</span></button>
+          <button class="ico-arrow left absolute top-1/2 -translate-y-1/2 left-0" @click="prevPage" v-if="hasPrev"><span class="sr-only">上一頁</span></button>
+          <button class="ico-arrow right absolute top-1/2 -translate-y-1/2 right-0" @click="nextPage" v-if="hasNext"><span class="sr-only">下一頁</span></button>
         </div>
       </div>
     </div>
@@ -712,8 +720,8 @@ onMounted(() => {})
         <span>關於我</span>
       </h2>
       <div class="flex items-center justify-center w-[810px] mt-[48px]">
-        <div class="w-[275px] mr-[39px] whitespace-nowrap">
-          <ul class="info">
+        <div class="mr-[39px] whitespace-nowrap">
+          <ul class="">
             <li class="">
               <img class="w-[200px]" src="../../assets/img/about/photo.gif" alt="Brian Lin`s photo">
             </li>
@@ -721,11 +729,25 @@ onMounted(() => {})
             <li class="text-[#fff] text-[16px] leading-[1.5em] tracking-[1px]">淡江大學企管系畢業</li>
             <li class="text-[#fff] text-[16px] leading-[1.5em] tracking-[1px]">資策會網頁互動設計菁英養成班</li>
           </ul>
-          <ul class="flex items-center justify-center">
-            <li class="list"><a class="link github" href="https://github.com/brian224" target="_blank">github</a></li>
-            <li class="list"><a class="link linkedin" href="http://tw.linkedin.com/in/brianlin224" target="_blank">linkedin</a></li>
-            <li class="list"><a class="link instagram" href="https://instagram.com/brianlin224/" target="_blank">instagram</a></li>
-            <li class="list"><a class="link facebook" href="https://www.facebook.com/brian224" target="_blank">facebook</a></li>
+          <ul class="mt-[20px] flex items-center justify-between">
+            <li class="">
+              <a class="text-[#333] hover:text-[#000]" href="https://github.com/brian224" target="_blank">
+                <SvgIcon icon="ico-github" class="h-[48px] w-[48px] transition-all ease-in-out duration-300" />
+              </a>
+            </li>
+            <li class="">
+              <a class="text-[#00649d] hover:text-[#00456e]" href="http://tw.linkedin.com/in/brianlin224" target="_blank">
+                <SvgIcon icon="ico-linkin" class="h-[48px] w-[48px] transition-all ease-in-out duration-300" />
+              </a></li>
+            <li class="">
+              <a class="text-[#ed4856] hover:text-[#a6333c]" href="https://instagram.com/brianlin224/" target="_blank">
+                <SvgIcon icon="ico-ig" class="h-[48px] w-[48px] transition-all ease-in-out duration-300" />
+              </a></li>
+            <li class="">
+              <a class="text-[#375596] hover:text-[#273e70]" href="https://www.facebook.com/brian224" target="_blank">
+                <SvgIcon icon="ico-fb" class="h-[48px] w-[48px] transition-all ease-in-out duration-300" />
+              </a>
+            </li>
           </ul>
         </div>
         <ul class="">
@@ -872,6 +894,6 @@ onMounted(() => {})
   }
 
   .desc {
-    text-shadow: 0 0 10px #5894DD;
+    text-shadow: 1px 1px 3px #5894DD, 1px -1px 3px #5894DD, -1px 1px 3px #5894DD, -1px -1px 3px #5894DD;
   }
 </style>
