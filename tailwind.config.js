@@ -12,7 +12,7 @@ export default {
             : '\\0screen\\, screen\\9, all and (min-width: 0\\0) and (min-resolution: 0.001dpcm)',
       },
       mLandscape: {
-        raw: `(max-width: 739px) and (orientation: landscape) and (min-width: 480px), (max-width: 999px) and (max-height: 428px) and (orientation: landscape) and (min-width: 480px), (min-width: 740px) and (max-width: 1366px) and (orientation: landscape)`,
+        raw: `(max-width: 739px) and (orientation: landscape) and (min-width: 480px), (max-width: 999px) and (max-height: 428px) and (orientation: landscape) and (min-width: 480px)`,
       },
       m: {
         raw: `(max-width: 999px) and (max-height: 428px) and (orientation: landscape), (max-width: ${CONFIG.mobileMaxWidth - 1}px)`,

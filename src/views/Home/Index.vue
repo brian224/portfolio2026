@@ -748,7 +748,7 @@ onMounted(() => {})
         >
         <span>關於我</span>
       </h2>
-      <div class="mt-[48px] flex w-[810px] items-center justify-center">
+      <div class="mt-[48px] flex items-center justify-center t:w-full t:px-[30px] p:w-[810px]">
         <div class="mr-[39px] whitespace-nowrap">
           <ul class="">
             <li class="">
@@ -959,7 +959,7 @@ onMounted(() => {})
           >
             <button
               class="flex h-[33px] w-full items-center justify-end pr-[9px] text-right text-[13px] text-[#00adee]"
-              @click=""
+              @click="global.theme = 'f2e'"
             >
               BACK
             </button>
