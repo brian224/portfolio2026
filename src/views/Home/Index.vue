@@ -99,7 +99,7 @@ const datas = [
         CoverImg: 'web_24.png',
         PhotoCount: '2',
         webLink: 'http://www.ctbcbank.com/html/fileUpload/internet/phaseII/homepage.html',
-        webDesc: '中國信託網路銀行2013全新風貌邀您立即體驗',
+        webDesc: '中國信託網路銀行 2013 全新風貌邀您立即體驗',
       },
       {
         CaseName: '家在雙和<br>活力 UP UP!',
@@ -186,7 +186,7 @@ const datas = [
           '好房網不動產市場週報 創刊發表暨記者會,輕總價 藝術生活 桃園藝文特區,馬來西亞皇萱灣',
       },
       {
-        CaseName: '中國信託CI',
+        CaseName: '中國信託 CI',
         CaseID: '25',
         CaseType: 'web',
         CoverImg: 'web_25.png',
@@ -608,9 +608,19 @@ const chunkArrayWithFill = (array, size) => {
 
 const caseGroups = computed(() => chunkArrayWithFill(datas[currentType.value].case, amount))
 
+// 切換分頁 作品 / 關於 / 專長
+const switchPage = (i) => {
+  global.theme = i
+
+  if (currentPage.value !== 0) {
+    nextPage()
+  }
+}
+
 // 切換分類 f2e / about / skill / detail
 const switchType = (i) => {
   currentType.value = i
+  currentPage.value = 0
 }
 
 // 目前所在詳細頁第幾張圖
@@ -658,7 +668,7 @@ onMounted(() => {})
     <Transition name="fade">
       <div
         class="absolute inset-0 flex flex-col items-center pt-[75px]"
-        v-if="global.theme === 'f2e'"
+        v-show="global.theme === 'f2e'"
       >
         <h2
           class="mb-[10px] flex w-[546px] items-end justify-center border-b-[2px] border-solid border-[#acd1ee] pb-[9px] text-center text-[18px] tracking-[2px] text-[#fff]"
@@ -704,7 +714,7 @@ onMounted(() => {})
                   >
                     <button
                       class="text-[#fff] transition-all duration-300 ease-in-out hover:text-[#accaee]"
-                      @click="toDetail(index, item.CaseID)"
+                      @click="toDetail(index)"
                     >
                       <ImgSrc
                         :src="`home/${item.CaseType}/${item.CoverImg}`"
@@ -752,7 +762,7 @@ onMounted(() => {})
     <Transition name="fade">
       <div
         class="absolute inset-0 flex flex-col items-center pt-[75px]"
-        v-if="global.theme === 'about'"
+        v-show="global.theme === 'about'"
       >
         <h2
           class="mb-[10px] flex w-[546px] items-end justify-center border-b-[2px] border-solid border-[#acd1ee] pb-[9px] text-center text-[18px] tracking-[2px] text-[#fff]"
@@ -885,7 +895,7 @@ onMounted(() => {})
     <Transition name="fade">
       <div
         class="absolute inset-0 flex flex-col items-center pt-[75px]"
-        v-if="global.theme === 'skill'"
+        v-show="global.theme === 'skill'"
       >
         <h2
           class="mb-[10px] flex w-[546px] items-end justify-center border-b-[2px] border-solid border-[#acd1ee] pb-[9px] text-center text-[18px] tracking-[2px] text-[#fff]"
@@ -955,7 +965,7 @@ onMounted(() => {})
     <Transition name="fade">
       <div
         class="absolute inset-0 flex flex-col items-center pt-[75px]"
-        v-if="global.theme === 'detail'"
+        v-show="global.theme === 'detail'"
       >
         <div class="relative mt-[24px] h-[552px] w-[843px]">
           <div
@@ -963,25 +973,25 @@ onMounted(() => {})
           >
             <ul class="">
               <li
-                v-for="index in parseInt(caseGroups[0][currentIndex].PhotoCount, 10)"
+                v-for="index in parseInt(caseGroups[currentPage][currentIndex].PhotoCount, 10)"
                 :key="`${index}`"
                 class="relative flex h-full w-full flex-col items-center justify-center"
               >
                 <ImgSrc
-                  :src="`home/${caseGroups[0][currentIndex].CaseType}/detail/${caseGroups[0][currentIndex].CaseType}${caseGroups[0][currentIndex].CaseID}_0${currentDetailIndex}.png`"
+                  :src="`home/${caseGroups[currentPage][currentIndex].CaseType}/detail/${caseGroups[currentPage][currentIndex].CaseType}${caseGroups[currentPage][currentIndex].CaseID}_0${currentDetailIndex}.png`"
                   :setClass="{
                     main: 'flex-shrink-0 flex items-center justify-center h-[544px] w-[835px]',
                     img: 'max-w-full max-h-full object-contain',
                   }"
-                  v-if="caseGroups[0][currentIndex]"
+                  v-if="caseGroups[currentPage][currentIndex]"
                 />
                 <a
-                  :href="caseGroups[0][currentIndex].webLink"
+                  :href="caseGroups[currentPage][currentIndex].webLink"
                   target="_blank"
                   class="web-url absolute bottom-[4px] left-[12px] text-[16px] text-[#fff] underline hover:text-[#addee3]"
-                  v-if="caseGroups[0][currentIndex].webLink"
+                  v-if="caseGroups[currentPage][currentIndex].webLink"
                 >
-                  {{ caseGroups[0][currentIndex].webDesc }}
+                  {{ caseGroups[currentPage][currentIndex].webDesc }}
                 </a>
               </li>
             </ul>
@@ -994,13 +1004,13 @@ onMounted(() => {})
             >
               <button
                 class="flex h-[33px] w-full items-center justify-end pr-[9px] text-right text-[13px] text-[#00adee]"
-                @click="global.theme = 'f2e'"
+                @click="switchPage('f2e')"
               >
                 BACK
               </button>
             </li>
             <li
-              v-for="index in parseInt(caseGroups[0][currentIndex].PhotoCount, 10)"
+              v-for="index in parseInt(caseGroups[currentPage][currentIndex].PhotoCount, 10)"
               :key="`${index}`"
               class="ani-bookmark-2 ml-[-42px] mt-[8px] h-[33px] w-[75px] -translate-x-full border-[1px] border-solid border-[#4c82d5] transition-all duration-300 ease-in-out hover:ml-[-23px]"
               :class="

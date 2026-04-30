@@ -22,31 +22,34 @@ const global = globalStore()
     <nav class="absolute bottom-full mb-[9px] w-full text-center">
       <ul class="menu flex items-center justify-center">
         <li class="px-[30px]">
-          <button class="menu-link design cursor-pointer text-[18px] text-[#ff0]">
+          <button
+            class="menu-link design cursor-pointer text-[18px] text-[#ff0]"
+            @click="global.changeTheme('f2e')"
+          >
             01.
-            <span
-              class="tracking-[3px] text-[#fff] transition-all duration-300 ease-in-out"
-              @click="global.changeTheme('f2e')"
+            <span class="tracking-[3px] text-[#fff] transition-all duration-300 ease-in-out"
               >[設計作品]</span
             >
           </button>
         </li>
         <li class="px-[30px]">
-          <button class="menu-link about cursor-pointer text-[18px] text-[#ff0]">
+          <button
+            class="menu-link about cursor-pointer text-[18px] text-[#ff0]"
+            @click="global.changeTheme('about')"
+          >
             02.
-            <span
-              class="tracking-[3px] text-[#fff] transition-all duration-300 ease-in-out"
-              @click="global.changeTheme('about')"
+            <span class="tracking-[3px] text-[#fff] transition-all duration-300 ease-in-out"
               >[關於我]</span
             >
           </button>
         </li>
         <li class="px-[30px]">
-          <button class="menu-link skill cursor-pointer text-[18px] text-[#ff0]">
+          <button
+            class="menu-link skill cursor-pointer text-[18px] text-[#ff0]"
+            @click="global.changeTheme('skill')"
+          >
             03.
-            <span
-              class="tracking-[3px] text-[#fff] transition-all duration-300 ease-in-out"
-              @click="global.changeTheme('skill')"
+            <span class="tracking-[3px] text-[#fff] transition-all duration-300 ease-in-out"
               >[專長技能]</span
             >
           </button>
