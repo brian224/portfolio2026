@@ -1,5 +1,6 @@
 import CONFIG from './config.js'
 
+import { existsSync } from 'node:fs'
 import { fileURLToPath, URL } from 'node:url'
 import path from 'path'
 
@@ -78,10 +79,14 @@ export default defineConfig(({ mode }) => {
         targets: [
           ...(CONFIG.docker && appMode !== 'dev'
             ? [
-                {
-                  src: `./src/docker/${appMode}/[!.]*`,
-                  dest: './',
-                },
+                ...(existsSync(path.resolve(process.cwd(), `./src/docker/${appMode}`))
+                  ? [
+                      {
+                        src: `./src/docker/${appMode}/[!.]*`,
+                        dest: './',
+                      },
+                    ]
+                  : []),
               ]
             : []),
         ],

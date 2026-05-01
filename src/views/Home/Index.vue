@@ -611,10 +611,7 @@ const caseGroups = computed(() => chunkArrayWithFill(datas[currentType.value].ca
 // 切換分頁 作品 / 關於 / 專長
 const switchPage = (i) => {
   global.theme = i
-
-  if (currentPage.value !== 0) {
-    nextPage()
-  }
+  currentDetailIndex.value = 1
 }
 
 // 切換分類 f2e / about / skill / detail
@@ -715,6 +712,7 @@ onMounted(() => {})
                     <button
                       class="text-[#fff] transition-all duration-300 ease-in-out hover:text-[#accaee]"
                       @click="toDetail(index)"
+                      :class="item ? '' : 'pointer-events-none'"
                     >
                       <ImgSrc
                         :src="`home/${item.CaseType}/${item.CoverImg}`"
@@ -988,10 +986,28 @@ onMounted(() => {})
                 <a
                   :href="caseGroups[currentPage][currentIndex].webLink"
                   target="_blank"
-                  class="web-url absolute bottom-[4px] left-[12px] text-[16px] text-[#fff] underline hover:text-[#addee3]"
-                  v-if="caseGroups[currentPage][currentIndex].webLink"
+                  class="web-url absolute bottom-[4px] left-[12px] text-[16px] text-[#fff] underline transition-all duration-300 ease-in-out hover:text-[#addee3]"
+                  v-if="
+                    caseGroups[currentPage][currentIndex].webLink &&
+                    caseGroups[currentPage][currentIndex].webLink.split(',').length === 1
+                  "
                 >
                   {{ caseGroups[currentPage][currentIndex].webDesc }}
+                </a>
+                <a
+                  :href="
+                    caseGroups[currentPage][currentIndex].webLink.split(',')[currentDetailIndex - 1]
+                  "
+                  target="_blank"
+                  class="web-url absolute bottom-[4px] left-[12px] text-[16px] text-[#fff] underline transition-all duration-300 ease-in-out hover:text-[#addee3]"
+                  v-else-if="
+                    caseGroups[currentPage][currentIndex].webLink &&
+                    caseGroups[currentPage][currentIndex].webLink.split(',').length !== 1
+                  "
+                >
+                  {{
+                    caseGroups[currentPage][currentIndex].webDesc.split(',')[currentDetailIndex - 1]
+                  }}
                 </a>
               </li>
             </ul>
