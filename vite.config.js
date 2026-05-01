@@ -69,7 +69,7 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
-    base: process.env.VITE_BASE_URL || '/',
+    base: process.env.VITE_BASE_URL || './',
     cacheDir: 'node_modules/.vite',
     plugins: [
       vue(),
