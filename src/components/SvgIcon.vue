@@ -9,7 +9,7 @@ const props = defineProps({
   },
 })
 
-const href = computed(() => `${__SPRITEMAP_URL__}#${props.icon}`)
+const href = computed(() => `/portfolio${__SPRITEMAP_URL__}#${props.icon}`)
 </script>
 
 <template>

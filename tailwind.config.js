@@ -25,7 +25,7 @@ export default {
       },
       pt: { raw: `(min-width: ${CONFIG.mobileMaxWidth}px) and (min-height: 428px)` },
       pMin: { min: '1024px', max: `${CONFIG.desktopMinWidth}px` },
-      p: { raw: '(min-width: 1024px)' },
+      p: { raw: `(min-width: ${CONFIG.desktopMinWidth}px)` },
       pMax: { min: `${CONFIG.desktopMinWidth + 1}px` },
       firefox: {
         raw: '(min--moz-device-pixel-ratio:0) and (display-mode:browser), (min--moz-device-pixel-ratio:0) and (display-mode:fullscreen)',
@@ -34,7 +34,7 @@ export default {
     },
     fontSize: {
       vmp: `${(16 / CONFIG.desktopMinWidth) * 100}vw`,
-      vmt: `${(16 / 768) * 100}vw`,
+      vmt: `${(14 / 768) * 100}vw`,
       vmm: `${(16 / CONFIG.basicMobileWidth) * 100}vw`,
       vmmls: `${((16 / CONFIG.basicMobileWidth) * 100) / 1.77}vw`,
     },

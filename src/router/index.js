@@ -1,17 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import { ENV } from '@js/_env.js'
 import pinia from '@stores'
 import { commonStore } from '@stores/common.js'
 
-import routerHome from '@js/_router/home.js'
-
 const common = commonStore(pinia)
 
-const routes = [...routerHome]
 const router = createRouter({
-  history: createWebHistory(ENV.BASE_URL),
-  routes,
+  history: createWebHistory('/portfolio/'),
+  routes: [
+    {
+      path: '/',
+      component: () => import('@/views/Home/Index.vue'),
+    },
+  ],
   linkActiveClass: 'router-active',
   linkExactActiveClass: 'router-exact-active',
 })

@@ -19,10 +19,10 @@ onMounted(() => {})
 
 <template>
   <div
-    class="l-wrap flex h-[100dvh] min-h-[900px] w-full flex-col items-center justify-center overflow-hidden"
+    class="l-wrap flex w-full flex-col items-center overflow-hidden m:min-h-[100dvh] pt:h-[100dvh] p:min-h-[900px] p:justify-center"
     :class="route.name"
   >
-    <main class="l-body relative flex w-full flex-col t:h-full p:h-[960px]">
+    <main class="l-body relative flex w-full flex-col m:min-h-[100dvh] t:h-[640px] p:h-[960px]">
       <Header />
       <router-view />
       <Footer />

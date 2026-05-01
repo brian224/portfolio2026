@@ -8,22 +8,22 @@ const global = globalStore()
 
 <template>
   <header
-    class="l-header show absolute z-[3] mt-[9px] h-[189px] w-full flex-col items-center justify-start bg-repeat-x t:bottom-[36px] p:bottom-[20px]"
+    class="l-header show z-[3] w-full flex-col items-center justify-start bg-repeat-x m:fixed m:bottom-[44px] m:h-[63px] m:bg-[#5894DD] t:bottom-[24px] t:mt-[6px] t:h-[126px] pt:absolute p:bottom-[20px] p:mt-[9px] p:h-[189px]"
   >
-    <h1 class="logo">
+    <h1 class="logo pointer-events-none z-[1] m:relative">
       <em class="sr-only">Brian Lin 作品集</em>
       <ImgSrc
         src="common/logo.png"
         :setClass="{
-          main: 'flex-shrink-0 w-[688px] h-[291px] mt-[-9px]',
+          main: 'flex-shrink-0 p:w-[688px] t:w-[458px] m:w-[229px] p:h-[291px] t:h-[194px] m:h-[97px] p:mt-[-9px] t:mt-[-6px] m:mt-[-3px]',
         }"
       />
     </h1>
-    <nav class="absolute bottom-full mb-[9px] w-full text-center">
+    <nav class="absolute bottom-full w-full text-center m:bg-[#5894DD] t:mb-[6px] p:mb-[9px]">
       <ul class="menu flex items-center justify-center">
-        <li class="px-[30px]">
+        <li class="m:px-[10px] t:px-[20px] p:px-[30px]">
           <button
-            class="menu-link design cursor-pointer text-[18px] text-[#ff0]"
+            class="menu-link design cursor-pointer text-[#ff0] tm:text-[12px] p:text-[18px]"
             @click="global.changeTheme('f2e')"
           >
             01.
@@ -32,9 +32,9 @@ const global = globalStore()
             >
           </button>
         </li>
-        <li class="px-[30px]">
+        <li class="m:px-[10px] t:px-[20px] p:px-[30px]">
           <button
-            class="menu-link about cursor-pointer text-[18px] text-[#ff0]"
+            class="menu-link about cursor-pointer text-[#ff0] tm:text-[12px] p:text-[18px]"
             @click="global.changeTheme('about')"
           >
             02.
@@ -43,9 +43,9 @@ const global = globalStore()
             >
           </button>
         </li>
-        <li class="px-[30px]">
+        <li class="m:px-[10px] t:px-[20px] p:px-[30px]">
           <button
-            class="menu-link skill cursor-pointer text-[18px] text-[#ff0]"
+            class="menu-link skill cursor-pointer text-[#ff0] tm:text-[12px] p:text-[18px]"
             @click="global.changeTheme('skill')"
           >
             03.
@@ -71,8 +71,6 @@ const global = globalStore()
 
 .menu-link {
   &.curr {
-    @apply cursor-default;
-
     span,
     &:hover span {
       @apply text-[#ff0];
