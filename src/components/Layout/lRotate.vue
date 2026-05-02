@@ -1,8 +1,9 @@
 <script setup></script>
 
 <template>
-  <div class="l-lock bg-dot-gr">
+  <div class="l-lock">
     <div class="l-lock-bd flex h-full w-full flex-col items-center justify-center">
+      <span class="text-[#fff]">請將手機轉為直式，以確保最佳體驗</span>
     </div>
   </div>
 </template>

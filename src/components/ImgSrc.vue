@@ -115,7 +115,7 @@ onMounted(() => onLazy())
 </script>
 
 <template>
-  <component :is="as" class="m-figure" :class="setClass.main" v-if="status === 200">
+  <component :is="as" class="m-figure" :class="setClass.main, status === 200 ? '' : 'is-loading'" v-if="status === 200">
     <picture v-if="mobilePath && hasMobile">
       <source :srcset="mobilePath" media="(max-width: 428px)" />
       <img
@@ -136,6 +136,7 @@ onMounted(() => onLazy())
       :loading="hasLazy ? 'lazy' : null"
       ref="imageRef"
       :alt="alt"
+      class="relative z-[1]"
       :class="setClass.img"
       @error="onError"
       v-else
@@ -143,8 +144,33 @@ onMounted(() => onLazy())
   </component>
 
   <div class="m-figure" :class="setClass.main" v-else>
-    <div class="m-figure-error flex items-center justify-center">
+    <div class="m-figure-error relative z-[1] flex items-center justify-center">
       <SvgIcon class="m:h-[36px] m:w-[36px] pt:h-[54px] pt:w-[54px]" icon="image_404" />
     </div>
   </div>
 </template>
+
+<style lang="postcss">
+.m-figure {
+  @apply relative;
+
+  &.is-loading::before {
+    animation: loading 0.75s 0s linear infinite;
+    @apply absolute left-1/2 top-1/2 z-[0] ml-[-12px] mt-[-12px] h-[24px] w-[24px] rounded-full border-[2px] border-solid border-[#fff] border-b-transparent bg-transparent content-default;
+  }
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+
+  50% {
+    transform: rotate(180deg) scale(0.6);
+  }
+
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+</style>

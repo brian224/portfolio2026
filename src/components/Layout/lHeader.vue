@@ -19,7 +19,9 @@ const global = globalStore()
         }"
       />
     </h1>
-    <nav class="absolute bottom-full w-full text-center m:bg-[#5894DD] t:mb-[6px] p:mb-[9px]">
+    <nav
+      class="absolute bottom-full w-full text-center m:bg-[#5894DD] m:pb-[5px] t:mb-[6px] p:mb-[9px]"
+    >
       <ul class="menu flex items-center justify-center">
         <li class="m:px-[10px] t:px-[20px] p:px-[30px]">
           <button
