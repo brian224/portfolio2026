@@ -15,7 +15,7 @@ const datas = [
         CaseID: '94',
         CaseType: 'web',
         CoverImg: 'web_94.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/brian/campaign/',
         webDesc: '迎財納福衝第一',
       },
@@ -24,7 +24,7 @@ const datas = [
         CaseID: '92',
         CaseType: 'web',
         CoverImg: 'web_92.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/Mega/2023chatroom/index.html',
         webDesc: '錢錢溝通室 - 兆豐機器人理財 e 把兆',
       },
@@ -42,7 +42,7 @@ const datas = [
         CaseID: '90',
         CaseType: 'web',
         CoverImg: 'web_90.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://www.msf.org.tw/campaign/whereithurtsquiz/',
         webDesc: '測出你的共感類型 | 無國界醫生（台灣）',
       },
@@ -51,7 +51,7 @@ const datas = [
         CaseID: '89',
         CaseType: 'web',
         CoverImg: 'web_89.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: 'https://www.msf.org.tw/campaign/whereithurts/',
         webDesc: '痛，我願同行 人道醫療展 x 故事音樂節 | 無國界醫生（台灣）',
       },
@@ -60,7 +60,7 @@ const datas = [
         CaseID: '88',
         CaseType: 'web',
         CoverImg: 'web_88.png',
-        PhotoCount: '1',
+        PhotoCount: '5',
         webLink: 'https://f2e.sugarfun.com.tw/NB/grey/index.html',
         webDesc: 'THE GREY MISSIONS 灰境計劃',
       },
@@ -69,7 +69,7 @@ const datas = [
         CaseID: '87',
         CaseType: 'web',
         CoverImg: 'web_87.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/NB/CNY2023/index.html',
         webDesc: '穿上 NB 從新出發',
       },
@@ -78,7 +78,7 @@ const datas = [
         CaseID: '86',
         CaseType: 'web',
         CoverImg: 'web_86.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/NB/1906/index.html',
         webDesc: 'NB 1906 復刻潮！',
       },
@@ -96,7 +96,7 @@ const datas = [
         CaseID: '84',
         CaseType: 'web',
         CoverImg: 'web_84.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/PG/index.html',
         webDesc: 'ScalpX 頭皮科研養髮三部曲',
       },
@@ -105,7 +105,7 @@ const datas = [
         CaseID: '83',
         CaseType: 'web',
         CoverImg: 'web_83.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/skl/hisandher/html/Views/Home/index.html',
         webDesc: '新光人壽 男女眉角大不同',
       },
@@ -114,7 +114,7 @@ const datas = [
         CaseID: '82',
         CaseType: 'web',
         CoverImg: 'web_82.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Sugarfun/Event/karma/Views/Home/index.html',
         webDesc: '消一波！奴曆七月業障重',
       },
@@ -123,16 +123,16 @@ const datas = [
         CaseID: '81',
         CaseType: 'web',
         CoverImg: 'web_81.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/Sugarfun/Event/wageslave/Views/Home/index.html',
-        webDesc: '當個活活潑潑的好學生，做個堂堂正正的社畜人',
+        webDesc: '社畜自救指南',
       },
       {
         CaseName: '活存 V.S 定存<br>大解密',
         CaseID: '80',
         CaseType: 'web',
         CoverImg: 'web_80.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/rate/Views/Home/index.html',
         webDesc: '活存 V.S 定存大解密',
       },
@@ -141,7 +141,7 @@ const datas = [
         CaseID: '79',
         CaseType: 'web',
         CoverImg: 'web_79.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/rich/Views/Home/index.html',
         webDesc: '練金人生大富翁',
       },
@@ -150,16 +150,16 @@ const datas = [
         CaseID: '78',
         CaseType: 'web',
         CoverImg: 'web_78.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/MGM/event2/Views/Home/index.html',
         webDesc: 'Richart 好友出任務',
       },
       {
-        CaseName: 'Richart 限時<br>闖關拿 10 萬',
+        CaseName: 'Richart<br>友情大考驗',
         CaseID: '77',
         CaseType: 'web',
         CoverImg: 'web_77.png',
-        PhotoCount: '1',
+        PhotoCount: '2',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/MGM/event1/Views/Home/index.html',
         webDesc: 'Richart 限時闖關拿 10 萬',
       },
@@ -168,7 +168,7 @@ const datas = [
         CaseID: '76',
         CaseType: 'web',
         CoverImg: 'web_76.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/invest/Views/Home/index.html',
         webDesc: 'Richart 2017 練財神回應',
       },
@@ -245,7 +245,7 @@ const datas = [
         webDesc: 'RICHART 和你 17 賺翻天',
       },
       {
-        CaseName: '台新銀行',
+        CaseName: '翡翠會員計劃',
         CaseID: '66',
         CaseType: 'web',
         CoverImg: 'web_66.png',
@@ -312,7 +312,7 @@ const datas = [
         CaseID: '59',
         CaseType: 'web',
         CoverImg: 'web_59.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Cartier/CNY2024/?',
         webDesc: '選擇新年祝賀，點亮珍貴心意 | Cartier',
       },
@@ -366,7 +366,7 @@ const datas = [
         CaseID: '52',
         CaseType: 'web',
         CoverImg: 'web_52.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/Chloe/index.html',
         webDesc: 'Chloé 新春專屬桌布',
       },
@@ -545,7 +545,7 @@ const datas = [
         CaseID: '68',
         CaseType: 'web',
         CoverImg: 'web_68.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/SIT/Views/home/index.html',
         webDesc: '台新投信',
       },
@@ -1292,11 +1292,11 @@ onMounted(() => {})
                 Brian Lin (1984.02.24)
               </li>
               <li class="leading-[1.5em] tracking-[1px] text-[#fff] tm:text-[12px] p:text-[16px]">
-                淡江大學企管系畢業
+                淡江大學企業管理系畢業
               </li>
-              <li class="leading-[1.5em] tracking-[1px] text-[#fff] tm:text-[12px] p:text-[16px]">
+              <!-- <li class="leading-[1.5em] tracking-[1px] text-[#fff] tm:text-[12px] p:text-[16px]">
                 資策會網頁互動設計菁英養成班
-              </li>
+              </li> -->
             </ul>
             <ul class="flex items-center m:pl-[143px] tm:mt-[12px] p:mt-[20px] p:justify-between">
               <li class="">
@@ -1311,7 +1311,7 @@ onMounted(() => {})
                   />
                 </a>
               </li>
-              <li class="tm:ml-[10px]">
+              <li class="tm:ml-[10px] p:ml-[15px]">
                 <a
                   class="text-[#00649d] hover:text-[#00456e]"
                   href="http://tw.linkedin.com/in/brianlin224"
@@ -1323,7 +1323,7 @@ onMounted(() => {})
                   />
                 </a>
               </li>
-              <li class="tm:ml-[10px]">
+              <li class="tm:ml-[10px] p:ml-[15px]">
                 <a
                   class="text-[#ed4856] hover:text-[#a6333c]"
                   href="https://instagram.com/brianlin224/"
@@ -1335,7 +1335,7 @@ onMounted(() => {})
                   />
                 </a>
               </li>
-              <li class="tm:ml-[10px]">
+              <li class="tm:ml-[10px] p:ml-[15px]">
                 <a
                   class="text-[#375596] hover:text-[#273e70]"
                   href="https://www.facebook.com/brian224"
@@ -1542,20 +1542,21 @@ onMounted(() => {})
                 <a
                   :href="caseGroups[currentPage][currentIndex].webLink"
                   target="_blank"
-                  class="web-url left-[12px] z-[1] text-[#fff] underline transition-all duration-300 ease-in-out hover:text-[#addee3] m:relative t:bottom-[5px] tm:text-[12px] pt:absolute p:bottom-[4px] p:text-[16px]"
+                  class="web-url left-0 z-[1] flex items-center justify-center !bg-opacity-70 py-[4px] text-[#fff] underline transition-all duration-300 ease-in-out hover:text-[#addee3] m:relative tm:text-[12px] pt:absolute pt:bottom-0 pt:bg-[#4e5ca5] p:text-[16px]"
                   v-if="
                     caseGroups[currentPage][currentIndex].webLink &&
                     caseGroups[currentPage][currentIndex].webLink.split(',').length === 1
                   "
                 >
-                  {{ caseGroups[currentPage][currentIndex].webDesc }}
+                  <i class="ico-d-arrow"></i>
+                  <span>{{ caseGroups[currentPage][currentIndex].webDesc }}</span>
                 </a>
                 <a
                   :href="
                     caseGroups[currentPage][currentIndex].webLink.split(',')[currentDetailIndex - 1]
                   "
                   target="_blank"
-                  class="web-url left-[12px] z-[1] text-[#fff] underline transition-all duration-300 ease-in-out hover:text-[#addee3] m:relative t:bottom-[5px] tm:text-[12px] pt:absolute p:bottom-[4px] p:text-[16px]"
+                  class="web-url left-0 z-[1] flex items-center justify-center !bg-opacity-70 py-[4px] text-[#fff] underline transition-all duration-300 ease-in-out hover:text-[#addee3] m:relative tm:text-[12px] pt:absolute pt:bottom-0 pt:bg-[#4e5ca5] p:text-[16px]"
                   v-else-if="
                     caseGroups[currentPage][currentIndex].webLink &&
                     caseGroups[currentPage][currentIndex].webLink.split(',').length !== 1 &&
@@ -1564,9 +1565,10 @@ onMounted(() => {})
                     ] !== ''
                   "
                 >
-                  {{
+                  <i class="ico-d-arrow"></i>
+                  <span>{{
                     caseGroups[currentPage][currentIndex].webDesc.split(',')[currentDetailIndex - 1]
-                  }}
+                  }}</span>
                 </a>
               </li>
             </ul>
@@ -1672,15 +1674,28 @@ onMounted(() => {})
 }
 
 .web-url {
-  @apply pl-[10px];
+  @apply pt:pr-[10px];
+
+  &::after {
+    background-image: linear-gradient(to right, #4e5ca5b3 0%, #4e5ca500 100%);
+    @apply absolute bottom-0 left-full top-0 w-[50px] content-default;
+  }
+}
+
+.ico-d-arrow {
+  @apply relative mx-[7px] h-[8px] w-[8px];
 
   &::before,
   &::after {
-    @apply absolute left-0 top-1/2 -translate-y-1/2 border-[4px] border-solid border-transparent border-l-[#fff] content-default;
+    @apply absolute top-1/2 -translate-y-1/2 border-[4px] border-solid border-transparent border-l-[#fff] content-default;
+  }
+
+  &::before {
+    @apply left-[3px];
   }
 
   &::after {
-    @apply left-[-3px];
+    @apply left-0;
   }
 }
 

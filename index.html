@@ -18,7 +18,7 @@
     <meta property="og:site_name" content="%VITE_APP_TITLE%" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="%VITE_APP_URL%" />
-    <meta property="og:image" content="%VITE_APP_URL%/static/img/FB.png" />
+    <!-- <meta property="og:image" content="%VITE_APP_URL%/static/img/FB.png" /> -->
     <meta property="og:image:type" content="image/jpeg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -27,54 +27,73 @@
     <link rel="canonical" href="%VITE_APP_URL%" />
     <script type="application/ld+json">
       {
-      "@context": "https://schema.org",
-      "@graph": [
-
-        {
+        "@context": "https://schema.org",
         "@type": "Person",
-        "@id": "https://brian224.github.io/portfolio/#person",
         "name": "Brian Lin",
+        "alternateName": "林子仁"
         "url": "https://brian224.github.io/portfolio/",
-        "jobTitle": "Frontend Developer",
+        "image": "https://brian224.github.io/portfolio/assets/img/common/profile.png",
+        "jobTitle": "Associate Front-End Engineer Director",
+        "inLanguage": "zh-TW",
+        "description": "前端工程師（Front-End Engineer），具有十年以上 Vue.js、互動網站、SEO 與網頁效能優化經驗。",
         "sameAs": [
-          "https://github.com/brian224",
-          "https://codepen.io/brian224"
+          "https://github.com/brian224"
         ],
         "knowsAbout": [
-          "JavaScript",
           "HTML",
           "CSS",
-          "Frontend Development",
-          "Web Development"
+          "SCSS",
+          "Tailwind CSS",
+          "JavaScript",
+          "Vue.js",
+          "jQuery",
+          "JSON-LD",
+          "SVG",
+          "AMP",
+          "PWA",
+          "Canvas API",
+          "Web Animation",
+          "Git",
+          "GitHub",
+          "GitLab",
+          "SEO",
+          "Structured Data"
+        ],
+        "alumniOf": {
+          "@type": "Organization",
+          "name": "淡江大學企業管理系"
+        },
+        "worksFor": {
+          "@type": "Organization",
+          "name": "方形糖創意數位 Sugarfun / Associate Front-End Engineer Director"
+        },
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "Front-End Engineer",
+          "occupationLocation": {
+            "@type": "Country",
+            "name": "Taiwan"
+          },
+          "skills": [
+            "Vue.js",
+            "JavaScript",
+            "Tailwind CSS",
+            "Responsive Web Design",
+            "SEO",
+            "Web Performance Optimization"
+          ]
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": "https://brian224.github.io/portfolio/"
+        },
+        "subjectOf": [
+          {
+            "@type": "CreativeWork",
+            "name": "Front-End Portfolio Website",
+            "url": "https://brian224.github.io/portfolio/"
+          }
         ]
-        },
-
-        {
-        "@type": "WebSite",
-        "@id": "https://brian224.github.io/portfolio/#website",
-        "url": "https://brian224.github.io/portfolio/",
-        "name": "Brian Lin Portfolio",
-        "author": {
-          "@id": "https://brian224.github.io/portfolio/#person"
-        },
-        "inLanguage": "zh-TW"
-        },
-
-        {
-        "@type": "CollectionPage",
-        "@id": "https://brian224.github.io/portfolio/#portfolio",
-        "url": "https://brian224.github.io/portfolio/",
-        "name": "Brian Lin Portfolio",
-        "description": "Frontend developer portfolio showcasing web development projects and UI works.",
-        "isPartOf": {
-          "@id": "https://brian224.github.io/portfolio/#website"
-        },
-        "about": {
-          "@id": "https://brian224.github.io/portfolio/#person"
-        }
-        }
-
-      ]
       }
     </script>
   </head>
