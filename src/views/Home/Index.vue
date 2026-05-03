@@ -11,13 +11,13 @@ const datas = [
     type: '活動作品',
     case: [
       {
-        CaseName: '一銀 CNY_2025',
+        CaseName: '迎財納福衝第一',
         CaseID: '94',
         CaseType: 'web',
         CoverImg: 'web_94.png',
         PhotoCount: '1',
-        webLink: '',
-        webDesc: '一銀 CNY_2025',
+        webLink: 'https://f2e.sugarfun.com.tw/brian/campaign/',
+        webDesc: '迎財納福衝第一',
       },
       {
         CaseName: '錢錢溝通室',
@@ -43,7 +43,7 @@ const datas = [
         CaseType: 'web',
         CoverImg: 'web_90.png',
         PhotoCount: '1',
-        webLink: 'https://f2e.sugarfun.com.tw/MSF/campaign/index.html',
+        webLink: 'https://www.msf.org.tw/campaign/whereithurtsquiz/',
         webDesc: '測出你的共感類型 | 無國界醫生（台灣）',
       },
       {
@@ -52,8 +52,8 @@ const datas = [
         CaseType: 'web',
         CoverImg: 'web_89.png',
         PhotoCount: '1',
-        webLink: 'https://f2e.sugarfun.com.tw/MSF/normal/index.html',
-        webDesc: '痛，我願同行 人道醫療展 x 故事音樂節| 無國界醫生（台灣）',
+        webLink: 'https://www.msf.org.tw/campaign/whereithurts/',
+        webDesc: '痛，我願同行 人道醫療展 x 故事音樂節 | 無國界醫生（台灣）',
       },
       {
         CaseName: 'NB 灰境計劃',
@@ -213,25 +213,25 @@ const datas = [
         CaseID: '71',
         CaseType: 'web',
         CoverImg: 'web_71.png',
-        PhotoCount: '1',
+        PhotoCount: '2',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/friday/Views/Home/index.html',
         webDesc: 'Richart x friDay 影音',
       },
       {
-        CaseName: 'Richart<br>1 歲慶生會',
+        CaseName: 'Richart<br>一歲慶生會',
         CaseID: '70',
         CaseType: 'web',
         CoverImg: 'web_70.png',
-        PhotoCount: '1',
+        PhotoCount: '2',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/birthday/Views/Home/index.html',
-        webDesc: 'Richart 1 歲慶生會',
+        webDesc: 'Richart 一歲慶生會',
       },
       {
         CaseName: '與你相遇<br>我很幸運',
         CaseID: '67',
         CaseType: 'web',
         CoverImg: 'web_67.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/2020/index.html',
         webDesc: '與你相遇，我很幸運',
       },
@@ -240,7 +240,7 @@ const datas = [
         CaseID: '69',
         CaseType: 'web',
         CoverImg: 'web_69.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/17life/Views/Home/index.html',
         webDesc: 'RICHART 和你 17 賺翻天',
       },
@@ -258,7 +258,7 @@ const datas = [
         CaseID: '65',
         CaseType: 'web',
         CoverImg: 'web_65.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/UBS/website/Views/Home/index.html',
         webDesc: '瑞銀私人財富俱樂部',
       },
@@ -267,7 +267,7 @@ const datas = [
         CaseID: '64',
         CaseType: 'web',
         CoverImg: 'web_64.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Transglobe/opening2020/index.html',
         webDesc: '全球人壽 好奇星大冒險',
       },
@@ -294,7 +294,7 @@ const datas = [
         CaseID: '61',
         CaseType: 'web',
         CoverImg: 'web_61.png',
-        PhotoCount: '1',
+        PhotoCount: '2',
         webLink: 'https://f2e.sugarfun.com.tw/Beauty/travel/Views/Home/Index.html',
         webDesc: '跟著我的美麗日記去旅行',
       },
@@ -303,7 +303,7 @@ const datas = [
         CaseID: '60',
         CaseType: 'web',
         CoverImg: 'web_60.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Cartier/VDay/',
         webDesc: 'Cartier 愛的關鍵字',
       },
@@ -326,11 +326,11 @@ const datas = [
         webDesc: '來自卡地亞的新春祝福',
       },
       {
-        CaseName: 'Cartier<br>新春活動',
+        CaseName: 'Cartier<br>2022 新春活動',
         CaseID: '57',
         CaseType: 'web',
         CoverImg: 'web_57.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Cartier/CNY/index.html',
         webDesc: '來自卡地亞的新春祝福',
       },
@@ -339,7 +339,7 @@ const datas = [
         CaseID: '55',
         CaseType: 'web',
         CoverImg: 'web_55.png',
-        PhotoCount: '1',
+        PhotoCount: '2',
         webLink: 'https://f2e.sugarfun.com.tw/Cathay/KoKo/Combo/webiste/index.html',
         webDesc: 'KOKO COMBO 卡－5% 都市傳說',
       },
@@ -348,7 +348,7 @@ const datas = [
         CaseID: '54',
         CaseType: 'web',
         CoverImg: 'web_54.png',
-        PhotoCount: '1',
+        PhotoCount: '6',
         webLink: 'https://f2e.sugarfun.com.tw/Cathay/KoKo/5050/website/views/Home/index.html',
         webDesc: 'KOKO 斷糧求生懶人包',
       },
@@ -510,15 +510,24 @@ const datas = [
         CaseType: 'web',
         CoverImg: 'web_56.png',
         PhotoCount: '1',
-        webLink: 'https://f2e.sugarfun.com.tw/Taishin/Holdings/2025/new/index.html',
+        webLink: 'https://www.tsholdings.com.tw/tsh/',
         webDesc: '台新新光金控',
+      },
+      {
+        CaseName: '達爾生技',
+        CaseID: '95',
+        CaseType: 'web',
+        CoverImg: 'web_95.png',
+        PhotoCount: '5',
+        webLink: 'https://www.delbioww.com/tw/Home/Index',
+        webDesc: '達爾生技',
       },
       {
         CaseName: '漢來美食',
         CaseID: '45',
         CaseType: 'web',
         CoverImg: 'web_45.png',
-        PhotoCount: '1',
+        PhotoCount: '5',
         webLink: 'https://f2e.sugarfun.com.tw/Hanlai/Food/2016/website/index.html',
         webDesc: '漢來美食',
       },
@@ -527,7 +536,7 @@ const datas = [
         CaseID: '93',
         CaseType: 'web',
         CoverImg: 'web_93.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://www.feds.com.tw/',
         webDesc: '遠東百貨',
       },
@@ -1034,11 +1043,11 @@ const datas = [
     ],
   },
 ]
-const currentType = ref(0) // 目前在哪個分類 f2e / about / skill / detail
+const currentType = ref(Number(sessionStorage.getItem('type')) || 0) // 目前在哪個分類 活動作品 / 專案作品 / 其他作品
 const amount = 14 // 一頁幾筆作品
 const sliderRef = ref(null)
-const currentPage = ref(0) // 作品有多頁時 目前是哪一頁
-const currentIndex = ref(0) // 當前選取作品 index
+const currentPage = ref(Number(sessionStorage.getItem('page')) || 0) // 作品有多頁時 目前是哪一頁
+const currentIndex = ref(Number(sessionStorage.getItem('index')) || 0) // 當前選取作品 index
 const currentDetailIndex = ref(1) // 當前選取作品圖片 index
 
 const chunkArrayWithFill = (array, size) => {
@@ -1059,30 +1068,22 @@ const caseGroups = computed(() => chunkArrayWithFill(datas[currentType.value].ca
 
 watch(caseGroups, async () => {
   currentPage.value = 0
+  sessionStorage.setItem('page', 0)
 
   await nextTick()
 
   sliderRef.value.scrollLeft = 0
 })
 
-// 切換分頁 作品 / 關於 / 專長
-const switchPage = (i) => {
-  global.theme = i
-}
-
-// 切換分類 f2e / about / skill / detail
+// 切換分類 活動作品 / 專案作品 / 其他作品
 const switchType = (i) => {
   currentType.value = i
-  // currentPage.value = 0
-}
-
-// 目前所在詳細頁第幾張圖
-const switchImg = (i) => {
-  currentDetailIndex.value = i
+  sessionStorage.setItem('type', i)
 }
 
 const goPage = (page) => {
   currentPage.value = Math.max(0, Math.min(page, caseGroups.value.length - 1))
+  sessionStorage.setItem('page', currentPage.value)
 
   sliderRef.value?.scrollTo({
     left: sliderRef.value.clientWidth * currentPage.value,
@@ -1105,14 +1106,17 @@ const hasPrev = computed(() => currentPage.value > 0)
 const hasNext = computed(() => currentPage.value < totalPages.value - 1)
 
 const toDetail = (idx) => {
-  global.theme = 'detail'
+  global.changeTheme('detail')
   currentDetailIndex.value = 1
 
   if (idx >= amount) {
     currentIndex.value = Math.floor(idx % amount)
     currentPage.value = Math.floor(idx / amount)
+    sessionStorage.setItem('index', currentIndex.value)
+    sessionStorage.setItem('page', currentPage.value)
   } else {
     currentIndex.value = idx
+    sessionStorage.setItem('index', currentIndex.value)
   }
 }
 
@@ -1420,27 +1424,44 @@ onMounted(() => {})
             </li>
             <li class="flex flex-col items-start">
               <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
-                程式撰寫
+                前端開發技術
               </h4>
               <span
                 class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
-                >Html、CSS / SCSS / Tailwind CSS、JavaScript、Vue.js、jQuery、JSON /
-                JSON-LD、SVG、AMP、PWA</span
+                >HTML5、CSS3 / SCSS / Tailwind CSS、JavaScript (ES6+)、Vue.js、jQuery、SVG、AMP /
+                PWA</span
               >
             </li>
             <li class="flex flex-col items-start">
               <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
-                網頁技術應用
+                資料格式與 SEO
               </h4>
               <span
                 class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
-                >Git / GitLab / GitHub / SVN、Compass、Facebook API、Line Liff API、Google Map
-                API、User Experience、User Interface、Google Analytics、CSS sprites、Web Fonts</span
+                >JSON / JSON-LD、SEO（搜尋引擎最佳化）</span
               >
             </li>
             <li class="flex flex-col items-start">
               <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
-                慣用開發軟體
+                API / 第三方整合
+              </h4>
+              <span
+                class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
+                >Facebook API、LINE LIFF API、Google Maps API</span
+              >
+            </li>
+            <li class="flex flex-col items-start">
+              <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
+                版本控制與協作
+              </h4>
+              <span
+                class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
+                >Git / GitLab / GitHub、SVN / TortoiseSVN</span
+              >
+            </li>
+            <li class="flex flex-col items-start">
+              <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
+                設計與開發工具
               </h4>
               <span
                 class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
@@ -1451,34 +1472,34 @@ onMounted(() => {})
           </ul>
           <ul class="m:mt-[20px] pt:w-1/2">
             <li class="flex items-center justify-center tm:mb-[10px] p:mb-[15px]">
-              <h3 class="tracking-[3px] text-[#ff0] tm:text-[14px] p:text-[20px]">實際應用經驗</h3>
+              <h3 class="tracking-[3px] text-[#ff0] tm:text-[14px] p:text-[20px]">專業經歷</h3>
             </li>
             <li class="flex flex-col items-start">
               <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
-                前端 / 網頁設計
+                網站開發與前端實作
               </h4>
               <span
                 class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
-                >網頁製作 ( 單頁式網頁 / 無障礙網頁 / 手機網頁 / 自適應網頁 )、網站優化 ( 檔案合併 /
-                文檔最小化 / CDN )、搜尋引擎最佳化 SEO、跨瀏覽器製作</span
+                >單頁式網站（Landing Page）開發、響應式網頁設計（RWD）、手機網頁 /
+                行動裝置優化、無障礙網站（Accessibility / WCAG）、跨瀏覽器相容性開發</span
               >
             </li>
             <li class="flex flex-col items-start">
               <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
-                介面設計
+                網站效能優化
               </h4>
               <span
                 class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
-                >行動裝置 Apps 開發、Mobile Web 製作</span
+                >檔案合併與最小化（Minification）、CDN 導入、網站載入速度優化</span
               >
             </li>
             <li class="flex flex-col items-start">
               <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
-                平面設計
+                SEO 與結構優化
               </h4>
               <span
                 class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
-                >海報 / DM / EDM / 易拉展 / 名片 / 賀卡 / CI 設計</span
+                >SEO 技術優化、結構化資料（Schema / JSON-LD）</span
               >
             </li>
           </ul>
@@ -1558,7 +1579,7 @@ onMounted(() => {})
             >
               <button
                 class="flex h-full w-full text-[#00adee] m:items-end m:justify-center m:pb-[4px] m:text-center t:h-[22px] t:pr-[6px] t:text-[10px] pt:items-center pt:justify-end pt:text-right p:h-[33px] p:pr-[9px] p:text-[13px]"
-                @click="switchPage('f2e')"
+                @click="global.changeTheme('f2e')"
               >
                 <span class="m:hidden">BACK</span>
                 <span class="relative rotate-180 pt:hidden">➜</span>
@@ -1576,7 +1597,7 @@ onMounted(() => {})
             >
               <button
                 class="flex h-full w-full text-right text-[#00adee] m:items-end m:justify-center m:pb-[4px] t:h-[22px] t:pr-[6px] t:text-[10px] pt:items-center pt:justify-end p:h-[33px] p:pr-[9px] p:text-[13px]"
-                @click="switchImg(index)"
+                @click="currentDetailIndex = index"
               >
                 {{ index }}
               </button>
