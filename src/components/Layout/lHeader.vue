@@ -8,7 +8,7 @@ const global = globalStore()
 
 <template>
   <header
-    class="l-header show z-[3] w-full flex-col items-center justify-start bg-repeat-x m:fixed m:bottom-[44px] m:h-[63px] m:bg-[#5894DD] t:bottom-[24px] t:mt-[6px] t:h-[126px] pt:absolute p:bottom-[20px] p:mt-[9px] p:h-[189px]"
+    class="l-header show z-[3] w-full flex-col items-center justify-start bg-repeat-x m:fixed m:bottom-[24px] m:h-[63px] m:bg-[#5894DD] t:bottom-[24px] t:mt-[6px] t:h-[126px] pt:absolute p:bottom-[20px] p:mt-[9px] p:h-[189px]"
   >
     <h1 class="logo pointer-events-none z-[1] m:relative">
       <em class="sr-only">Brian Lin 作品集</em>
@@ -20,7 +20,7 @@ const global = globalStore()
       />
     </h1>
     <nav
-      class="absolute bottom-full w-full text-center m:bg-[#5894DD] m:pb-[5px] t:mb-[6px] p:mb-[9px]"
+      class="absolute bottom-full w-full text-center m:bg-[#5894DD] m:py-[5px] t:mb-[6px] p:mb-[9px]"
     >
       <ul class="menu flex items-center justify-center">
         <li class="m:px-[10px] t:px-[20px] p:px-[30px]">

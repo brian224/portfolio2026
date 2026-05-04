@@ -1066,28 +1066,81 @@ const chunkArrayWithFill = (array, size) => {
 
 const caseGroups = computed(() => chunkArrayWithFill(datas[currentType.value].case, amount))
 
-watch(caseGroups, async () => {
-  currentPage.value = 0
-  sessionStorage.setItem('page', 0)
+watch(
+  () => global.theme,
+  async (theme) => {
+    if (theme !== 'f2e') return
 
-  await nextTick()
+    const savedPage = Number(sessionStorage.getItem('page')) || 0
+    const maxPage = totalPages.value - 1
 
-  sliderRef.value.scrollLeft = 0
+    currentPage.value = Math.max(0, Math.min(savedPage, maxPage))
+
+    await scrollToCurrentPage()
+  },
+  { flush: 'post' }
+)
+
+watch(
+  caseGroups,
+  async () => {
+    const maxPage = caseGroups.value.length - 1
+
+    if (currentPage.value > maxPage) {
+      currentPage.value = 0
+    }
+
+    if (global.theme === 'f2e') {
+      await scrollToCurrentPage()
+    }
+  },
+  { flush: 'post' }
+)
+
+watch(currentPage, (val) => {
+  sessionStorage.setItem('page', val)
 })
 
 // 切換分類 活動作品 / 專案作品 / 其他作品
-const switchType = (i) => {
+const switchType = async (i) => {
   currentType.value = i
+  currentPage.value = 0
+
   sessionStorage.setItem('type', i)
+  sessionStorage.setItem('page', 0)
+
+  await nextTick()
+  sliderRef.value && (sliderRef.value.scrollLeft = 0)
 }
 
-const goPage = (page) => {
-  currentPage.value = Math.max(0, Math.min(page, caseGroups.value.length - 1))
-  sessionStorage.setItem('page', currentPage.value)
+const scrollToCurrentPage = async () => {
+  await nextTick()
 
-  sliderRef.value?.scrollTo({
-    left: sliderRef.value.clientWidth * currentPage.value,
-    behavior: 'smooth',
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const el = sliderRef.value
+      if (!el) return
+      if (!el.clientWidth) return
+
+      el.scrollLeft = el.clientWidth * currentPage.value
+    })
+  })
+}
+
+// 左右鍵切換作品
+const goPage = (page) => {
+  const maxPage = totalPages.value - 1
+
+  currentPage.value = Math.max(0, Math.min(page, maxPage))
+
+  nextTick(() => {
+    const el = sliderRef.value
+    if (!el) return
+
+    el.scrollTo({
+      left: el.clientWidth * currentPage.value,
+      behavior: 'smooth',
+    })
   })
 }
 
@@ -1120,11 +1173,13 @@ const toDetail = (idx) => {
   }
 }
 
-onBeforeMount(() => {
-  // console.log(datas)
-})
+onBeforeMount(() => {})
 
-onMounted(() => {})
+onMounted(async () => {
+  if (global.theme === 'f2e') {
+    await scrollToCurrentPage()
+  }
+})
 </script>
 
 <template>
@@ -1277,28 +1332,50 @@ onMounted(() => {})
         <div
           class="flex items-center justify-center m:w-full m:flex-col m:px-[20px] t:mt-[32px] t:w-[810px] t:px-[30px] p:mt-[48px] p:w-[990px]"
         >
-          <div class="whitespace-nowrap m:w-full t:mr-[26px] p:mr-[39px]">
-            <ul class="m:relative m:pl-[143px] m:pt-[32px] tm:mt-[5px]">
-              <li class="m:absolute m:left-0 m:top-0 m:flex m:justify-center">
-                <img
-                  class="tm:w-[133px] p:w-[200px]"
-                  src="../../assets/img/about/photo.gif"
+          <div class="whitespace-nowrap t:mr-[26px] p:mr-[39px]">
+            <ul class="m:relative m:flex m:flex-col m:items-center m:pt-[32px] tm:mt-[5px]">
+              <li class="flex m:justify-center pt:justify-end">
+                <ImgSrc
+                  src="about/photo.png"
                   alt="Brian Lin`s photo"
+                  :setClass="{
+                    main: 'tm:w-[133px] p:w-[200px] m:h-[133px] m:rounded-full overflow-hidden m:bg-[#fff]',
+                  }"
                 />
               </li>
               <li
-                class="border-b-[1px] border-dashed border-[#fff] leading-[1.5em] tracking-[1px] text-[#fff] tm:my-[6px] tm:pb-[6px] tm:text-[12px] p:my-[9px] p:pb-[9px] p:text-[16px]"
+                class="border-b-[1px] border-dashed border-[#fff] leading-[1.5em] tracking-[1px] text-[#fff] m:w-full m:text-center m:text-[14px] t:text-[12px] tm:my-[6px] tm:pb-[6px] p:my-[9px] p:pb-[9px] p:text-[16px]"
               >
                 Brian Lin (1984.02.24)
               </li>
-              <li class="leading-[1.5em] tracking-[1px] text-[#fff] tm:text-[12px] p:text-[16px]">
-                淡江大學企業管理系畢業
+              <li
+                class="flex items-center leading-[1.5em] tracking-[1px] text-[#fff] m:w-full m:text-center m:text-[14px] t:text-[12px] p:text-[16px]"
+              >
+                <SvgIcon icon="ico-house" class="mr-[0.5em] h-[16px] w-[16px] text-[#fff]" />
+                <span>方形糖 Sugarfun</span>
               </li>
-              <!-- <li class="leading-[1.5em] tracking-[1px] text-[#fff] tm:text-[12px] p:text-[16px]">
-                資策會網頁互動設計菁英養成班
-              </li> -->
+              <li
+                class="flex items-center leading-[1.5em] tracking-[1px] text-[#fff] m:w-full m:text-center m:text-[14px] t:text-[12px] p:text-[16px]"
+              >
+                <SvgIcon icon="ico-pin" class="mr-[0.5em] h-[16px] w-[16px] text-[#fff]" />
+                <span>台灣 台北 / 新北</span>
+              </li>
+              <li
+                class="flex items-center leading-[1.5em] tracking-[1px] text-[#fff] m:w-full m:text-center m:text-[14px] t:text-[12px] p:text-[16px]"
+              >
+                <SvgIcon icon="ico-mail" class="mr-[0.5em] h-[16px] w-[16px] text-[#fff]" />
+                <a href="mailto:brianlin224@gmail.com">brianlin224@gmail.com</a>
+              </li>
+              <li
+                class="flex items-center leading-[1.5em] tracking-[1px] text-[#fff] m:w-full m:text-center m:text-[14px] t:text-[12px] p:text-[16px]"
+              >
+                <SvgIcon icon="ico-phone" class="mr-[0.5em] h-[16px] w-[16px] text-[#fff]" />
+                <a heref="tel:+886956823720">0956-823-720</a>
+              </li>
             </ul>
-            <ul class="flex items-center m:pl-[143px] tm:mt-[12px] p:mt-[20px] p:justify-between">
+            <ul
+              class="flex items-center m:justify-center tm:mt-[12px] p:mt-[20px] p:justify-between"
+            >
               <li class="">
                 <a
                   class="text-[#333] hover:text-[#000]"
@@ -1351,37 +1428,41 @@ onMounted(() => {})
           </div>
           <ul class="">
             <li class="m:mt-[12px]">
-              <h3 class="mb-[6px] text-[#accaee] tm:text-[18px] p:text-[24px]">Experience</h3>
+              <h3 class="mb-[6px] text-[#accaee] m:text-[20px] t:text-[18px] p:text-[24px]">
+                Experience
+              </h3>
               <ul
-                class="flex flex-col flex-wrap leading-[1.5em] tracking-[1px] text-[#fff] tm:text-[12px] pt:h-[6em] p:text-[16px]"
+                class="flex flex-col flex-wrap leading-[1.5em] tracking-[1px] text-[#fff] m:text-[14px] t:text-[12px] pt:h-[6em] p:text-[16px]"
               >
                 <li class="flex items-stretch pt:w-1/2">
-                  <span class="min-w-[10em]">2015.12~NOW</span>方形糖創意數位
+                  <span class="min-w-[10em]">2015.12~NOW</span><span>方形糖</span>
                 </li>
                 <li class="flex items-stretch pt:w-1/2">
-                  <span class="min-w-[10em]">2013.04~2015.11</span>永慶房產集團
+                  <span class="min-w-[10em]">2013.04~2015.11</span><span>永慶房產集團</span>
                 </li>
                 <li class="flex items-stretch pt:w-1/2">
-                  <span class="min-w-[10em]">2012.08~2013.03</span>安捷達顧問
+                  <span class="min-w-[10em]">2012.08~2013.03</span><span>安捷達顧問</span>
                 </li>
                 <li class="flex items-stretch pt:w-1/2">
-                  <span class="min-w-[10em]">2012.03~2012.07</span>學學文創志業
+                  <span class="min-w-[10em]">2012.03~2012.07</span><span>學學文創志業</span>
                 </li>
                 <li class="flex items-stretch pt:w-1/2">
-                  <span class="min-w-[10em]">2009.12~2012.03</span>華藝數位
+                  <span class="min-w-[10em]">2009.12~2012.03</span><span>華藝數位</span>
                 </li>
                 <li class="flex items-stretch pt:w-1/2">
-                  <span class="min-w-[10em]">2009.03~2009.07</span>玉馬門創意設計
+                  <span class="min-w-[10em]">2009.03~2009.07</span><span>玉馬門創意設計</span>
                 </li>
                 <li class="flex items-stretch pt:w-1/2">
-                  <span class="min-w-[10em]">2008.05~2009.01</span>詩米亞媒體
+                  <span class="min-w-[10em]">2008.05~2009.01</span><span>詩米亞媒體</span>
                 </li>
               </ul>
             </li>
             <li class="tm:mt-[12px] p:mt-[20px]">
-              <h3 class="mb-[6px] text-[#accaee] tm:text-[18px] p:text-[24px]">Autobiography</h3>
+              <h3 class="mb-[6px] text-[#accaee] m:text-[20px] t:text-[18px] p:text-[24px]">
+                Autobiography
+              </h3>
               <article
-                class="leading-[1.5em] tracking-[1px] text-[#fff] tm:text-[12px] p:text-[16px]"
+                class="leading-[1.5em] tracking-[1px] text-[#fff] m:text-[14px] t:text-[12px] p:text-[16px]"
               >
                 <p class="">
                   我是具有十年以上經驗的前端工程師，目前專注於 Vue.js
@@ -1418,89 +1499,145 @@ onMounted(() => {})
         <div
           class="skill-wrap flex items-start justify-center bg-center bg-no-repeat m:flex-col m:px-[20px] t:mt-[32px] t:w-[660px] t:px-[26px] p:mt-[48px] p:w-[990px]"
         >
-          <ul class="m:mt-[20px] t:mr-[20px] pt:w-1/2 p:mr-[30px]">
-            <li class="flex items-center justify-center tm:mb-[10px] p:mb-[15px]">
-              <h3 class="tracking-[3px] text-[#ff0] tm:text-[14px] p:text-[20px]">技術專長</h3>
+          <ul class="m:mt-[20px] m:flex m:w-full m:flex-wrap t:mr-[20px] pt:w-1/2 p:mr-[30px]">
+            <li class="flex items-center justify-center m:w-full tm:mb-[10px] p:mb-[15px]">
+              <h3 class="tracking-[3px] text-[#ff0] m:text-[16px] t:text-[14px] p:text-[20px]">
+                技術專長
+              </h3>
             </li>
-            <li class="flex flex-col items-start">
-              <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
+            <li class="flex flex-col items-start m:order-1 m:w-1/2">
+              <h4
+                class="bg-[#fff] px-[5px] font-bold text-[#5894DD] m:text-[14px] t:text-[12px] p:text-[16px]"
+              >
                 前端開發技術
               </h4>
-              <span
-                class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
-                >HTML5、CSS3 / SCSS / Tailwind CSS、JavaScript (ES6+)、Vue.js、jQuery、SVG、AMP /
-                PWA</span
+              <p
+                class="desc leading-[1.5em] text-[#fff] m:flex m:flex-col m:text-[14px] t:text-[12px] tm:pb-[10px] tm:pt-[5px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
               >
+                <span>HTML5</span><span class="m:hidden">、</span
+                ><span>CSS3 / SCSS / Tailwind CSS / PostCSS</span><span class="m:hidden">、</span
+                ><span>JavaScript (ES6+)</span><span class="m:hidden">、</span><span>Vue.js</span
+                ><span class="m:hidden">、</span><span>jQuery</span><span class="m:hidden">、</span
+                ><span>SVG</span><span class="m:hidden">、</span><span>AMP / PWA</span>
+              </p>
             </li>
-            <li class="flex flex-col items-start">
-              <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
+            <li class="flex flex-col items-start m:order-3 m:w-1/2">
+              <h4
+                class="bg-[#fff] px-[5px] font-bold text-[#5894DD] m:text-[14px] t:text-[12px] p:text-[16px]"
+              >
                 資料格式與 SEO
               </h4>
-              <span
-                class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
-                >JSON / JSON-LD、SEO（搜尋引擎最佳化）</span
+              <p
+                class="desc leading-[1.5em] text-[#fff] m:flex m:flex-col m:text-[14px] t:text-[12px] tm:pb-[10px] tm:pt-[5px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
               >
+                <span>JSON / JSON-LD</span><span class="m:hidden">、</span
+                ><span>SEO（搜尋引擎最佳化）</span>
+              </p>
             </li>
-            <li class="flex flex-col items-start">
-              <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
+            <li class="flex flex-col items-start m:order-3 m:w-1/2">
+              <h4
+                class="bg-[#fff] px-[5px] font-bold text-[#5894DD] m:text-[14px] t:text-[12px] p:text-[16px]"
+              >
                 API / 第三方整合
               </h4>
-              <span
-                class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
-                >Facebook API、LINE LIFF API、Google Maps API</span
+              <p
+                class="desc leading-[1.5em] text-[#fff] m:flex m:flex-col m:text-[14px] t:text-[12px] tm:pb-[10px] tm:pt-[5px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
               >
+                <span>Facebook API</span><span class="m:hidden">、</span><span>LINE LIFF API</span
+                ><span class="m:hidden">、</span><span>Google Maps API</span>
+              </p>
             </li>
-            <li class="flex flex-col items-start">
-              <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
+            <li class="flex flex-col items-start m:order-3 m:w-1/2">
+              <h4
+                class="bg-[#fff] px-[5px] font-bold text-[#5894DD] m:text-[14px] t:text-[12px] p:text-[16px]"
+              >
                 版本控制與協作
               </h4>
-              <span
-                class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
-                >Git / GitLab / GitHub、SVN / TortoiseSVN</span
+              <p
+                class="desc leading-[1.5em] text-[#fff] m:flex m:flex-col m:text-[14px] t:text-[12px] tm:pb-[10px] tm:pt-[5px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
               >
+                <span>Git / GitLab / GitHub</span><span class="m:hidden">、</span
+                ><span>SVN / TortoiseSVN</span>
+              </p>
             </li>
-            <li class="flex flex-col items-start">
-              <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
+            <li class="flex flex-col items-start m:order-2 m:w-1/2">
+              <h4
+                class="bg-[#fff] px-[5px] font-bold text-[#5894DD] m:text-[14px] t:text-[12px] p:text-[16px]"
+              >
                 設計與開發工具
               </h4>
-              <span
-                class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
-                >Visual Studio Code、TortoiseSVN、Chrome Developer
-                Tools、Photoshop、Illustrator、Figma、Sketch、Slack</span
+              <p
+                class="desc leading-[1.5em] text-[#fff] m:flex m:flex-col m:text-[14px] t:text-[12px] tm:pb-[10px] tm:pt-[5px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
               >
+                <span>Visual Studio Code</span><span class="m:hidden">、</span
+                ><span>TortoiseSVN</span><span class="m:hidden">、</span
+                ><span>Chrome Developer Tools</span><span class="m:hidden">、</span
+                ><span>Photoshop</span><span class="m:hidden">、</span><span>Illustrator</span
+                ><span class="m:hidden">、</span><span>Figma</span><span class="m:hidden">、</span
+                ><span>Sketch</span><span class="m:hidden">、</span><span>Slack</span>
+              </p>
             </li>
           </ul>
-          <ul class="m:mt-[20px] pt:w-1/2">
+          <ul class="m:mt-[20px] m:w-full pt:w-1/2">
             <li class="flex items-center justify-center tm:mb-[10px] p:mb-[15px]">
-              <h3 class="tracking-[3px] text-[#ff0] tm:text-[14px] p:text-[20px]">專業經歷</h3>
+              <h3 class="tracking-[3px] text-[#ff0] m:text-[16px] t:text-[14px] p:text-[20px]">
+                專業經歷
+              </h3>
             </li>
-            <li class="flex flex-col items-start">
-              <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
+            <li class="flex flex-col items-start m:w-full">
+              <h4
+                class="bg-[#fff] px-[5px] font-bold text-[#5894DD] m:text-[14px] t:text-[12px] p:text-[16px]"
+              >
                 網站開發與前端實作
               </h4>
-              <span
-                class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
-                >單頁式網站（Landing Page）開發、響應式網頁設計（RWD）、手機網頁 /
-                行動裝置優化、無障礙網站（Accessibility / WCAG）、跨瀏覽器相容性開發</span
+              <p
+                class="desc leading-[1.5em] text-[#fff] m:flex m:flex-col m:text-[14px] t:text-[12px] tm:pb-[10px] tm:pt-[5px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
               >
+                <span>單頁式網站（Landing Page）開發</span><span class="m:hidden">、</span
+                ><span>響應式網頁設計（RWD）</span><span class="m:hidden">、</span
+                ><span>手機網頁 / 行動裝置優化</span><span class="m:hidden">、</span
+                ><span>無障礙網站（Accessibility / WCAG）</span><span class="m:hidden">、</span
+                ><span>跨瀏覽器相容性開發</span>
+              </p>
             </li>
-            <li class="flex flex-col items-start">
-              <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
+            <li class="flex flex-col items-start m:w-full">
+              <h4
+                class="bg-[#fff] px-[5px] font-bold text-[#5894DD] m:text-[14px] t:text-[12px] p:text-[16px]"
+              >
                 網站效能優化
               </h4>
-              <span
-                class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
-                >檔案合併與最小化（Minification）、CDN 導入、網站載入速度優化</span
+              <p
+                class="desc leading-[1.5em] text-[#fff] m:flex m:flex-col m:text-[14px] t:text-[12px] tm:pb-[10px] tm:pt-[5px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
               >
+                <span>檔案合併與最小化（Minification）</span><span class="m:hidden">、</span
+                ><span>CDN 導入</span><span class="m:hidden">、</span><span>網站載入速度優化</span>
+              </p>
             </li>
-            <li class="flex flex-col items-start">
-              <h4 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] tm:text-[12px] p:text-[16px]">
+            <li class="flex flex-col items-start m:w-full">
+              <h4
+                class="bg-[#fff] px-[5px] font-bold text-[#5894DD] m:text-[14px] t:text-[12px] p:text-[16px]"
+              >
                 SEO 與結構優化
               </h4>
-              <span
-                class="desc leading-[1.5em] text-[#fff] tm:pb-[10px] tm:pt-[5px] tm:text-[12px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
-                >SEO 技術優化、結構化資料（Schema / JSON-LD）</span
+              <p
+                class="desc leading-[1.5em] text-[#fff] m:flex m:flex-col m:text-[14px] t:text-[12px] tm:pb-[10px] tm:pt-[5px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
               >
+                <span>SEO 技術優化</span><span class="m:hidden">、</span
+                ><span>結構化資料（Schema / JSON-LD）</span>
+              </p>
+            </li>
+            <li class="flex flex-col items-start m:w-full">
+              <h4
+                class="bg-[#fff] px-[5px] font-bold text-[#5894DD] m:text-[14px] t:text-[12px] p:text-[16px]"
+              >
+                資訊安全與流程管理
+              </h4>
+              <p
+                class="desc leading-[1.5em] text-[#fff] m:flex m:flex-col m:text-[14px] t:text-[12px] tm:pb-[10px] tm:pt-[5px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
+              >
+                <span>黑箱 / 白箱弱點掃描配合與修正</span><span class="m:hidden">、</span
+                ><span>ISO 27001 資安流程配合</span>
+              </p>
             </li>
           </ul>
         </div>
@@ -1509,7 +1646,7 @@ onMounted(() => {})
     <Transition name="fade">
       <div
         class="inset-0 flex flex-col items-center m:py-[30px] t:pt-[50px] pt:absolute p:pt-[75px]"
-        v-show="global.theme === 'detail'"
+        v-if="global.theme === 'detail'"
       >
         <div
           class="relative m:w-[335px] t:mt-[16px] t:h-[340px] t:w-[562px] p:mt-[24px] p:h-[552px] p:w-[843px]"
@@ -1699,10 +1836,6 @@ onMounted(() => {})
   }
 }
 
-.skill-wrap {
-  background-image: url('@imgs/skill/skill_bg.png');
-}
-
 .desc {
   text-shadow:
     1px 1px 3px #5894dd,
@@ -1741,6 +1874,10 @@ onMounted(() => {})
 }
 
 @screen pt {
+  .skill-wrap {
+    background-image: url('@imgs/skill/skill_bg.png');
+  }
+
   .wrap-shadow {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   }
