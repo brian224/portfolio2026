@@ -1,8 +1,9 @@
 <script setup>
 import ImgSrc from '@components/ImgSrc.vue'
 
-import { onBeforeMount, onMounted, ref, computed, watch, nextTick } from 'vue'
+import { onBeforeMount, onMounted, onBeforeUnmount, ref, computed, watch, nextTick } from 'vue'
 import { globalStore } from '@stores/global.js'
+import { onDevice } from '@js/_prototype.js'
 
 const global = globalStore()
 
@@ -20,22 +21,76 @@ const datas = [
         webDesc: '迎財納福衝第一',
       },
       {
-        CaseName: '錢錢溝通室',
-        CaseID: '92',
+        CaseName: '永豐行動銀行<br>全面改版',
+        CaseID: '102',
         CaseType: 'web',
-        CoverImg: 'web_92.png',
-        PhotoCount: '4',
-        webLink: 'https://f2e.sugarfun.com.tw/Mega/2023chatroom/index.html',
-        webDesc: '錢錢溝通室 - 兆豐機器人理財 e 把兆',
+        CoverImg: 'web_102.png',
+        PhotoCount: '1',
+        webLink: 'https://f2e.sugarfun.com.tw/BSP_005/index.html',
+        webDesc: '永豐行動銀行 全面改版',
       },
       {
-        CaseName: '樂遊東京<br>有夠 High',
-        CaseID: '91',
+        CaseName: '限量典藏！<br>專屬感謝盒',
+        CaseID: '100',
         CaseType: 'web',
-        CoverImg: 'web_91.png',
+        CoverImg: 'web_100.png',
+        PhotoCount: '4',
+        webLink: '',
+        webDesc: '國泰人壽【限量典藏！專屬感謝盒】',
+      },
+      {
+        CaseName: 'iLeo 宇宙<br>能量探勘計畫',
+        CaseID: '99',
+        CaseType: 'web',
+        CoverImg: 'web_99.png',
+        PhotoCount: '4',
+        webLink: '',
+        webDesc: 'iLeo 宇宙 能量探勘計畫',
+      },
+      {
+        CaseName: '毛起來畫！<br>我畫你猜大挑戰',
+        CaseID: '98',
+        CaseType: 'web',
+        CoverImg: 'web_98.png',
         PhotoCount: '1',
-        webLink: 'https://f2e.sugarfun.com.tw/Mega/2020Q1/index.html',
-        webDesc: '兆豐銀行線上結匯 - 樂遊東京有夠 High 極速換匯超利 High',
+        webLink: '',
+        webDesc: '毛起來畫！我畫你猜大挑戰',
+      },
+      {
+        CaseName: '',
+        CaseID: '97',
+        CaseType: 'web',
+        CoverImg: 'web_97.png',
+        PhotoCount: '1',
+        webLink: '',
+        webDesc: '',
+      },
+      {
+        CaseName: '法國皇家<br>寵物年齡換算器',
+        CaseID: '96',
+        CaseType: 'web',
+        CoverImg: 'web_96.png',
+        PhotoCount: '5',
+        webLink: 'https://royalcanin-petagecalculator-website.azurewebsites.net/',
+        webDesc: '法國皇家｜寵物年齡換算器',
+      },
+      {
+        CaseName: 'KOKO<br>都市傳說',
+        CaseID: '55',
+        CaseType: 'web',
+        CoverImg: 'web_55.png',
+        PhotoCount: '2',
+        webLink: 'https://f2e.sugarfun.com.tw/Cathay/KoKo/Combo/webiste/index.html',
+        webDesc: 'KOKO COMBO 卡 － 5% 都市傳說',
+      },
+      {
+        CaseName: 'KOKO<br>斷糧求生懶人包',
+        CaseID: '54',
+        CaseType: 'web',
+        CoverImg: 'web_54.png',
+        PhotoCount: '6',
+        webLink: 'https://f2e.sugarfun.com.tw/Cathay/KoKo/5050/website/views/Home/index.html',
+        webDesc: 'KOKO 斷糧求生懶人包',
       },
       {
         CaseName: '測出你的<br>共感類型',
@@ -51,7 +106,7 @@ const datas = [
         CaseID: '89',
         CaseType: 'web',
         CoverImg: 'web_89.png',
-        PhotoCount: '4',
+        PhotoCount: '5',
         webLink: 'https://www.msf.org.tw/campaign/whereithurts/',
         webDesc: '痛，我願同行 人道醫療展 x 故事音樂節 | 無國界醫生（台灣）',
       },
@@ -81,6 +136,43 @@ const datas = [
         PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/NB/1906/index.html',
         webDesc: 'NB 1906 復刻潮！',
+      },
+      {
+        CaseName: '錢錢溝通室',
+        CaseID: '92',
+        CaseType: 'web',
+        CoverImg: 'web_92.png',
+        PhotoCount: '4',
+        webLink: 'https://f2e.sugarfun.com.tw/Mega/2023chatroom/index.html',
+        webDesc: '錢錢溝通室 - 兆豐機器人理財 e 把兆',
+      },
+      {
+        CaseName: '樂遊東京<br>有夠 High',
+        CaseID: '91',
+        CaseType: 'web',
+        CoverImg: 'web_91.png',
+        PhotoCount: '1',
+        webLink: 'https://f2e.sugarfun.com.tw/Mega/2020Q1/index.html',
+        webDesc: '兆豐銀行線上結匯 - 樂遊東京有夠 High 極速換匯超利 High',
+      },
+      {
+        CaseName: '3M - 給我一個<br>賴床理由',
+        CaseID: '43',
+        CaseType: 'web',
+        CoverImg: 'web_43.png',
+        PhotoCount: '3',
+        webLink: 'https://f2e.sugarfun.com.tw/3m/website/Views/Home/',
+        webDesc: '3M 給我一個賴床理由',
+      },
+      {
+        CaseName: 'Gucci<br>Garden',
+        CaseID: '46',
+        CaseType: 'web',
+        CoverImg: 'web_46.png',
+        PhotoCount: '5',
+        webLink:
+          'https://f2e.sugarfun.com.tw/Gucci/website/index.html,https://f2e.sugarfun.com.tw/Gucci/website/ticket.html,https://f2e.sugarfun.com.tw/Gucci/website/shop.html,https://f2e.sugarfun.com.tw/Gucci/gallery/gallery.html,https://f2e.sugarfun.com.tw/Gucci/gallery/gallery-details.html?id=5',
+        webDesc: '首頁,票券頁,專門店資訊,展覽資訊,活動介紹',
       },
       {
         CaseName: 'OLAY',
@@ -128,6 +220,87 @@ const datas = [
         webDesc: '社畜自救指南',
       },
       {
+        CaseName: '團援！一起幫助<br>野孩子回家',
+        CaseID: '75',
+        CaseType: 'web',
+        CoverImg: 'web_75.png',
+        PhotoCount: '1',
+        webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/friend/event6/index.html',
+        webDesc: '【Richart 台新Ｘ野灣 】 團援！一起幫助野孩子回家',
+      },
+      {
+        CaseName: '微笑連署書',
+        CaseID: '74',
+        CaseType: 'web',
+        CoverImg: 'web_74.png',
+        PhotoCount: '1',
+        webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/friend/event3/Views/Home/index.html',
+        webDesc: '微笑連署書 一起不流浪 -Richart x 浪浪別哭-',
+      },
+      {
+        CaseName: '毛孩告急！<br>救援浪浪',
+        CaseID: '73',
+        CaseType: 'web',
+        CoverImg: 'web_73.png',
+        PhotoCount: '1',
+        webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/friend/event2/Views/Home/index.html',
+        webDesc: '毛孩告急！救援浪浪 不再忽視',
+      },
+      {
+        CaseName: 'Richart 和<br>你一起助養浪浪',
+        CaseID: '72',
+        CaseType: 'web',
+        CoverImg: 'web_72.png',
+        PhotoCount: '1',
+        webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/friend/event1/Views/Home/index.html',
+        webDesc: 'Richart 和你一起助養浪浪',
+      },
+      {
+        CaseName: 'Cartier<br>愛的關鍵字',
+        CaseID: '60',
+        CaseType: 'web',
+        CoverImg: 'web_60.png',
+        PhotoCount: '3',
+        webLink: 'https://f2e.sugarfun.com.tw/Cartier/VDay/',
+        webDesc: 'Cartier 愛的關鍵字',
+      },
+      {
+        CaseName: 'Cartier<br>2024 新春活動',
+        CaseID: '59',
+        CaseType: 'web',
+        CoverImg: 'web_59.png',
+        PhotoCount: '3',
+        webLink: 'https://f2e.sugarfun.com.tw/Cartier/CNY2024/?',
+        webDesc: '選擇新年祝賀，點亮珍貴心意 | Cartier',
+      },
+      {
+        CaseName: 'Cartier<br>2023 新春活動',
+        CaseID: '58',
+        CaseType: 'web',
+        CoverImg: 'web_58.png',
+        PhotoCount: '1',
+        webLink: 'https://f2e.sugarfun.com.tw/Cartier/CNY2023/index.html',
+        webDesc: '來自卡地亞的新春祝福',
+      },
+      {
+        CaseName: 'Cartier<br>2022 新春活動',
+        CaseID: '57',
+        CaseType: 'web',
+        CoverImg: 'web_57.png',
+        PhotoCount: '3',
+        webLink: 'https://f2e.sugarfun.com.tw/Cartier/CNY/index.html',
+        webDesc: '來自卡地亞的新春祝福',
+      },
+      {
+        CaseName: 'Chloé<br>新春專屬桌布',
+        CaseID: '52',
+        CaseType: 'web',
+        CoverImg: 'web_52.png',
+        PhotoCount: '4',
+        webLink: 'https://f2e.sugarfun.com.tw/Chloe/index.html',
+        webDesc: 'Chloé 新春專屬桌布',
+      },
+      {
         CaseName: '活存 V.S 定存<br>大解密',
         CaseID: '80',
         CaseType: 'web',
@@ -171,42 +344,6 @@ const datas = [
         PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/invest/Views/Home/index.html',
         webDesc: 'Richart 2017 練財神回應',
-      },
-      {
-        CaseName: '團援！一起幫助<br>野孩子回家',
-        CaseID: '75',
-        CaseType: 'web',
-        CoverImg: 'web_75.png',
-        PhotoCount: '1',
-        webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/friend/event6/index.html',
-        webDesc: '【Richart 台新Ｘ野灣 】 團援！一起幫助野孩子回家',
-      },
-      {
-        CaseName: '微笑連署書',
-        CaseID: '74',
-        CaseType: 'web',
-        CoverImg: 'web_74.png',
-        PhotoCount: '1',
-        webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/friend/event3/Views/Home/index.html',
-        webDesc: '微笑連署書　一起；不流浪-Richart x 浪浪別哭-',
-      },
-      {
-        CaseName: '毛孩告急！<br>救援浪浪',
-        CaseID: '73',
-        CaseType: 'web',
-        CoverImg: 'web_73.png',
-        PhotoCount: '1',
-        webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/friend/event2/Views/Home/index.html',
-        webDesc: '毛孩告急！救援浪浪 不再忽視',
-      },
-      {
-        CaseName: 'Richart 和<br>你一起助養浪浪',
-        CaseID: '72',
-        CaseType: 'web',
-        CoverImg: 'web_72.png',
-        PhotoCount: '1',
-        webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/friend/event1/Views/Home/index.html',
-        webDesc: 'Richart 和你一起助養浪浪',
       },
       {
         CaseName: 'Richart x<br>friDay',
@@ -299,60 +436,6 @@ const datas = [
         webDesc: '跟著我的美麗日記去旅行',
       },
       {
-        CaseName: 'Cartier<br>愛的關鍵字',
-        CaseID: '60',
-        CaseType: 'web',
-        CoverImg: 'web_60.png',
-        PhotoCount: '3',
-        webLink: 'https://f2e.sugarfun.com.tw/Cartier/VDay/',
-        webDesc: 'Cartier 愛的關鍵字',
-      },
-      {
-        CaseName: 'Cartier<br>2024 新春活動',
-        CaseID: '59',
-        CaseType: 'web',
-        CoverImg: 'web_59.png',
-        PhotoCount: '3',
-        webLink: 'https://f2e.sugarfun.com.tw/Cartier/CNY2024/?',
-        webDesc: '選擇新年祝賀，點亮珍貴心意 | Cartier',
-      },
-      {
-        CaseName: 'Cartier<br>2023 新春活動',
-        CaseID: '58',
-        CaseType: 'web',
-        CoverImg: 'web_58.png',
-        PhotoCount: '1',
-        webLink: 'https://f2e.sugarfun.com.tw/Cartier/CNY2023/index.html',
-        webDesc: '來自卡地亞的新春祝福',
-      },
-      {
-        CaseName: 'Cartier<br>2022 新春活動',
-        CaseID: '57',
-        CaseType: 'web',
-        CoverImg: 'web_57.png',
-        PhotoCount: '3',
-        webLink: 'https://f2e.sugarfun.com.tw/Cartier/CNY/index.html',
-        webDesc: '來自卡地亞的新春祝福',
-      },
-      {
-        CaseName: 'KOKO 都市傳說',
-        CaseID: '55',
-        CaseType: 'web',
-        CoverImg: 'web_55.png',
-        PhotoCount: '2',
-        webLink: 'https://f2e.sugarfun.com.tw/Cathay/KoKo/Combo/webiste/index.html',
-        webDesc: 'KOKO COMBO 卡－5% 都市傳說',
-      },
-      {
-        CaseName: 'KOKO<br>斷糧求生懶人包',
-        CaseID: '54',
-        CaseType: 'web',
-        CoverImg: 'web_54.png',
-        PhotoCount: '6',
-        webLink: 'https://f2e.sugarfun.com.tw/Cathay/KoKo/5050/website/views/Home/index.html',
-        webDesc: 'KOKO 斷糧求生懶人包',
-      },
-      {
         CaseName: '國泰一日生活圈',
         CaseID: '53',
         CaseType: 'web',
@@ -360,15 +443,6 @@ const datas = [
         PhotoCount: '1',
         webLink: 'https://f2e.sugarfun.com.tw/Cathay/expo/index.html',
         webDesc: '國泰線上展【國泰一日生活圈】',
-      },
-      {
-        CaseName: 'Chloé<br>新春專屬桌布',
-        CaseID: '52',
-        CaseType: 'web',
-        CoverImg: 'web_52.png',
-        PhotoCount: '4',
-        webLink: 'https://f2e.sugarfun.com.tw/Chloe/index.html',
-        webDesc: 'Chloé 新春專屬桌布',
       },
       {
         CaseName: '永豐 DAWHO<br>大戶登大郎！',
@@ -398,15 +472,6 @@ const datas = [
         webDesc: 'Glenfiddich 格蘭菲迪',
       },
       {
-        CaseName: '3M - 給我一個<br>賴床理由',
-        CaseID: '43',
-        CaseType: 'web',
-        CoverImg: 'web_43.png',
-        PhotoCount: '3',
-        webLink: 'https://f2e.sugarfun.com.tw/3m/website/Views/Home/',
-        webDesc: '3M 給我一個賴床理由',
-      },
-      {
         CaseName: '遠傳<br>資費得來速',
         CaseID: '49',
         CaseType: 'web',
@@ -434,16 +499,6 @@ const datas = [
         webLink:
           'https://f2e.sugarfun.com.tw/FETnet/dna/website/Index-full.html,https://f2e.sugarfun.com.tw/FETnet/line-mobile/2020/Views/index.html,https://f2e.sugarfun.com.tw/FETnet/line-mobile/2019/Views/index.html',
         webDesc: 'LINE MOBILE 重磅好康 立即搶購,LINE MOBILE 驚喜島,LINE MOBILE 驚喜大飯店',
-      },
-      {
-        CaseName: 'Gucci<br>Garden',
-        CaseID: '46',
-        CaseType: 'web',
-        CoverImg: 'web_46.png',
-        PhotoCount: '5',
-        webLink:
-          'https://f2e.sugarfun.com.tw/Gucci/website/index.html,https://f2e.sugarfun.com.tw/Gucci/website/ticket.html,https://f2e.sugarfun.com.tw/Gucci/website/shop.html,https://f2e.sugarfun.com.tw/Gucci/gallery/gallery.html,https://f2e.sugarfun.com.tw/Gucci/gallery/gallery-details.html?id=5',
-        webDesc: '首頁,票券頁,專門店資訊,展覽資訊,活動介紹',
       },
       {
         CaseName: '全家鮮食平台',
@@ -512,6 +567,15 @@ const datas = [
         PhotoCount: '1',
         webLink: 'https://www.tsholdings.com.tw/tsh/',
         webDesc: '台新新光金控',
+      },
+      {
+        CaseName: 'SUGARFUN<br>CREATIVE',
+        CaseID: '101',
+        CaseType: 'web',
+        CoverImg: 'web_101.png',
+        PhotoCount: '1',
+        webLink: 'https://www.sugarfun.com.tw/',
+        webDesc: 'SUGARFUN CREATIVE 方形糖創意數位',
       },
       {
         CaseName: '達爾生技',
@@ -1044,11 +1108,12 @@ const datas = [
   },
 ]
 const currentType = ref(Number(sessionStorage.getItem('type')) || 0) // 目前在哪個分類 活動作品 / 專案作品 / 其他作品
-const amount = 14 // 一頁幾筆作品
+const amount = onDevice() === 'm' ? 100 : 14 // 一頁幾筆作品
 const sliderRef = ref(null)
 const currentPage = ref(Number(sessionStorage.getItem('page')) || 0) // 作品有多頁時 目前是哪一頁
 const currentIndex = ref(Number(sessionStorage.getItem('index')) || 0) // 當前選取作品 index
 const currentDetailIndex = ref(1) // 當前選取作品圖片 index
+let mediaQuery
 
 const chunkArrayWithFill = (array, size) => {
   const groups = Array.from({ length: Math.ceil(array.length / size) }, (_, index) =>
@@ -1173,12 +1238,23 @@ const toDetail = (idx) => {
   }
 }
 
+const clearStorage = () => {
+  sessionStorage.clear()
+}
+
 onBeforeMount(() => {})
 
 onMounted(async () => {
+  mediaQuery = window.matchMedia('(max-width: 740px)')
+  mediaQuery.addEventListener('change', clearStorage)
+
   if (global.theme === 'f2e') {
     await scrollToCurrentPage()
   }
+})
+
+onBeforeUnmount(() => {
+  mediaQuery.removeEventListener('change', clearStorage)
 })
 </script>
 
@@ -1679,7 +1755,7 @@ onMounted(async () => {
                 <a
                   :href="caseGroups[currentPage][currentIndex].webLink"
                   target="_blank"
-                  class="web-url left-0 z-[1] flex items-center justify-center !bg-opacity-70 py-[4px] text-[#fff] underline transition-all duration-300 ease-in-out hover:text-[#addee3] m:relative tm:text-[12px] pt:absolute pt:bottom-0 pt:bg-[#4e5ca5] p:text-[16px]"
+                  class="web-url left-0 z-[1] flex items-center !bg-opacity-70 py-[4px] text-[#fff] underline transition-all duration-300 ease-in-out hover:text-[#addee3] m:relative tm:text-[12px] pt:absolute pt:bottom-0 pt:justify-center pt:bg-[#4e5ca5] p:text-[16px]"
                   v-if="
                     caseGroups[currentPage][currentIndex].webLink &&
                     caseGroups[currentPage][currentIndex].webLink.split(',').length === 1
@@ -1693,7 +1769,7 @@ onMounted(async () => {
                     caseGroups[currentPage][currentIndex].webLink.split(',')[currentDetailIndex - 1]
                   "
                   target="_blank"
-                  class="web-url left-0 z-[1] flex items-center justify-center !bg-opacity-70 py-[4px] text-[#fff] underline transition-all duration-300 ease-in-out hover:text-[#addee3] m:relative tm:text-[12px] pt:absolute pt:bottom-0 pt:bg-[#4e5ca5] p:text-[16px]"
+                  class="web-url left-0 z-[1] flex items-center !bg-opacity-70 py-[4px] text-[#fff] underline transition-all duration-300 ease-in-out hover:text-[#addee3] m:relative tm:text-[12px] pt:absolute pt:bottom-0 pt:justify-center pt:bg-[#4e5ca5] p:text-[16px]"
                   v-else-if="
                     caseGroups[currentPage][currentIndex].webLink &&
                     caseGroups[currentPage][currentIndex].webLink.split(',').length !== 1 &&
@@ -1836,13 +1912,14 @@ onMounted(async () => {
   }
 }
 
+/*
 .desc {
   text-shadow:
     1px 1px 3px #5894dd,
     1px -1px 3px #5894dd,
     -1px 1px 3px #5894dd,
     -1px -1px 3px #5894dd;
-}
+}*/
 
 .fade-enter-active,
 .fade-leave-active {
@@ -1874,9 +1951,10 @@ onMounted(async () => {
 }
 
 @screen pt {
+  /*
   .skill-wrap {
     background-image: url('@imgs/skill/skill_bg.png');
-  }
+  } */
 
   .wrap-shadow {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
