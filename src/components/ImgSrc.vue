@@ -120,8 +120,6 @@ onMounted(() => onLazy())
       <source :srcset="mobilePath" media="(max-width: 428px)" />
       <img
         :src="blankUrl"
-        width="100%"
-        height="100%"
         :loading="hasLazy ? 'lazy' : null"
         ref="imageRef"
         :alt="alt"
@@ -131,8 +129,6 @@ onMounted(() => onLazy())
     </picture>
     <img
       :src="blankUrl"
-      width="100%"
-      height="100%"
       :loading="hasLazy ? 'lazy' : null"
       ref="imageRef"
       :alt="alt"

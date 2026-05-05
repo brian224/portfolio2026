@@ -14,6 +14,7 @@ const global = globalStore()
       <em class="sr-only">Brian Lin 作品集</em>
       <ImgSrc
         src="common/logo.png"
+        alt="Brian Lin 作品集"
         :setClass="{
           main: 'flex-shrink-0 p:w-[688px] t:w-[458px] m:w-[229px] p:h-[291px] t:h-[194px] m:h-[97px] p:mt-[-9px] t:mt-[-6px] m:mt-[-3px]',
         }"

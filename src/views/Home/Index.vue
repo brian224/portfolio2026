@@ -57,13 +57,13 @@ const datas = [
         webDesc: '毛起來畫！我畫你猜大挑戰',
       },
       {
-        CaseName: '',
+        CaseName: '數位生活圈<br>開幕嘉年華',
         CaseID: '97',
         CaseType: 'web',
         CoverImg: 'web_97.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: '',
-        webDesc: '',
+        webDesc: '數位生活圈開幕嘉年華',
       },
       {
         CaseName: '法國皇家<br>寵物年齡換算器',
@@ -136,15 +136,6 @@ const datas = [
         PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/NB/1906/index.html',
         webDesc: 'NB 1906 復刻潮！',
-      },
-      {
-        CaseName: '錢錢溝通室',
-        CaseID: '92',
-        CaseType: 'web',
-        CoverImg: 'web_92.png',
-        PhotoCount: '4',
-        webLink: 'https://f2e.sugarfun.com.tw/Mega/2023chatroom/index.html',
-        webDesc: '錢錢溝通室 - 兆豐機器人理財 e 把兆',
       },
       {
         CaseName: '樂遊東京<br>有夠 High',
@@ -254,6 +245,15 @@ const datas = [
         PhotoCount: '1',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/friend/event1/Views/Home/index.html',
         webDesc: 'Richart 和你一起助養浪浪',
+      },
+      {
+        CaseName: '錢錢溝通室',
+        CaseID: '92',
+        CaseType: 'web',
+        CoverImg: 'web_92.png',
+        PhotoCount: '4',
+        webLink: 'https://f2e.sugarfun.com.tw/Mega/2023chatroom/index.html',
+        webDesc: '錢錢溝通室 - 兆豐機器人理財 e 把兆',
       },
       {
         CaseName: 'Cartier<br>愛的關鍵字',
@@ -564,7 +564,7 @@ const datas = [
         CaseID: '56',
         CaseType: 'web',
         CoverImg: 'web_56.png',
-        PhotoCount: '1',
+        PhotoCount: '2',
         webLink: 'https://www.tsholdings.com.tw/tsh/',
         webDesc: '台新新光金控',
       },
@@ -573,7 +573,7 @@ const datas = [
         CaseID: '101',
         CaseType: 'web',
         CoverImg: 'web_101.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: 'https://www.sugarfun.com.tw/',
         webDesc: 'SUGARFUN CREATIVE 方形糖創意數位',
       },
@@ -1315,6 +1315,7 @@ onBeforeUnmount(() => {
                     >
                       <ImgSrc
                         :src="`home/${item.CaseType}/${item.CoverImg}`"
+                        :alt="`${item.CaseName}`"
                         :setClass="{
                           main: 'shadow-md flex-shrink-0 flex items-center justify-center p:w-[126px] tm:w-[84px] p:h-[126px] tm:h-[84px] p:border-[4px] tm:border-[3px] border-[#98cbe1] border-solid p:m-[5px] tm:m-[3px] px-[1px] bg-[#4e5ca5]',
                           img: 'w-full',
@@ -1365,6 +1366,7 @@ onBeforeUnmount(() => {
                 >
                   <ImgSrc
                     :src="`home/${item.CaseType}/${item.CoverImg}`"
+                    :alt="`${item.CaseType}/${item.CaseName}`"
                     :setClass="{
                       main: 'shadow-md flex-shrink-0 flex items-center justify-center p:w-[126px] tm:w-[84px] p:h-[126px] tm:h-[84px] p:border-[4px] tm:border-[3px] border-[#98cbe1] border-solid p:m-[5px] tm:m-[3px] px-[1px] bg-[#4e5ca5]',
                       img: 'w-full',
@@ -1738,6 +1740,7 @@ onBeforeUnmount(() => {
               >
                 <ImgSrc
                   :src="`home/${caseGroups[currentPage][currentIndex].CaseType}/detail/${caseGroups[currentPage][currentIndex].CaseType}${caseGroups[currentPage][currentIndex].CaseID}_0${currentDetailIndex}.png`"
+                  :alt="`${caseGroups[currentPage][currentIndex].webDesc}`"
                   :setClass="{
                     main: 'flex-shrink-0 flex items-center justify-center p:h-[544px] p:w-[835px] t:h-[334px] t:w-[556px] m:hidden',
                     img: 'max-w-full max-h-full object-contain',
@@ -1746,6 +1749,7 @@ onBeforeUnmount(() => {
                 />
                 <ImgSrc
                   :src="`home/${caseGroups[currentPage][currentIndex].CaseType}/detail/${caseGroups[currentPage][currentIndex].CaseType}${caseGroups[currentPage][currentIndex].CaseID}_0${index}.png`"
+                  :alt="`${caseGroups[currentPage][currentIndex].webDesc}`"
                   :setClass="{
                     main: 'm:wrap-shadow m:mb-[3px] flex-shrink-0 flex items-center justify-center m:w-full pt:hidden border-solid border-[#98cbe1] bg-[#4e5ca5] m:border-[3px]',
                     img: 'max-w-full max-h-full object-contain',
