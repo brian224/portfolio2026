@@ -11,23 +11,23 @@ const datas = [
   {
     type: '活動作品',
     case: [
+      // {
+      //   CaseName: '',
+      //   CaseID: '110',
+      //   CaseType: 'web',
+      //   CoverImg: 'web_110.png',
+      //   PhotoCount: '1',
+      //   webLink: '',
+      //   webDesc: '',
+      // },
       {
-        CaseName: '迎財納福衝第一',
+        CaseName: '第一銀行<br>迎財納福衝第一',
         CaseID: '94',
         CaseType: 'web',
         CoverImg: 'web_94.png',
-        PhotoCount: '4',
+        PhotoCount: '6',
         webLink: 'https://f2e.sugarfun.com.tw/brian/campaign/',
-        webDesc: '迎財納福衝第一',
-      },
-      {
-        CaseName: '永豐行動銀行<br>全面改版',
-        CaseID: '102',
-        CaseType: 'web',
-        CoverImg: 'web_102.png',
-        PhotoCount: '1',
-        webLink: 'https://f2e.sugarfun.com.tw/BSP_005/index.html',
-        webDesc: '永豐行動銀行 全面改版',
+        webDesc: '迎財納福衝第一 (手機版網站)',
       },
       {
         CaseName: '限量典藏！<br>專屬感謝盒',
@@ -35,7 +35,7 @@ const datas = [
         CaseType: 'web',
         CoverImg: 'web_100.png',
         PhotoCount: '4',
-        webLink: '',
+        webLink: 'https://f2e.sugarfun.com.tw/Cathay/2025-fb-spotlight/index.html',
         webDesc: '國泰人壽【限量典藏！專屬感謝盒】',
       },
       {
@@ -52,8 +52,8 @@ const datas = [
         CaseID: '98',
         CaseType: 'web',
         CoverImg: 'web_98.png',
-        PhotoCount: '1',
-        webLink: '',
+        PhotoCount: '5',
+        webLink: 'https://f2e.sugarfun.com.tw/royalcanin/2024-q2crm/',
         webDesc: '毛起來畫！我畫你猜大挑戰',
       },
       {
@@ -72,16 +72,25 @@ const datas = [
         CoverImg: 'web_96.png',
         PhotoCount: '5',
         webLink: 'https://royalcanin-petagecalculator-website.azurewebsites.net/',
-        webDesc: '法國皇家｜寵物年齡換算器',
+        webDesc: '法國皇家｜寵物年齡換算器 (手機版網站)',
       },
       {
-        CaseName: 'KOKO<br>都市傳說',
-        CaseID: '55',
+        CaseName: '測出你的<br>共感類型',
+        CaseID: '90',
         CaseType: 'web',
-        CoverImg: 'web_55.png',
-        PhotoCount: '2',
-        webLink: 'https://f2e.sugarfun.com.tw/Cathay/KoKo/Combo/webiste/index.html',
-        webDesc: 'KOKO COMBO 卡 － 5% 都市傳說',
+        CoverImg: 'web_90.png',
+        PhotoCount: '3',
+        webLink: 'https://www.msf.org.tw/campaign/whereithurtsquiz/',
+        webDesc: '測出你的共感類型 | 無國界醫生',
+      },
+      {
+        CaseName: '無國界醫生<br>痛，我願同行',
+        CaseID: '89',
+        CaseType: 'web',
+        CoverImg: 'web_89.png',
+        PhotoCount: '5',
+        webLink: 'https://www.msf.org.tw/campaign/whereithurts/',
+        webDesc: '痛，我願同行 人道醫療展 x 故事音樂節 | 無國界醫生',
       },
       {
         CaseName: 'KOKO<br>斷糧求生懶人包',
@@ -93,31 +102,22 @@ const datas = [
         webDesc: 'KOKO 斷糧求生懶人包',
       },
       {
-        CaseName: '測出你的<br>共感類型',
-        CaseID: '90',
+        CaseName: '永豐行動銀行<br>全面改版',
+        CaseID: '102',
         CaseType: 'web',
-        CoverImg: 'web_90.png',
+        CoverImg: 'web_102.png',
         PhotoCount: '3',
-        webLink: 'https://www.msf.org.tw/campaign/whereithurtsquiz/',
-        webDesc: '測出你的共感類型 | 無國界醫生（台灣）',
+        webLink: 'https://f2e.sugarfun.com.tw/BSP_005/index.html',
+        webDesc: '永豐行動銀行 全面改版',
       },
       {
-        CaseName: '無國界醫生<br>痛，我願同行',
-        CaseID: '89',
-        CaseType: 'web',
-        CoverImg: 'web_89.png',
-        PhotoCount: '5',
-        webLink: 'https://www.msf.org.tw/campaign/whereithurts/',
-        webDesc: '痛，我願同行 人道醫療展 x 故事音樂節 | 無國界醫生（台灣）',
-      },
-      {
-        CaseName: 'NB 灰境計劃',
+        CaseName: 'New Balance<br>灰境計劃',
         CaseID: '88',
         CaseType: 'web',
         CoverImg: 'web_88.png',
         PhotoCount: '5',
         webLink: 'https://f2e.sugarfun.com.tw/NB/grey/index.html',
-        webDesc: 'THE GREY MISSIONS 灰境計劃',
+        webDesc: 'THE GREY MISSIONS 灰境計劃 (手機版網站)',
       },
       {
         CaseName: '穿上 NB <br>從新出發',
@@ -126,7 +126,7 @@ const datas = [
         CoverImg: 'web_87.png',
         PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/NB/CNY2023/index.html',
-        webDesc: '穿上 NB 從新出發',
+        webDesc: '穿上 NB 從新出發 (手機版網站)',
       },
       {
         CaseName: 'New Balance<br>1906 復刻潮！',
@@ -135,7 +135,7 @@ const datas = [
         CoverImg: 'web_86.png',
         PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/NB/1906/index.html',
-        webDesc: 'NB 1906 復刻潮！',
+        webDesc: 'NB 1906 復刻潮！(手機版網站)',
       },
       {
         CaseName: '樂遊東京<br>有夠 High',
@@ -170,7 +170,7 @@ const datas = [
         CaseID: '85',
         CaseType: 'web',
         CoverImg: 'web_85.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/Olay/website/index.html',
         webDesc: 'OLAY 高效透白光塑淡斑精華',
       },
@@ -199,7 +199,7 @@ const datas = [
         CoverImg: 'web_82.png',
         PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Sugarfun/Event/karma/Views/Home/index.html',
-        webDesc: '消一波！奴曆七月業障重',
+        webDesc: '消一波！奴曆七月業障重 (手機版網站)',
       },
       {
         CaseName: '社畜自救指南',
@@ -208,7 +208,25 @@ const datas = [
         CoverImg: 'web_81.png',
         PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/Sugarfun/Event/wageslave/Views/Home/index.html',
-        webDesc: '社畜自救指南',
+        webDesc: '社畜自救指南 (手機版網站)',
+      },
+      {
+        CaseName: '尾牙加碼製造機',
+        CaseID: '107',
+        CaseType: 'web',
+        CoverImg: 'web_107.png',
+        PhotoCount: '3',
+        webLink: 'https://f2e.sugarfun.com.tw/Feds/catchfall/index.html',
+        webDesc: '尾牙加碼製造機 (手機版網站)',
+      },
+      {
+        CaseName: '你的老派<br>好不浪漫',
+        CaseID: '105',
+        CaseType: 'web',
+        CoverImg: 'web_105.png',
+        PhotoCount: '4',
+        webLink: 'https://f2e.sugarfun.com.tw/Feds/A13campaign/index.html',
+        webDesc: '你的老派 好不浪漫',
       },
       {
         CaseName: '團援！一起幫助<br>野孩子回家',
@@ -220,13 +238,13 @@ const datas = [
         webDesc: '【Richart 台新Ｘ野灣 】 團援！一起幫助野孩子回家',
       },
       {
-        CaseName: '微笑連署書',
+        CaseName: 'Richart<br>微笑連署書',
         CaseID: '74',
         CaseType: 'web',
         CoverImg: 'web_74.png',
         PhotoCount: '1',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/friend/event3/Views/Home/index.html',
-        webDesc: '微笑連署書 一起不流浪 -Richart x 浪浪別哭-',
+        webDesc: '微笑連署書 一起不流浪 -Richart x 浪浪別哭- (手機版網站)',
       },
       {
         CaseName: '毛孩告急！<br>救援浪浪',
@@ -247,13 +265,13 @@ const datas = [
         webDesc: 'Richart 和你一起助養浪浪',
       },
       {
-        CaseName: '錢錢溝通室',
+        CaseName: '兆豐商銀<br>錢錢溝通室',
         CaseID: '92',
         CaseType: 'web',
         CoverImg: 'web_92.png',
         PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/Mega/2023chatroom/index.html',
-        webDesc: '錢錢溝通室 - 兆豐機器人理財 e 把兆',
+        webDesc: '錢錢溝通室 - 兆豐機器人理財 e 把兆 (手機版網站)',
       },
       {
         CaseName: 'Cartier<br>愛的關鍵字',
@@ -271,7 +289,7 @@ const datas = [
         CoverImg: 'web_59.png',
         PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Cartier/CNY2024/?',
-        webDesc: '選擇新年祝賀，點亮珍貴心意 | Cartier',
+        webDesc: '選擇新年祝賀，點亮珍貴心意 | Cartier (手機版網站)',
       },
       {
         CaseName: 'Cartier<br>2023 新春活動',
@@ -280,7 +298,7 @@ const datas = [
         CoverImg: 'web_58.png',
         PhotoCount: '1',
         webLink: 'https://f2e.sugarfun.com.tw/Cartier/CNY2023/index.html',
-        webDesc: '來自卡地亞的新春祝福',
+        webDesc: '來自卡地亞的新春祝福 (手機版網站)',
       },
       {
         CaseName: 'Cartier<br>2022 新春活動',
@@ -298,7 +316,16 @@ const datas = [
         CoverImg: 'web_52.png',
         PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/Chloe/index.html',
-        webDesc: 'Chloé 新春專屬桌布',
+        webDesc: 'Chloé 新春專屬桌布 (手機版網站)',
+      },
+      {
+        CaseName: 'KOKO<br>都市傳說',
+        CaseID: '55',
+        CaseType: 'web',
+        CoverImg: 'web_55.png',
+        PhotoCount: '2',
+        webLink: 'https://f2e.sugarfun.com.tw/Cathay/KoKo/Combo/webiste/index.html',
+        webDesc: 'KOKO COMBO 卡 － 5% 都市傳說',
       },
       {
         CaseName: '活存 V.S 定存<br>大解密',
@@ -310,7 +337,7 @@ const datas = [
         webDesc: '活存 V.S 定存大解密',
       },
       {
-        CaseName: '練金人生大富翁',
+        CaseName: 'Richart<br>練金人生大富翁',
         CaseID: '79',
         CaseType: 'web',
         CoverImg: 'web_79.png',
@@ -337,7 +364,7 @@ const datas = [
         webDesc: 'Richart 限時闖關拿 10 萬',
       },
       {
-        CaseName: '練財神回應',
+        CaseName: 'Richart<br>練財神回應',
         CaseID: '76',
         CaseType: 'web',
         CoverImg: 'web_76.png',
@@ -382,22 +409,13 @@ const datas = [
         webDesc: 'RICHART 和你 17 賺翻天',
       },
       {
-        CaseName: '翡翠會員計劃',
-        CaseID: '66',
+        CaseName: '澎澎 MAN',
+        CaseID: '103',
         CaseType: 'web',
-        CoverImg: 'web_66.png',
-        PhotoCount: '1',
-        webLink: 'https://f2e.sugarfun.com.tw/Taishin/Asset/website/Views/Home/index.html',
-        webDesc: '台新銀行 翡翠會員計劃',
-      },
-      {
-        CaseName: '瑞銀私人<br>財富俱樂部',
-        CaseID: '65',
-        CaseType: 'web',
-        CoverImg: 'web_65.png',
+        CoverImg: 'web_103.png',
         PhotoCount: '3',
-        webLink: 'https://f2e.sugarfun.com.tw/UBS/website/Views/Home/index.html',
-        webDesc: '瑞銀私人財富俱樂部',
+        webLink: 'https://www.nice.com.tw/ponponman-face-wash/',
+        webDesc: '澎澎 MAN 胺基酸洗面乳全系列',
       },
       {
         CaseName: '全球人壽<br>好奇星大冒險',
@@ -440,7 +458,7 @@ const datas = [
         CaseID: '53',
         CaseType: 'web',
         CoverImg: 'web_53.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Cathay/expo/index.html',
         webDesc: '國泰線上展【國泰一日生活圈】',
       },
@@ -491,7 +509,7 @@ const datas = [
         webDesc: '首頁,互動頁,產品頁',
       },
       {
-        CaseName: 'LINE MOBILE',
+        CaseName: 'LINE MOBILE<br>歷屆活動',
         CaseID: '47',
         CaseType: 'web',
         CoverImg: 'web_47.png',
@@ -499,6 +517,51 @@ const datas = [
         webLink:
           'https://f2e.sugarfun.com.tw/FETnet/dna/website/Index-full.html,https://f2e.sugarfun.com.tw/FETnet/line-mobile/2020/Views/index.html,https://f2e.sugarfun.com.tw/FETnet/line-mobile/2019/Views/index.html',
         webDesc: 'LINE MOBILE 重磅好康 立即搶購,LINE MOBILE 驚喜島,LINE MOBILE 驚喜大飯店',
+      },
+      {
+        CaseName: '喘口氣，<br>記得照顧自己',
+        CaseID: '109',
+        CaseType: 'web',
+        CoverImg: 'web_109.png',
+        PhotoCount: '2',
+        webLink: 'https://f2e.sugarfun.com.tw/DrP/Q3/index.html',
+        webDesc: '喘口氣，記得照顧自己',
+      },
+      {
+        CaseName: '翡翠會員計劃',
+        CaseID: '66',
+        CaseType: 'web',
+        CoverImg: 'web_66.png',
+        PhotoCount: '1',
+        webLink: 'https://f2e.sugarfun.com.tw/Taishin/Asset/website/Views/Home/index.html',
+        webDesc: '台新銀行 翡翠會員計劃',
+      },
+      {
+        CaseName: '瑞銀私人<br>財富俱樂部',
+        CaseID: '65',
+        CaseType: 'web',
+        CoverImg: 'web_65.png',
+        PhotoCount: '3',
+        webLink: 'https://f2e.sugarfun.com.tw/UBS/website/Views/Home/index.html',
+        webDesc: '瑞銀私人財富俱樂部',
+      },
+      {
+        CaseName: '法國巴黎產險',
+        CaseID: '106',
+        CaseType: 'web',
+        CoverImg: 'web_106.png',
+        PhotoCount: '1',
+        webLink: 'https://f2e.sugarfun.com.tw/BNP-life/onboarding/insurance/index.html',
+        webDesc: '法國巴黎產險',
+      },
+      {
+        CaseName: '基力加<br>全能機能飲',
+        CaseID: '104',
+        CaseType: 'web',
+        CoverImg: 'web_104.png',
+        PhotoCount: '3',
+        webLink: 'https://www.nutrifuel-sarcojoint.com.tw/',
+        webDesc: '基力加全能機能飲',
       },
       {
         CaseName: '全家鮮食平台',
@@ -564,7 +627,7 @@ const datas = [
         CaseID: '56',
         CaseType: 'web',
         CoverImg: 'web_56.png',
-        PhotoCount: '2',
+        PhotoCount: '6',
         webLink: 'https://www.tsholdings.com.tw/tsh/',
         webDesc: '台新新光金控',
       },
@@ -585,6 +648,15 @@ const datas = [
         PhotoCount: '5',
         webLink: 'https://www.delbioww.com/tw/Home/Index',
         webDesc: '達爾生技',
+      },
+      {
+        CaseName: '遠東百貨<br>餐廳訂候位系統',
+        CaseID: '108',
+        CaseType: 'web',
+        CoverImg: 'web_108.png',
+        PhotoCount: '4',
+        webLink: 'https://f2e.sugarfun.com.tw/Feds/booking/Views/Home/index.html',
+        webDesc: '遠東百貨餐廳訂候位系統',
       },
       {
         CaseName: '漢來美食',
@@ -1310,6 +1382,7 @@ onBeforeUnmount(() => {
                   >
                     <button
                       class="flex flex-col items-center justify-center text-[#fff] transition-all duration-300 ease-in-out hover:text-[#accaee]"
+                      aria-label="了解更多此作品"
                       @click="toDetail(index)"
                       :class="item ? '' : 'pointer-events-none'"
                     >
@@ -1331,7 +1404,7 @@ onBeforeUnmount(() => {
                         ></i>
                       </div>
                       <em
-                        class="min-h-[3em] whitespace-nowrap text-center leading-[1.5em] tracking-[2px] tm:mb-[5px] tm:text-[12px] p:mb-[8px] p:text-[18px]"
+                        class="min-h-[3em] whitespace-nowrap text-center leading-[1.5em] tracking-[2px] tm:mb-[5px] tm:text-[12px] p:mb-[8px] p:text-[16px]"
                         v-html="item?.CaseName || ''"
                       ></em>
                     </button>
@@ -1596,20 +1669,21 @@ onBeforeUnmount(() => {
                 ><span>CSS3 / SCSS / Tailwind CSS / PostCSS</span><span class="m:hidden">、</span
                 ><span>JavaScript (ES6+)</span><span class="m:hidden">、</span><span>Vue.js</span
                 ><span class="m:hidden">、</span><span>jQuery</span><span class="m:hidden">、</span
-                ><span>SVG</span><span class="m:hidden">、</span><span>AMP / PWA</span>
+                ><span>SVG</span>
               </p>
             </li>
             <li class="flex flex-col items-start m:order-3 m:w-1/2">
               <h4
                 class="bg-[#fff] px-[5px] font-bold text-[#5894DD] m:text-[14px] t:text-[12px] p:text-[16px]"
               >
-                資料格式與 SEO
+                模板引擎與前端建構
               </h4>
               <p
                 class="desc leading-[1.5em] text-[#fff] m:flex m:flex-col m:text-[14px] t:text-[12px] tm:pb-[10px] tm:pt-[5px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
               >
-                <span>JSON / JSON-LD</span><span class="m:hidden">、</span
-                ><span>SEO（搜尋引擎最佳化）</span>
+                <span>Vue / Nuxt</span><span class="m:hidden">、</span><span>Webpack / Vite</span
+                ><span class="m:hidden">、</span><span>npm</span><span class="m:hidden">、</span>
+                <span>EJS</span><span class="m:hidden">、</span><span>Pug</span>
               </p>
             </li>
             <li class="flex flex-col items-start m:order-3 m:w-1/2">
@@ -1648,7 +1722,7 @@ onBeforeUnmount(() => {
                 class="desc leading-[1.5em] text-[#fff] m:flex m:flex-col m:text-[14px] t:text-[12px] tm:pb-[10px] tm:pt-[5px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
               >
                 <span>Visual Studio Code</span><span class="m:hidden">、</span
-                ><span>TortoiseSVN</span><span class="m:hidden">、</span
+                ><span>TortoiseGit</span><span class="m:hidden">、</span
                 ><span>Chrome Developer Tools</span><span class="m:hidden">、</span
                 ><span>Photoshop</span><span class="m:hidden">、</span><span>Illustrator</span
                 ><span class="m:hidden">、</span><span>Figma</span><span class="m:hidden">、</span
