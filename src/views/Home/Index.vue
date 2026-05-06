@@ -36,7 +36,7 @@ const datas = [
         CoverImg: 'web_99.png',
         PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/Brian/202406Event/',
-        webDesc: 'iLeo 宇宙 能量探勘計畫',
+        webDesc: 'iLeo 宇宙 能量探勘計畫 (手機版網站)',
       },
       {
         CaseName: '毛起來畫！<br>我畫你猜大挑戰',
@@ -117,7 +117,7 @@ const datas = [
         CoverImg: 'web_110.png',
         PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/longchamp/26cny-pop-up-event/',
-        webDesc: 'Longchamp 搖搖馬樂園',
+        webDesc: 'Longchamp 搖搖馬樂園 (手機版網站)',
       },
       {
         CaseName: 'New Balance<br>灰境計劃',
