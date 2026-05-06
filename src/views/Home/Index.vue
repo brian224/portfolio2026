@@ -11,22 +11,13 @@ const datas = [
   {
     type: '活動作品',
     case: [
-      // {
-      //   CaseName: '',
-      //   CaseID: '110',
-      //   CaseType: 'web',
-      //   CoverImg: 'web_110.png',
-      //   PhotoCount: '1',
-      //   webLink: '',
-      //   webDesc: '',
-      // },
       {
         CaseName: '第一銀行<br>迎財納福衝第一',
         CaseID: '94',
         CaseType: 'web',
         CoverImg: 'web_94.png',
         PhotoCount: '6',
-        webLink: 'https://f2e.sugarfun.com.tw/brian/campaign/',
+        webLink: 'https://f2e.sugarfun.com.tw/Brian/campaign/',
         webDesc: '迎財納福衝第一 (手機版網站)',
       },
       {
@@ -44,7 +35,7 @@ const datas = [
         CaseType: 'web',
         CoverImg: 'web_99.png',
         PhotoCount: '4',
-        webLink: '',
+        webLink: 'https://f2e.sugarfun.com.tw/Brian/202406Event/',
         webDesc: 'iLeo 宇宙 能量探勘計畫',
       },
       {
@@ -57,15 +48,6 @@ const datas = [
         webDesc: '毛起來畫！我畫你猜大挑戰',
       },
       {
-        CaseName: '數位生活圈<br>開幕嘉年華',
-        CaseID: '97',
-        CaseType: 'web',
-        CoverImg: 'web_97.png',
-        PhotoCount: '4',
-        webLink: '',
-        webDesc: '數位生活圈開幕嘉年華',
-      },
-      {
         CaseName: '法國皇家<br>寵物年齡換算器',
         CaseID: '96',
         CaseType: 'web',
@@ -73,6 +55,15 @@ const datas = [
         PhotoCount: '5',
         webLink: 'https://royalcanin-petagecalculator-website.azurewebsites.net/',
         webDesc: '法國皇家｜寵物年齡換算器 (手機版網站)',
+      },
+      {
+        CaseName: '數位生活圈<br>開幕嘉年華',
+        CaseID: '97',
+        CaseType: 'web',
+        CoverImg: 'web_97.png',
+        PhotoCount: '4',
+        webLink: 'https://f2e.sugarfun.com.tw/Brian/2025brand/index.html',
+        webDesc: '數位生活圈 開幕嘉年華',
       },
       {
         CaseName: '測出你的<br>共感類型',
@@ -111,6 +102,24 @@ const datas = [
         webDesc: '永豐行動銀行 全面改版',
       },
       {
+        CaseName: '3M - 給我一個<br>賴床理由',
+        CaseID: '43',
+        CaseType: 'web',
+        CoverImg: 'web_43.png',
+        PhotoCount: '3',
+        webLink: 'https://f2e.sugarfun.com.tw/3m/website/Views/Home/',
+        webDesc: '3M 給我一個賴床理由',
+      },
+      {
+        CaseName: 'Longchamp<br>搖搖馬樂園',
+        CaseID: '110',
+        CaseType: 'web',
+        CoverImg: 'web_110.png',
+        PhotoCount: '3',
+        webLink: 'https://f2e.sugarfun.com.tw/longchamp/26cny-pop-up-event/',
+        webDesc: 'Longchamp 搖搖馬樂園',
+      },
+      {
         CaseName: 'New Balance<br>灰境計劃',
         CaseID: '88',
         CaseType: 'web',
@@ -147,15 +156,6 @@ const datas = [
         webDesc: '兆豐銀行線上結匯 - 樂遊東京有夠 High 極速換匯超利 High',
       },
       {
-        CaseName: '3M - 給我一個<br>賴床理由',
-        CaseID: '43',
-        CaseType: 'web',
-        CoverImg: 'web_43.png',
-        PhotoCount: '3',
-        webLink: 'https://f2e.sugarfun.com.tw/3m/website/Views/Home/',
-        webDesc: '3M 給我一個賴床理由',
-      },
-      {
         CaseName: 'Gucci<br>Garden',
         CaseID: '46',
         CaseType: 'web',
@@ -164,6 +164,24 @@ const datas = [
         webLink:
           'https://f2e.sugarfun.com.tw/Gucci/website/index.html,https://f2e.sugarfun.com.tw/Gucci/website/ticket.html,https://f2e.sugarfun.com.tw/Gucci/website/shop.html,https://f2e.sugarfun.com.tw/Gucci/gallery/gallery.html,https://f2e.sugarfun.com.tw/Gucci/gallery/gallery-details.html?id=5',
         webDesc: '首頁,票券頁,專門店資訊,展覽資訊,活動介紹',
+      },
+      {
+        CaseName: '消一波！<br>奴曆七月業障重',
+        CaseID: '82',
+        CaseType: 'web',
+        CoverImg: 'web_82.png',
+        PhotoCount: '3',
+        webLink: 'https://f2e.sugarfun.com.tw/Sugarfun/Event/karma/Views/Home/index.html',
+        webDesc: '消一波！奴曆七月業障重 (手機版網站)',
+      },
+      {
+        CaseName: '社畜自救指南',
+        CaseID: '81',
+        CaseType: 'web',
+        CoverImg: 'web_81.png',
+        PhotoCount: '4',
+        webLink: 'https://f2e.sugarfun.com.tw/Sugarfun/Event/wageslave/Views/Home/index.html',
+        webDesc: '社畜自救指南 (手機版網站)',
       },
       {
         CaseName: 'OLAY',
@@ -191,24 +209,6 @@ const datas = [
         PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/skl/hisandher/html/Views/Home/index.html',
         webDesc: '新光人壽 男女眉角大不同',
-      },
-      {
-        CaseName: '消一波！<br>奴曆七月業障重',
-        CaseID: '82',
-        CaseType: 'web',
-        CoverImg: 'web_82.png',
-        PhotoCount: '3',
-        webLink: 'https://f2e.sugarfun.com.tw/Sugarfun/Event/karma/Views/Home/index.html',
-        webDesc: '消一波！奴曆七月業障重 (手機版網站)',
-      },
-      {
-        CaseName: '社畜自救指南',
-        CaseID: '81',
-        CaseType: 'web',
-        CoverImg: 'web_81.png',
-        PhotoCount: '4',
-        webLink: 'https://f2e.sugarfun.com.tw/Sugarfun/Event/wageslave/Views/Home/index.html',
-        webDesc: '社畜自救指南 (手機版網站)',
       },
       {
         CaseName: '尾牙加碼製造機',
@@ -1342,7 +1342,7 @@ onBeforeUnmount(() => {
         >
           <span>01.</span>
           <em
-            class="tracking-[-1px] m:mb-[-5px] t:mb-[-3px] tm:mx-[5px] tm:text-[20px] p:mx-[8px] p:mb-[-5px] p:text-[30px]"
+            class="tracking-[-1px] m:mb-[-5px] t:mb-[-3px] tm:mx-[5px] tm:text-[24px] p:mx-[8px] p:mb-[-5px] p:text-[30px]"
             >Works & <span class="text-[#accaee]">Design</span></em
           >
           <span>過往作品</span>
@@ -1475,7 +1475,7 @@ onBeforeUnmount(() => {
         >
           <span>02.</span>
           <em
-            class="tracking-[-1px] m:mb-[-5px] t:mb-[-3px] tm:mx-[5px] tm:text-[20px] p:mx-[8px] p:mb-[-5px] p:text-[30px]"
+            class="tracking-[-1px] m:mb-[-5px] t:mb-[-3px] tm:mx-[5px] tm:text-[24px] p:mx-[8px] p:mb-[-5px] p:text-[30px]"
             >About <span class="text-[#accaee]">Me</span></em
           >
           <span>關於我</span>
@@ -1521,7 +1521,7 @@ onBeforeUnmount(() => {
                 class="flex items-center leading-[1.5em] tracking-[1px] text-[#fff] m:w-full m:text-center m:text-[14px] t:text-[12px] p:text-[16px]"
               >
                 <SvgIcon icon="ico-phone" class="mr-[0.5em] h-[16px] w-[16px] text-[#fff]" />
-                <a heref="tel:+886956823720">0956-823-720</a>
+                <a href="tel:+886956823720">0956-823-720</a>
               </li>
             </ul>
             <ul
@@ -1642,7 +1642,7 @@ onBeforeUnmount(() => {
         >
           <span>03.</span>
           <em
-            class="tracking-[-1px] m:mb-[-5px] t:mb-[-3px] tm:mx-[5px] tm:text-[20px] p:mx-[8px] p:mb-[-5px] p:text-[30px]"
+            class="tracking-[-1px] m:mb-[-5px] t:mb-[-3px] tm:mx-[5px] tm:text-[24px] p:mx-[8px] p:mb-[-5px] p:text-[30px]"
             >Specialty & <span class="text-[#accaee]">Skill</span></em
           >
           <span>專長技能</span>
@@ -1745,11 +1745,11 @@ onBeforeUnmount(() => {
               <p
                 class="desc leading-[1.5em] text-[#fff] m:flex m:flex-col m:text-[14px] t:text-[12px] tm:pb-[10px] tm:pt-[5px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
               >
-                <span>單頁式網站（Landing Page）開發</span><span class="m:hidden">、</span
-                ><span>響應式網頁設計（RWD）</span><span class="m:hidden">、</span
-                ><span>手機網頁 / 行動裝置優化</span><span class="m:hidden">、</span
-                ><span>無障礙網站（Accessibility / WCAG）</span><span class="m:hidden">、</span
-                ><span>跨瀏覽器相容性開發</span>
+                <span>單頁式網站（Single-Page Application）開發</span
+                ><span class="m:hidden">、</span><span>響應式網頁設計（Responsive Web Design）</span
+                ><span class="m:hidden">、</span><span>手機網頁 / 行動裝置優化</span
+                ><span class="m:hidden">、</span><span>無障礙網站（Accessibility / WCAG）</span
+                ><span class="m:hidden">、</span><span>跨瀏覽器相容性開發</span>
               </p>
             </li>
             <li class="flex flex-col items-start m:w-full">
@@ -1761,7 +1761,8 @@ onBeforeUnmount(() => {
               <p
                 class="desc leading-[1.5em] text-[#fff] m:flex m:flex-col m:text-[14px] t:text-[12px] tm:pb-[10px] tm:pt-[5px] p:pb-[15px] p:pt-[8px] p:text-[18px]"
               >
-                <span>檔案合併與最小化（Minification）</span><span class="m:hidden">、</span
+                <span>Chrome Lighthouse</span><span class="m:hidden">、</span
+                ><span>檔案合併與最小化（Minification）</span><span class="m:hidden">、</span
                 ><span>CDN 導入</span><span class="m:hidden">、</span><span>網站載入速度優化</span>
               </p>
             </li>

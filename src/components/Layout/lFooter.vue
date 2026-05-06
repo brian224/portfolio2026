@@ -6,7 +6,7 @@
   >
     <ul class="flex items-center justify-center m:flex-wrap">
       <li class="tracking-[1px] text-[#fff] tm:px-[6px] tm:text-[10px] p:px-[9px] p:text-[14px]">
-        Brian Lin 2026 Portfolio
+        © 2026 Brian Lin. Portfolio Site.
       </li>
     </ul>
   </footer>

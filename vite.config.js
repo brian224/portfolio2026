@@ -177,6 +177,8 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: undefined,
+          // entryFileNames: `${CONFIG.js}/[name].js`,
+          // chunkFileNames: `${CONFIG.js}/[name].js`,
           assetFileNames: (assetInfo) => {
             const { name } = assetInfo
             if (!name) return `${CONFIG.imgs}/[name][extname]`
@@ -199,8 +201,10 @@ export default defineConfig(({ mode }) => {
               return `${CONFIG.imgs}/${relative.replace(/\.[^/.]+$/, '')}[extname]`
             } else if (name.endsWith('.css')) {
               return `${CONFIG.css}/[name].[hash][extname]`
+              // return `${CONFIG.css}/[name].[extname]`
             } else if (/\.(woff|woff2|eot|ttf|otf)$/i.test(name)) {
               return `${CONFIG.fonts}/[name].[hash][extname]`
+              // return `${CONFIG.fonts}/[name].[extname]`
             }
             return `${CONFIG.imgs}/[name][extname]`
           },
