@@ -1586,7 +1586,7 @@ onBeforeUnmount(() => {
                 class="flex flex-col flex-wrap leading-[1.5em] tracking-[1px] text-[#fff] m:text-[14px] t:text-[12px] pt:h-[6em] p:text-[16px]"
               >
                 <li class="flex items-stretch pt:w-1/2">
-                  <span class="min-w-[10em]">2015.12~NOW</span><span>方形糖</span>
+                  <span class="min-w-[10em]">2015.12~NOW</span><span>方形糖創意數位</span>
                 </li>
                 <li class="flex items-stretch pt:w-1/2">
                   <span class="min-w-[10em]">2013.04~2015.11</span><span>永慶房產集團</span>
