@@ -111,6 +111,16 @@ const datas = [
         webDesc: '3M 給我一個賴床理由',
       },
       {
+        CaseName: '南山人壽<br>保障評估',
+        CaseID: '111',
+        CaseType: 'web',
+        CoverImg: 'web_111.png',
+        PhotoCount: '3',
+        webLink:
+          'https://f2e.sugarfun.com.tw/nsl/views/desktop/nslcp_pages/needanalysis/index.html',
+        webDesc: '南山人壽保障評估',
+      },
+      {
         CaseName: 'Longchamp<br>搖搖馬樂園',
         CaseID: '110',
         CaseType: 'web',
@@ -666,6 +676,15 @@ const datas = [
         PhotoCount: '5',
         webLink: 'https://f2e.sugarfun.com.tw/Hanlai/Food/2016/website/index.html',
         webDesc: '漢來美食',
+      },
+      {
+        CaseName: 'illuma 啟賦 3',
+        CaseID: '112',
+        CaseType: 'web',
+        CoverImg: 'web_112.png',
+        PhotoCount: '5',
+        webLink: 'https://f2e.sugarfun.com.tw/illuma/Official/2018/Views/Home/',
+        webDesc: '惠氏 illuma 啟賦 3',
       },
       {
         CaseName: '遠東百貨',
