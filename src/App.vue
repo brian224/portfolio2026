@@ -33,5 +33,4 @@ onMounted(() => {})
   <Rotate />
 </template>
 
-<style src="@css/_modules/nSup.css"></style>
 <style lang="postcss"></style>

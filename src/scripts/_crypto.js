@@ -23,16 +23,9 @@ export const deCrypto = (string) => {
   })
   const decryptedStr = decrypt.toString(CryptoJS.enc.Utf8)
   const decryptContent = decryptedStr.toString()
-  return /^({|\[).*(}|\])$/.test(decryptContent)
-    ? JSON.parse(decryptContent)
-    : decryptContent
+  return /^({|\[).*(}|\])$/.test(decryptContent) ? JSON.parse(decryptContent) : decryptContent
 }
 
 export const hashHex = (string, length) => {
-  return enCrypto(string)
-    .toLocaleLowerCase()
-    .split('')
-    .reverse()
-    .join('')
-    .slice(0, length)
+  return enCrypto(string).toLocaleLowerCase().split('').reverse().join('').slice(0, length)
 }
