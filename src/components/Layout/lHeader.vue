@@ -6,6 +6,48 @@ import { globalStore } from '@stores/global.js'
 const global = globalStore()
 </script>
 
+<spec lang="md">
+# lHeader
+
+作品集網站的固定頁首，包含 Logo 與三個區塊的導覽按鈕。
+
+## 結構
+
+```
+header.l-header
+  ├── h1.logo        Logo 圖片（ImgSrc）
+  └── nav
+        └── ul.menu
+              ├── 01. [設計作品]  → changeTheme('f2e')
+              ├── 02. [關於我]    → changeTheme('about')
+              └── 03. [專長技能]  → changeTheme('skill')
+```
+
+## Props
+
+無。
+
+## 依賴
+
+| 項目 | 說明 |
+|------|------|
+| `globalStore` | 呼叫 `changeTheme(theme)` 切換目前顯示區塊，並掛載 `.curr` 至對應的 `.menu-link` |
+| `ImgSrc` | 響應式圖片元件，載入 `common/logo.png` |
+
+## 選取狀態
+
+當某個區塊為目前頁面時，JS 會在對應的 `.menu-link` 上加入 `.curr` class，
+樣式會將 span 文字改為黃色（`#ff0`），hover 狀態亦同。
+
+## 尺寸（各裝置）
+
+| 裝置 | 高度 | 定位方式 |
+|------|------|----------|
+| 手機（`m:`） | 63px | `fixed`，距底部 24px |
+| 平板（`t:`） | 126px | `absolute`，距底部 24px |
+| 桌機（`p:`） | 189px | `absolute`，距底部 20px |
+</spec>
+
 <template>
   <header
     class="l-header show z-[3] w-full flex-col items-center justify-start bg-repeat-x m:fixed m:bottom-[24px] m:h-[63px] m:bg-[#5894DD] t:bottom-[24px] t:mt-[6px] t:h-[126px] pt:absolute p:bottom-[20px] p:mt-[9px] p:h-[189px]"

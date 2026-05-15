@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import ImgSrc from '@components/ImgSrc.vue'
 
 import { onBeforeMount, onMounted, onBeforeUnmount, ref, computed, watch, nextTick } from 'vue'
@@ -1348,6 +1348,78 @@ onBeforeUnmount(() => {
   mediaQuery.removeEventListener('change', clearStorage)
 })
 </script>
+
+<spec lang="md">
+# Home/Index.vue
+
+作品集的唯一頁面，包含三個以 `globalStore.theme` 切換顯示的區塊：設計作品、關於我、專長技能。
+
+## 區塊切換
+
+透過 `global.theme` 控制，每個區塊以 `v-show` + `&lt;Transition name="fade"&gt;` 淡入淡出：
+
+| theme 值 | 顯示區塊 |
+|----------|----------|
+| `'f2e'` | 01. Works & Design 設計作品 |
+| `'about'` | 02. About Me 關於我 |
+| `'skill'` | 03. Specialty & Skill 專長技能 |
+| `'detail'` | 作品燈箱（疊在 f2e 之上） |
+
+## 資料結構 `datas`
+
+靜態陣列，共三個分類：
+
+| index | type | 內容 |
+|-------|------|------|
+| 0 | 活動作品 | 活動網頁、互動頁面 |
+| 1 | 專案作品 | 大型網站、長期案子 |
+| 2 | 其他作品 | 平面設計、App 提案、空間設計等早期作品 |
+
+每筆 case 欄位：
+
+| 欄位 | 說明 |
+|------|------|
+| `CaseName` | 顯示名稱（允許 `&lt;br&gt;`） |
+| `CaseID` | 識別用 ID |
+| `CaseType` | 圖片路徑分類（`web` / `ad` / `other`） |
+| `CoverImg` | 封面圖檔名，路徑為 `home/{CaseType}/{CoverImg}` |
+| `PhotoCount` | 燈箱內圖片數量 |
+| `webLink` | 連結（多個以 `,` 分隔；空字串表示無連結） |
+| `webDesc` | 連結說明（多個以 `,` 分隔） |
+
+## 狀態
+
+| 變數 | 說明 |
+|------|------|
+| `currentType` | 目前分類 index（0/1/2），初始值從 `sessionStorage.type` 讀取 |
+| `currentPage` | 桌機分頁索引，初始值從 `sessionStorage.page` 讀取 |
+| `currentIndex` | 目前選取的作品 index，初始值從 `sessionStorage.index` 讀取 |
+| `currentDetailIndex` | 燈箱內目前顯示的圖片編號（從 1 起算） |
+| `sliderRef` | 桌機 / 平板分頁滑軌的 DOM ref |
+
+## 分頁邏輯
+
+- 手機（`m:`）：一頁顯示全部（`amount = 100`），不分頁
+- 平板 / 桌機（`pt:`）：每頁 14 筆（`amount = 14`），`chunkArrayWithFill` 補 `null` 填滿最後一頁
+- 每頁補空格子顯示為帶 × 樣式的佔位卡
+- 翻頁以 `scrollLeft` 水平滾動，加上 `scroll-smooth`
+
+## sessionStorage 持久化
+
+| key | 說明 |
+|-----|------|
+| `type` | 當前分類 index |
+| `page` | 當前頁碼 |
+| `index` | 當前選取作品 index |
+
+視窗寬度跨越 740px 時（手機 ↔ 非手機）自動 `clear()`，避免分頁狀態污染。
+
+## 作品燈箱進入
+
+點擊作品縮圖呼叫 `toDetail(idx)`：
+1. 計算 `currentPage` 與 `currentIndex` 並寫入 sessionStorage
+2. 呼叫 `global.changeTheme('detail')` 切換至燈箱
+</spec>
 
 <template>
   <div class="l-cnt relative h-full w-full m:min-h-[100dvh] m:pb-[164px]">
