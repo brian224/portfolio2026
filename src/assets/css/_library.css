@@ -5,7 +5,4 @@
 @import 'tailwindcss/variants';
 
 /* common */
-@import '_common/color';
 @import '_common/framework';
-@import '_common/common';
-@import '_common/layout';

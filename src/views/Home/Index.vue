@@ -243,7 +243,7 @@ const datas = [
         CaseID: '75',
         CaseType: 'web',
         CoverImg: 'web_75.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/friend/event6/index.html',
         webDesc: '【Richart 台新Ｘ野灣 】 團援！一起幫助野孩子回家',
       },
@@ -450,7 +450,7 @@ const datas = [
         CaseID: '62',
         CaseType: 'web',
         CoverImg: 'web_62.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Beauty/2019/Views/Home/Index.html',
         webDesc: '我的美麗日記｜春の戀愛淨白肌',
       },
@@ -1358,44 +1358,44 @@ onBeforeUnmount(() => {
 
 透過 `global.theme` 控制，每個區塊以 `v-show` + `&lt;Transition name="fade"&gt;` 淡入淡出：
 
-| theme 值 | 顯示區塊 |
-|----------|----------|
-| `'f2e'` | 01. Works & Design 設計作品 |
-| `'about'` | 02. About Me 關於我 |
-| `'skill'` | 03. Specialty & Skill 專長技能 |
-| `'detail'` | 作品燈箱（疊在 f2e 之上） |
+| theme 值   | 顯示區塊                       |
+| ---------- | ------------------------------ |
+| `'f2e'`    | 01. Works & Design 設計作品    |
+| `'about'`  | 02. About Me 關於我            |
+| `'skill'`  | 03. Specialty & Skill 專長技能 |
+| `'detail'` | 作品燈箱（疊在 f2e 之上）      |
 
 ## 資料結構 `datas`
 
 靜態陣列，共三個分類：
 
-| index | type | 內容 |
-|-------|------|------|
-| 0 | 活動作品 | 活動網頁、互動頁面 |
-| 1 | 專案作品 | 大型網站、長期案子 |
-| 2 | 其他作品 | 平面設計、App 提案、空間設計等早期作品 |
+| index | type     | 內容                                   |
+| ----- | -------- | -------------------------------------- |
+| 0     | 活動作品 | 活動網頁、互動頁面                     |
+| 1     | 專案作品 | 大型網站、長期案子                     |
+| 2     | 其他作品 | 平面設計、App 提案、空間設計等早期作品 |
 
 每筆 case 欄位：
 
-| 欄位 | 說明 |
-|------|------|
-| `CaseName` | 顯示名稱（允許 `&lt;br&gt;`） |
-| `CaseID` | 識別用 ID |
-| `CaseType` | 圖片路徑分類（`web` / `ad` / `other`） |
-| `CoverImg` | 封面圖檔名，路徑為 `home/{CaseType}/{CoverImg}` |
-| `PhotoCount` | 燈箱內圖片數量 |
-| `webLink` | 連結（多個以 `,` 分隔；空字串表示無連結） |
-| `webDesc` | 連結說明（多個以 `,` 分隔） |
+| 欄位         | 說明                                            |
+| ------------ | ----------------------------------------------- |
+| `CaseName`   | 顯示名稱（允許 `&lt;br&gt;`）                   |
+| `CaseID`     | 識別用 ID                                       |
+| `CaseType`   | 圖片路徑分類（`web` / `ad` / `other`）          |
+| `CoverImg`   | 封面圖檔名，路徑為 `home/{CaseType}/{CoverImg}` |
+| `PhotoCount` | 燈箱內圖片數量                                  |
+| `webLink`    | 連結（多個以 `,` 分隔；空字串表示無連結）       |
+| `webDesc`    | 連結說明（多個以 `,` 分隔）                     |
 
 ## 狀態
 
-| 變數 | 說明 |
-|------|------|
-| `currentType` | 目前分類 index（0/1/2），初始值從 `sessionStorage.type` 讀取 |
-| `currentPage` | 桌機分頁索引，初始值從 `sessionStorage.page` 讀取 |
-| `currentIndex` | 目前選取的作品 index，初始值從 `sessionStorage.index` 讀取 |
-| `currentDetailIndex` | 燈箱內目前顯示的圖片編號（從 1 起算） |
-| `sliderRef` | 桌機 / 平板分頁滑軌的 DOM ref |
+| 變數                 | 說明                                                         |
+| -------------------- | ------------------------------------------------------------ |
+| `currentType`        | 目前分類 index（0/1/2），初始值從 `sessionStorage.type` 讀取 |
+| `currentPage`        | 桌機分頁索引，初始值從 `sessionStorage.page` 讀取            |
+| `currentIndex`       | 目前選取的作品 index，初始值從 `sessionStorage.index` 讀取   |
+| `currentDetailIndex` | 燈箱內目前顯示的圖片編號（從 1 起算）                        |
+| `sliderRef`          | 桌機 / 平板分頁滑軌的 DOM ref                                |
 
 ## 分頁邏輯
 
@@ -1406,10 +1406,10 @@ onBeforeUnmount(() => {
 
 ## sessionStorage 持久化
 
-| key | 說明 |
-|-----|------|
-| `type` | 當前分類 index |
-| `page` | 當前頁碼 |
+| key     | 說明               |
+| ------- | ------------------ |
+| `type`  | 當前分類 index     |
+| `page`  | 當前頁碼           |
 | `index` | 當前選取作品 index |
 
 視窗寬度跨越 740px 時（手機 ↔ 非手機）自動 `clear()`，避免分頁狀態污染。
@@ -1417,6 +1417,7 @@ onBeforeUnmount(() => {
 ## 作品燈箱進入
 
 點擊作品縮圖呼叫 `toDetail(idx)`：
+
 1. 計算 `currentPage` 與 `currentIndex` 並寫入 sessionStorage
 2. 呼叫 `global.changeTheme('detail')` 切換至燈箱
 </spec>
