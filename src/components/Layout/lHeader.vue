@@ -29,10 +29,10 @@ header.l-header
 
 ## 依賴
 
-| 項目 | 說明 |
-|------|------|
+| 項目          | 說明                                                                             |
+| ------------- | -------------------------------------------------------------------------------- |
 | `globalStore` | 呼叫 `changeTheme(theme)` 切換目前顯示區塊，並掛載 `.curr` 至對應的 `.menu-link` |
-| `ImgSrc` | 響應式圖片元件，載入 `common/logo.png` |
+| `ImgSrc`      | 響應式圖片元件，載入 `common/logo.png`                                           |
 
 ## 選取狀態
 
@@ -41,9 +41,9 @@ header.l-header
 
 ## 尺寸（各裝置）
 
-| 裝置 | 高度 | 定位方式 |
-|------|------|----------|
-| 手機（`m:`） | 63px | `fixed`，距底部 24px |
+| 裝置         | 高度  | 定位方式                |
+| ------------ | ----- | ----------------------- |
+| 手機（`m:`） | 63px  | `fixed`，距底部 24px    |
 | 平板（`t:`） | 126px | `absolute`，距底部 24px |
 | 桌機（`p:`） | 189px | `absolute`，距底部 20px |
 </spec>
@@ -68,7 +68,8 @@ header.l-header
       <ul class="menu flex items-center justify-center">
         <li class="m:px-[10px] t:px-[20px] p:px-[30px]">
           <button
-            class="menu-link design cursor-pointer text-[#ff0] tm:text-[12px] p:text-[18px]"
+            class="menu-link cursor-pointer text-[#ff0] tm:text-[12px] p:text-[18px]"
+            :class="global.theme === 'f2e' ? 'curr' : ''"
             @click="global.changeTheme('f2e')"
           >
             01.
@@ -79,7 +80,8 @@ header.l-header
         </li>
         <li class="m:px-[10px] t:px-[20px] p:px-[30px]">
           <button
-            class="menu-link about cursor-pointer text-[#ff0] tm:text-[12px] p:text-[18px]"
+            class="menu-link cursor-pointer text-[#ff0] tm:text-[12px] p:text-[18px]"
+            :class="global.theme === 'about' ? 'curr' : ''"
             @click="global.changeTheme('about')"
           >
             02.
@@ -90,7 +92,8 @@ header.l-header
         </li>
         <li class="m:px-[10px] t:px-[20px] p:px-[30px]">
           <button
-            class="menu-link skill cursor-pointer text-[#ff0] tm:text-[12px] p:text-[18px]"
+            class="menu-link cursor-pointer text-[#ff0] tm:text-[12px] p:text-[18px]"
+            :class="global.theme === 'skill' ? 'curr' : ''"
             @click="global.changeTheme('skill')"
           >
             03.
@@ -116,6 +119,8 @@ header.l-header
 
 .menu-link {
   &.curr {
+    @apply pointer-events-none;
+
     span,
     &:hover span {
       @apply text-[#ff0];
@@ -127,3 +132,4 @@ header.l-header
   }
 }
 </style>
+
