@@ -12,6 +12,10 @@ const router = createRouter({
       path: '/',
       component: () => import('@/views/Home/Index.vue'),
     },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/',
+    },
   ],
   linkActiveClass: 'router-active',
   linkExactActiveClass: 'router-exact-active',

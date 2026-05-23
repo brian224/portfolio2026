@@ -74,7 +74,7 @@ header.l-header
           >
             01.
             <span class="tracking-[3px] text-[#fff] transition-all duration-300 ease-in-out"
-              >[設計作品]</span
+              >[過往作品]</span
             >
           </button>
         </li>

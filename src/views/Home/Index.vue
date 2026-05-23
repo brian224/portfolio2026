@@ -11,15 +11,15 @@ const datas = [
   {
     type: '活動作品',
     case: [
-      {
-        CaseName: '活力第一！<br>神指對決',
-        CaseID: '113',
-        CaseType: 'web',
-        CoverImg: 'web_113.png',
-        PhotoCount: '4',
-        webLink: 'https://firstbank-socialevent.com/2026ileo',
-        webDesc: '第一銀行 活力第一！神指對決 (手機版網站)',
-      },
+      // {
+      //   CaseName: '活力第一！<br>神指對決',
+      //   CaseID: '113',
+      //   CaseType: 'web',
+      //   CoverImg: 'web_113.png',
+      //   PhotoCount: '4',
+      //   webLink: 'https://firstbank-socialevent.com/2026ileo',
+      //   webDesc: '第一銀行 活力第一！神指對決 (手機版網站)',
+      // },
       {
         CaseName: '第一銀行<br>迎財納福衝第一',
         CaseID: '94',
