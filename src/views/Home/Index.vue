@@ -1345,7 +1345,8 @@ const clearStorage = () => {
 onBeforeMount(() => {})
 
 onMounted(async () => {
-  mediaQuery = window.matchMedia('(max-width: 740px)')
+  // 對齊 tailwind.config.js 的 m（手機）斷點界線：max-width 739px（= mobileMaxWidth - 1）
+  mediaQuery = window.matchMedia('(max-width: 739px)')
   mediaQuery.addEventListener('change', clearStorage)
 
   if (global.theme === 'f2e') {

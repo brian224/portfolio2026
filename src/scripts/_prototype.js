@@ -1,23 +1,26 @@
-// 取得裝置
+// 取得裝置類別（與 tailwind.config.js 的 m / t / p 斷點對齊）
+// 策略：以寬度為主，並用 (pointer: coarse) 修正「寬螢幕觸控裝置」（如 iPad Pro 橫向）。
+// iPadOS 主指標恆為 coarse，可穩定辨識各方向 iPad，故不再依賴脆弱的 UA 嗅探與 orientation。
 export const onDevice = () => {
-  const angle = window.screen.orientation ? window.screen.orientation.angle : 0
-  const PCMinWidth = 1024
-  const mobileWidth = 740
-  const userAgent = navigator.userAgent
-  const isPCPad = angle === 0 && window.innerWidth > mobileWidth && window.innerWidth < PCMinWidth // 在桌機時 resize 模擬 Pad 的尺寸
-  const isAndroidPad = /Android|webOS|BlackBerry/i.test(userAgent)
-  const is16BelowPad = /iPad/i.test(userAgent) // ios 16 以下的系統
-  const is17AbovePad = angle !== 0 && /Mac OS X/i.test(userAgent) // iso 17 以上的系統
-  const isAndroidMobile = /Android|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)
-  const isIPhoneMobile =
-    (angle !== 0 && window.innerWidth > 730 && window.innerWidth < 815) || /iPhone/i.test(userAgent)
+  const mobileMaxWidth = 740 // 對應 CONFIG.mobileMaxWidth
+  const desktopMinWidth = 1025 // 對應 CONFIG.desktopMinWidth
+  const width = window.innerWidth
+  const mq = (query) =>
+    typeof window.matchMedia === 'function' ? window.matchMedia(query).matches : false
 
-  if (window.innerWidth <= mobileWidth || isAndroidMobile || isIPhoneMobile) {
+  const isTouch = mq('(pointer: coarse)') // 主要輸入為觸控（手機 / 平板）
+  const isPhoneLandscape = mq(
+    '(max-width: 999px) and (max-height: 428px) and (orientation: landscape)'
+  ) // 矮的橫向手機
+
+  // 手機：窄寬度，或矮的橫向手機
+  if (width < mobileMaxWidth || isPhoneLandscape) {
     return 'm'
   }
-  if (isPCPad || isAndroidPad || is16BelowPad || is17AbovePad) {
-    return 't'
+  // 桌機：夠寬且為精準指標（滑鼠 / 觸控板）
+  if (width >= desktopMinWidth && !isTouch) {
+    return 'p'
   }
-
-  return 'p'
+  // 其餘為平板：中段寬度（740–1024），或「夠寬但為觸控」的大平板（如 iPad Pro 橫向）
+  return 't'
 }

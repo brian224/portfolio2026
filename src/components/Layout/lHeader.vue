@@ -50,7 +50,7 @@ header.l-header
 
 <template>
   <header
-    class="l-header show z-[3] w-full flex-col items-center justify-start bg-repeat-x m:fixed m:bottom-[24px] m:h-[63px] m:bg-[#5894DD] t:bottom-[24px] t:mt-[6px] t:h-[126px] pt:absolute p:bottom-[20px] p:mt-[9px] p:h-[189px]"
+    class="l-header show z-[3] w-full flex-col items-center justify-start bg-repeat-x m:fixed m:bottom-[24px] m:h-[63px] m:bg-[#5894DD] t:bottom-[24px] t:h-[126px] pt:absolute p:bottom-[20px] p:h-[189px]"
   >
     <h1 class="logo pointer-events-none z-[1] m:relative">
       <em class="sr-only">Brian Lin 作品集</em>
