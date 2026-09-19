@@ -139,6 +139,15 @@ const datas = [
         webDesc: 'Longchamp 搖搖馬樂園 (手機版網站)',
       },
       {
+        CaseName: '台新私人銀行',
+        CaseID: '114',
+        CaseType: 'web',
+        CoverImg: 'web_114.png',
+        PhotoCount: '4',
+        webLink: 'https://mkp.taishinbank.com.tw/s/2026/TS_PrivateBanking/index.html',
+        webDesc: '台新私人銀行',
+      },
+      {
         CaseName: 'New Balance<br>灰境計劃',
         CaseID: '88',
         CaseType: 'web',
