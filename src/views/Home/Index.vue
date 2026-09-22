@@ -145,7 +145,7 @@ const datas = [
         CoverImg: 'web_114.png',
         PhotoCount: '4',
         webLink: 'https://mkp.taishinbank.com.tw/s/2026/TS_PrivateBanking/index.html',
-        webDesc: '台新私人銀行',
+        webDesc: '台新私人銀行 (AI 協作作品)',
       },
       {
         CaseName: 'New Balance<br>灰境計劃',
