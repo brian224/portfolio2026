@@ -200,7 +200,7 @@
         <tr><td>改 / 新增作品（縮圖、連結、燈箱張數）</td><td><a href="#sec3">§3 網站地圖</a>、<a href="#sec5">§5 核心互動</a>、<a href="#sec9">§9 對照表</a></td><td>作品資料寫死在 <code>views/Home/_data/works.js</code> 的 <code>datas</code> 陣列；圖片需依命名規則放入 <code>src/assets/img/home/...</code>，否則顯示 404 佔位圖</td></tr>
         <tr><td>改三大區塊切換 / 動線</td><td><a href="#sec3">§3</a>、<a href="#sec5">§5 狀態管理</a></td><td>區塊切換不是路由，而是 <code>globalStore.theme</code>；改錯會影響 <code>sessionStorage</code> 還原</td></tr>
         <tr><td>改個人資料 / 經歷 / 技能文字</td><td><a href="#sec4">§4</a>、<code>_components/AboutSection.vue</code>、<code>_components/SkillSection.vue</code></td><td>多為寫死在 template 的靜態文字</td></tr>
-        <tr><td>改 RWD / 斷點</td><td><a href="#sec4">§4 RWD</a>、<code>tailwind.config.js</code>、<code>config.js</code></td><td>斷點用 <code>(pointer: coarse/fine)</code> 判斷觸控 / 滑鼠，非單純寬度；hover 樣式一律掛 <code>p:</code> 前綴。改寬度需同步的位置見 <a href="#sec8">§8 常見維運操作</a></td></tr>
+        <tr><td>改 RWD / 斷點</td><td><a href="#sec4">§4 RWD</a>、<code>src/scripts/_breakpoints.js</code>、<code>tailwind.config.js</code></td><td>斷點用 <code>(pointer: coarse/fine)</code> 判斷觸控 / 滑鼠，非單純寬度；hover 樣式一律掛 <code>p:</code> 前綴。門檻只改 <code>_breakpoints.js</code> 一支，改完要硬重啟 dev server</td></tr>
         <tr><td>改部署 / 環境</td><td><a href="#sec5">§5 建置</a>、<a href="#sec7">§7 環境網域</a>、<a href="#sec8">§8</a></td><td><code>npm run deploy</code> 輸出到 <code>dist/</code>（目錄名取自 <code>.env.deploy</code> 的 <code>VITE_APP_MODE</code>）；CI 部署前會先跑 lint 與測試，任一失敗就不會部署</td></tr>
         <tr><td>清理剩餘殘留</td><td><a href="#sec8">§8 程式碼觀察事項</a></td><td>proxy、LINE LIFF 變數、<code>deCrypto()</code> 已清除；剩下未使用的設定與圖片列在 §8</td></tr>
       </table>
@@ -246,11 +246,11 @@
       <pre><code>portfolio2026/
 ├── .github/workflows/deploy.yml   # CI/CD：lint → 測試 → build → 部署到 GitHub Pages
 ├── .env.dev / .env.build / .env.deploy   # 各模式環境變數
-├── config.js                      # 專案參數（埠號、斷點基準寬、輸出資料夾名…）
+├── config.js                      # 專案參數（埠號、設計基準寬、輸出資料夾名…）
 ├── vite.config.js                 # Vite 設定（alias、影像壓縮、SVG spritemap、輸出）
 ├── vitest.config.js               # 測試設定（alias 與 vite 一致、掛 &lt;spec&gt; plugin）
 ├── eslint.config.js               # ESLint（含 SFC 區塊順序 vue/block-order）
-├── tailwind.config.js             # 斷點（pointer-based）、字級、外掛
+├── tailwind.config.js             # screens（MQ 來自 _breakpoints.js）、字級、外掛
 ├── postcss.config.js / postcss.function.js
 ├── plugins/
 │   ├── vite-plugin-image-minimizer-sharp.js   # 自訂 sharp/svgo 壓縮外掛
@@ -268,7 +268,7 @@
 │   ├── components/
 │   │   ├── layout/                # lHeader / lFooter / lRotate
 │   │   └── modules/               # mImg（圖片元件）/ mIcon（SVG sprite 圖示）
-│   ├── scripts/                   # _crypto.js _env.js _prototype.js（+ __tests__）
+│   ├── scripts/                   # _breakpoints.js（斷點單一真值）_crypto.js _env.js _prototype.js（+ __tests__）
 │   ├── assets/css/                # _library.css + _common/framework.css
 │   ├── assets/img/                # shared/（共用）、home/（作品）、about/、skill/、n-sup/
 │   └── _svg/                      # 9 個 SVG icon（spritemap 來源）
@@ -376,7 +376,7 @@
       </ul>
 
       <h3>響應式與裝置適配</h3>
-      <p>斷點定義於 <code>tailwind.config.js</code>，以「主要指標 pointer」搭配寬度判斷，避免寬螢幕觸控裝置（如 iPad Pro 橫向）被誤判為桌機：</p>
+      <p>門檻與 media query 字串的單一真值在 <code>src/scripts/_breakpoints.js</code>，由 <code>tailwind.config.js</code> 的 screens 匯入，以「主要指標 pointer」搭配寬度判斷，避免寬螢幕觸控裝置（如 iPad Pro 橫向）被誤判為桌機：</p>
       <table>
         <tr><th>前綴</th><th>對應裝置</th><th>條件（簡述）</th></tr>
         <tr><td><code>m</code></td><td>手機</td><td>寬 ≤ 739px，或矮的橫向手機（≤999px 且高 ≤428px 橫向）</td></tr>
@@ -386,7 +386,7 @@
         <tr><td><code>pt</code></td><td>平板 + 桌機</td><td>≥740px 且高 ≥428px</td></tr>
         <tr><td><code>mLandscape</code></td><td>手機橫置</td><td>觸發 <code>lRotate</code> 鎖定遮罩</td></tr>
       </table>
-      <blockquote>JS 端對應邏輯在 <code>_prototype.js onDevice()</code>，回傳 <code>'m' / 't' / 'p'</code>，與上表同源（手機分頁用 <code>amount=100</code>、平板 / 桌機用 <code>amount=14</code> 即由它決定）。</blockquote>
+      <blockquote>JS 端對應邏輯在 <code>_prototype.js onDevice()</code>，回傳 <code>'m' / 't' / 'p'</code>，門檻常數同樣來自 <code>_breakpoints.js</code>（手機分頁用 <code>amount=100</code>、平板 / 桌機用 <code>amount=14</code> 即由它決定）。</blockquote>
       <blockquote><strong>hover 樣式一律掛 <code>p:</code> 前綴</strong>：<code>p</code> 的條件已含 <code>(pointer: fine)</code>，觸控裝置不會留下「點過就黏住」的 hover 態。</blockquote>
 
       <h3>跳窗 / 提示 UI</h3>
@@ -496,7 +496,7 @@
         <tr><td>改聯絡方式 / 社群</td><td>編輯關於我區塊（<code>AboutSection.vue</code>）</td></tr>
         <tr><td>重新部署</td><td>push 到 <code>main</code> 分支即觸發 GitHub Actions：lint → 跑測試 → <code>npm run deploy</code> → 上傳 <code>./dist</code> → 部署 Pages</td></tr>
         <tr><td>本機測試</td><td><code>npm run dev</code>（HTTPS, 埠 2026）；<code>npm run lint</code> 跑 ESLint；<code>npm run test</code> 跑單元測試</td></tr>
-        <tr><td>改斷點 / 裝置判斷</td><td>同步修改 <code>config.js</code>、<code>tailwind.config.js</code>（media query 字串內另有寫死的數字）、<code>_prototype.js</code>、<code>Index.vue</code> 的 <code>matchMedia('(max-width: 739px)')</code>、<code>mImg.vue</code> 的 <code>(max-width: 428px)</code></td></tr>
+        <tr><td>改斷點 / 裝置判斷</td><td>只改 <code>src/scripts/_breakpoints.js</code>：<code>tailwind.config.js</code> 的 screens、<code>onDevice()</code>、<code>mImg</code> 的手機版圖、<code>Index.vue</code> 的手機斷點監聽都從這裡匯入。改完要<strong>硬重啟</strong> dev server（本檔被 <code>tailwind.config.js</code> 匯入，熱更新不會重載，且會新舊混雜）</td></tr>
       </table>
 
       <h3>機密清單（位置，值一律不收錄）</h3>
@@ -517,10 +517,9 @@
         <li><strong>mImg 的 <code>lazy=false</code> 不會載入圖片</strong>：初始 <code>src</code> 為 <code>shared/blank.svg</code>，只有 IntersectionObserver 那段會換成真實路徑，<code>lazy=false</code> 會跳過它。目前全專案沒有傳 <code>false</code> 的地方。</li>
         <li><strong>mIcon 的 prop 寫成 <code>require: true</code></strong>：正確選項是 <code>required</code>，Vue 會忽略不認得的選項，所以 <code>icon</code> 實際上不是必填。</li>
         <li><strong>作品列表渲染兩次</strong>：WorksSection 在平板 / 桌機用分頁滑軌、手機另有一份完整列表（<code>pt:hidden</code>），同一批作品在 DOM 中出現兩次。</li>
-        <li><strong>斷點門檻散在多處</strong>：見上方「改斷點 / 裝置判斷」列出的五個位置，改門檻時要逐一同步。</li>
         <li><strong>/portfolio 子路徑寫死在三處</strong>：<code>vite.config.js</code> 的 <code>base</code>、<code>router/index.js</code> 的 <code>createWebHistory('/portfolio/')</code>、mIcon 的 sprite 網址。</li>
         <li><strong>Index.vue 帶 UTF-8 BOM</strong>：全專案唯一一支。</li>
-        <li><strong>桌機字級流體區只有 2px</strong>：<code>pMin</code> 為 1024–1025px，<code>pMax</code> 從 1026px 起封頂固定 16px，<code>vmp</code> 字級 token 實際上幾乎用不到。</li>
+        <li><strong>桌機字級流體區只有 2px</strong>：<code>pMin</code> 為 1024–1025px（其中的 1024 是 <code>tailwind.config.js</code> 裡唯一留下的字面數字，與全域骨架相同），<code>pMax</code> 從 1026px 起封頂固定 16px，<code>vmp</code> 字級 token 實際上幾乎用不到。</li>
         <li><strong>未使用的設定</strong>：<code>config.js</code> 的 <code>ws</code>、<code>rootDirectory</code>、<code>fonts</code> 欄位目前無程式使用；各 <code>.env</code> 的 <code>VITE_APP_APIPATH</code> 為空字串、未使用。</li>
       </ol>
       <p><strong>已處理（原列於本節）</strong></p>
@@ -530,6 +529,7 @@
         <li>og:image 原本串出雙重 /portfolio/；因沒有 1200×630 的分享圖，改為整組不放（分享時為純文字卡）。</li>
         <li>favicon 路徑確認沒有問題：Vite 建置時會自動加上 base，產物為 <code>/portfolio/static/img/favicon.ico</code>。</li>
         <li><code>jsconfig.json</code> 的 <code>@container</code> / <code>@fonts</code> 已移除，alias 在 <code>vite.config.js</code>、<code>vitest.config.js</code>、<code>jsconfig.json</code> 三處一致。</li>
+        <li>斷點門檻集中到 <code>src/scripts/_breakpoints.js</code>；<code>config.js</code> 的 <code>mobileMaxWidth</code>（門檻的第二份拷貝）、<code>ieVersion</code>，以及沒人用的 <code>notsupport</code> / <code>firefox</code> / <code>IE</code> screen 已移除。</li>
       </ul>
 
       <h3>聯絡資訊</h3>
@@ -549,9 +549,10 @@
       <table>
         <tr><th>項目</th><th>值</th></tr>
         <tr><td>dev server 埠</td><td><code>2026</code></td></tr>
-        <tr><td>desktopMinWidth</td><td><code>1025</code></td></tr>
-        <tr><td>mobileMaxWidth</td><td><code>740</code></td></tr>
-        <tr><td>basicMobileWidth</td><td><code>375</code></td></tr>
+        <tr><td>平板起始寬 TABLET_MIN_WIDTH（_breakpoints.js）</td><td><code>740</code></td></tr>
+        <tr><td>電腦門檻 PC_MIN_WIDTH（_breakpoints.js）</td><td><code>1025</code></td></tr>
+        <tr><td>桌機設計基準寬 desktopMinWidth（config.js）</td><td><code>1025</code></td></tr>
+        <tr><td>手機設計基準寬 basicMobileWidth（config.js）</td><td><code>375</code></td></tr>
         <tr><td>base 路徑</td><td><code>/portfolio/</code></td></tr>
         <tr><td>預設 theme</td><td><code>f2e</code></td></tr>
         <tr><td>桌機 / 平板每頁筆數</td><td><code>14</code></td></tr>

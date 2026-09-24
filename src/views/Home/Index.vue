@@ -51,6 +51,7 @@ import WorksSection from './_components/WorksSection.vue'
 import { datas } from './_data/works.js'
 
 import { computed, onBeforeUnmount, onMounted, provide, ref, watch } from 'vue'
+import { MQ_MOBILE } from '@js/_breakpoints.js'
 import { onDevice } from '@js/_prototype.js'
 
 const currentType = ref(Number(sessionStorage.getItem('type')) || 0) // 目前在哪個分類 活動作品 / 專案作品 / 其他作品
@@ -96,8 +97,8 @@ const clearStorage = () => {
 }
 
 onMounted(() => {
-  // 對齊 tailwind.config.js 的 m（手機）斷點界線：max-width 739px（= mobileMaxWidth - 1）
-  mediaQuery = window.matchMedia('(max-width: 739px)')
+  // 與 onDevice() 的「是不是手機」同一條件：跨過去時 amount（每頁筆數）會變，分頁狀態要清掉
+  mediaQuery = window.matchMedia(MQ_MOBILE)
   mediaQuery.addEventListener('change', clearStorage)
 })
 

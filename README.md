@@ -34,9 +34,9 @@ Tailwind CSS 自訂斷點，class 前綴對應裝置。斷點**以「主要指�
 | `pMin:`/`pMax:` | 桌機字級流體/封頂 | 1024–1025px／≥ 1026px（根字級由 vw 改回固定 16px）         |
 | `mLandscape:`   | 手機橫置          | 顯示轉向提示遮罩（`lRotate.vue`）                          |
 
-> 完整的 media query 條件是 [tailwind.config.js](tailwind.config.js) 的 `theme.screens`，
-> 門檻數值來自 [config.js](config.js)；`hover:` 一律掛 `p:` 前綴，觸控裝置才不會留下黏住的 hover 態。
-> 改寬度時要連同 [\_prototype.js](src/scripts/_prototype.js) 的 `onDevice()` 一起改（目前兩邊各有一份）。
+> 門檻與 media query 字串的單一真值在 [\_breakpoints.js](src/scripts/_breakpoints.js)：
+> `tailwind.config.js` 的 screens、`onDevice()`、`mImg` 都從這裡匯入，改寬度只改這一支（改完要硬重啟 dev server）。
+> `hover:` 一律掛 `p:` 前綴，觸控裝置才不會留下黏住的 hover 態。
 
 ## 開發指令
 

@@ -21,7 +21,7 @@
 ## 手機圖
 
 `src` 傳 `{ p, m }` 物件，或在字串後加 `?m=1`（手機圖檔名自動在副檔名前插 `_m`）。
-切換條件是 `(max-width: 428px)`。
+切換條件是 `@js/_breakpoints.js` 的 `MQ_MOBILE`（與 CSS 的 `m:` 同一條件）。
 
 ## 載入
 
@@ -34,6 +34,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 
 import blankUrl from '@imgs/shared/blank.svg'
 
+import { MQ_MOBILE } from '@js/_breakpoints.js'
 import { hashHex } from '@js/_crypto.js'
 import { ENV } from '@js/_env.js'
 
@@ -147,7 +148,7 @@ onMounted(() => onLazy())
 <template>
   <component :is="as" class="m-figure" :class="setClass.main" v-if="status === 200">
     <picture v-if="mobilePath && hasMobile">
-      <source :srcset="mobilePath" media="(max-width: 428px)" />
+      <source :srcset="mobilePath" :media="MQ_MOBILE" />
       <img
         :src="blankUrl"
         :loading="hasLazy ? 'lazy' : null"

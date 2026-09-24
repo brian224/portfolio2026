@@ -49,7 +49,7 @@
 | 改 / 新增作品（縮圖、連結、燈箱張數）| [§3 網站地圖](#sec3)、[§5 核心互動](#sec5)、[§9 對照表](#sec9) | 作品資料寫死在 [\_data/works.js](src/views/Home/_data/works.js#L14-L1222) 的 `datas` 陣列；圖片需依命名規則放到 `src/assets/img/home/...`，否則會顯示 404 佔位圖 |
 | 改三大區塊切換 / 動線 | [§3](#sec3)、[§5 狀態管理](#sec5) | 區塊切換不是路由，而是 `globalStore.theme`；改錯會影響 `sessionStorage` 還原 |
 | 改個人資料 / 經歷 / 技能文字 | [§4](#sec4)、[AboutSection.vue](src/views/Home/_components/AboutSection.vue)、[SkillSection.vue](src/views/Home/_components/SkillSection.vue) | 多為寫死在 template 的靜態文字 |
-| 改 RWD / 斷點 | [§4 RWD](#sec4)、[tailwind.config.js](tailwind.config.js#L14-L45)、[config.js](config.js) | 斷點用 `(pointer: coarse/fine)` 判斷觸控 / 滑鼠，非單純寬度；hover 樣式一律掛 `p:` 前綴。改寬度需同步的位置見 [§8 常見維運操作](#sec8) |
+| 改 RWD / 斷點 | [§4 RWD](#sec4)、[\_breakpoints.js](src/scripts/_breakpoints.js)、[tailwind.config.js](tailwind.config.js#L16-L30) | 斷點用 `(pointer: coarse/fine)` 判斷觸控 / 滑鼠，非單純寬度；hover 樣式一律掛 `p:` 前綴。門檻只改 `_breakpoints.js` 一支，改完要硬重啟 dev server |
 | 改部署 / 環境 | [§5 建置與環境](#sec5)、[§7 環境網域對照](#sec7)、[§8](#sec8) | `npm run deploy` 輸出到 `dist/`（目錄名取自 `.env.deploy` 的 `VITE_APP_MODE`）；CI 部署前會先跑 lint 與測試，任一失敗就不會部署 |
 | 清理剩餘殘留 | [§8 程式碼觀察事項](#sec8) | proxy、LINE LIFF 變數、`deCrypto()` 已清除；剩下未使用的設定與圖片列在 §8 |
 
@@ -79,7 +79,7 @@
 | 狀態管理 | Pinia 2 | 兩個 store：`global`（區塊 theme）、`common`（loading）|
 | 路由 | Vue Router 4（`createWebHistory('/portfolio/')`）| 單一路由 `/`，其餘導回 `/`（[router/index.js](src/router/index.js#L8-L23)）|
 | 樣式 | Tailwind CSS 3 + PostCSS（nesting / pxtorem / functions / calc / hexrgba / autoprefixer）| [postcss.config.js](postcss.config.js)、[tailwind.config.js](tailwind.config.js) |
-| 雜湊 | crypto-js（AES）| 僅用於圖片 URL 快取破壞雜湊（[mImg.vue:47](src/components/modules/mImg.vue#L47)）|
+| 雜湊 | crypto-js（AES）| 僅用於圖片 URL 快取破壞雜湊（[mImg.vue:48](src/components/modules/mImg.vue#L48)）|
 | 程式品質 | ESLint 9（flat config）+ Prettier | `npm run lint`；含 `vue/block-order` 強制 SFC 區塊順序 `spec → script → template → style` |
 | 後端 / 資料庫 | 無 | 純靜態前端 |
 | 平台 / 環境 | RWD 網頁（手機 / 平板 / 桌機）| base `/portfolio/` |
@@ -92,11 +92,11 @@
 portfolio2026/
 ├── .github/workflows/deploy.yml   # CI/CD：lint → 測試 → build → 部署到 GitHub Pages
 ├── .env.dev / .env.build / .env.deploy   # 各模式環境變數
-├── config.js                      # 專案參數（埠號、斷點基準寬、輸出資料夾名…）
+├── config.js                      # 專案參數（埠號、設計基準寬、輸出資料夾名…）
 ├── vite.config.js                 # Vite 設定（alias、影像壓縮、SVG spritemap、輸出）
 ├── vitest.config.js               # 測試設定（alias 與 vite 一致、掛 <spec> plugin）
 ├── eslint.config.js               # ESLint（含 SFC 區塊順序 vue/block-order）
-├── tailwind.config.js             # 斷點（pointer-based）、字級、外掛
+├── tailwind.config.js             # screens（MQ 來自 _breakpoints.js）、字級、外掛
 ├── postcss.config.js / postcss.function.js
 ├── plugins/
 │   ├── vite-plugin-image-minimizer-sharp.js   # 自訂 sharp/svgo 壓縮外掛
@@ -114,7 +114,7 @@ portfolio2026/
 │   ├── components/
 │   │   ├── layout/                # lHeader / lFooter / lRotate
 │   │   └── modules/               # mImg（圖片元件）/ mIcon（SVG sprite 圖示）
-│   ├── scripts/                   # _crypto.js _env.js _prototype.js（+ __tests__）
+│   ├── scripts/                   # _breakpoints.js（斷點單一真值）_crypto.js _env.js _prototype.js（+ __tests__）
 │   ├── assets/css/                # _library.css + _common/framework.css
 │   ├── assets/img/                # shared/（共用）、home/（作品）、about/、skill/、n-sup/
 │   └── _svg/                      # 9 個 SVG icon（spritemap 來源）
@@ -179,7 +179,7 @@ portfolio2026/
 | 目前作品 | `currentIndex`（同上）| 數字 | 存 `sessionStorage.index` |
 | 燈箱圖序 | `currentDetailIndex`（同上）| 從 1 起 | 不持久化 |
 
-> 後四項由 `Home/Index.vue` 以 `provide('works')` 傳給 `WorksSection` 與 `WorkDetail`（見 [§5 核心互動](#sec5)）。視窗寬度跨越 740px（手機 ↔ 非手機）時自動 `sessionStorage.clear()`，避免分頁狀態污染（[Index.vue:94-106](src/views/Home/Index.vue#L94-L106)）。
+> 後四項由 `Home/Index.vue` 以 `provide('works')` 傳給 `WorksSection` 與 `WorkDetail`（見 [§5 核心互動](#sec5)）。視窗寬度跨越 740px（手機 ↔ 非手機）時自動 `sessionStorage.clear()`，避免分頁狀態污染（[Index.vue:95-107](src/views/Home/Index.vue#L95-L107)）。
 
 ### 身分識別
 **不適用**。無登入 / 註冊 / 匿名 GUID / token。
@@ -234,7 +234,7 @@ repo 內**無 Figma / 設計流程連結**。設計與決策由製作者（Brian
 - **Footer**（[lFooter.vue](src/components/layout/lFooter.vue)）：`© 2026 Brian Lin. Portfolio Site.`。
 
 ### 響應式與裝置適配
-斷點定義於 [tailwind.config.js:14-45](tailwind.config.js#L14-L45)，**以「主要指標 pointer」搭配寬度判斷**，避免寬螢幕觸控裝置（如 iPad Pro 橫向）被誤判為桌機：
+門檻與 media query 字串的單一真值在 [\_breakpoints.js](src/scripts/_breakpoints.js)，由 [tailwind.config.js:16-30](tailwind.config.js#L16-L30) 的 screens 匯入，**以「主要指標 pointer」搭配寬度判斷**，避免寬螢幕觸控裝置（如 iPad Pro 橫向）被誤判為桌機：
 
 | 前綴 | 對應裝置 | 條件（簡述）|
 | --- | --- | --- |
@@ -245,7 +245,7 @@ repo 內**無 Figma / 設計流程連結**。設計與決策由製作者（Brian
 | `pt` | 平板 + 桌機 | ≥740px 且高 ≥428px |
 | `mLandscape` | 手機橫置 | 觸發 `lRotate` 鎖定遮罩 |
 
-> JS 端對應邏輯在 [\_prototype.js `onDevice()`](src/scripts/_prototype.js#L4-L26)，回傳 `'m' / 't' / 'p'`，與上表同源（手機分頁用 `amount=100`、平板 / 桌機用 `amount=14` 即由它決定）。
+> JS 端對應邏輯在 [\_prototype.js `onDevice()`](src/scripts/_prototype.js#L10-L28)，回傳 `'m' / 't' / 'p'`，門檻常數同樣來自 `_breakpoints.js`（手機分頁用 `amount=100`、平板 / 桌機用 `amount=14` 即由它決定）。
 
 > **hover 樣式一律掛 `p:` 前綴**：`p` 的條件已含 `(pointer: fine)`，觸控裝置不會留下「點過就黏住」的 hover 態。
 
@@ -368,12 +368,12 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 | 改聯絡方式 / 社群 | 編輯關於我區塊（[AboutSection.vue:51-127](src/views/Home/_components/AboutSection.vue#L51-L127)）|
 | 重新部署 | push 到 `main` 分支即觸發 [GitHub Actions](.github/workflows/deploy.yml)：lint → 跑測試 → `npm run deploy` → 上傳 `./dist` → 部署 Pages |
 | 本機測試 | `npm run dev`（HTTPS, 埠 2026）；`npm run lint` 跑 ESLint；`npm run test` 跑單元測試 |
-| 改斷點 / 裝置判斷 | 同步修改 [config.js](config.js#L4-L6)、[tailwind.config.js](tailwind.config.js#L14-L45)（media query 字串內另有寫死的數字）、[\_prototype.js](src/scripts/_prototype.js)、[Index.vue](src/views/Home/Index.vue#L98-L102) 的 `matchMedia('(max-width: 739px)')`、[mImg.vue](src/components/modules/mImg.vue) 的 `(max-width: 428px)` |
+| 改斷點 / 裝置判斷 | 只改 [\_breakpoints.js](src/scripts/_breakpoints.js)：`tailwind.config.js` 的 screens、`onDevice()`、`mImg` 的手機版圖、`Index.vue` 的手機斷點監聽都從這裡匯入。改完要**硬重啟** dev server（本檔被 `tailwind.config.js` 匯入，熱更新不會重載，且會新舊混雜）|
 
 ### 機密清單（位置，值一律不收錄）
 | 機密 | 存放位置 | 說明 |
 | --- | --- | --- |
-| AES `KEY` / `IV` | [src/scripts/_crypto.js:3-4](src/scripts/_crypto.js#L3-L4) `<已遮罩>` | **硬編碼於原始碼**。實際**僅供 `hashHex()` 產生圖片快取破壞字串**，未用於保護任何敏感資料（全專案僅 [mImg.vue](src/components/modules/mImg.vue#L47) 使用）。嚴格說非真機密，但仍列位置供接手者評估是否清理 |
+| AES `KEY` / `IV` | [src/scripts/_crypto.js:3-4](src/scripts/_crypto.js#L3-L4) `<已遮罩>` | **硬編碼於原始碼**。實際**僅供 `hashHex()` 產生圖片快取破壞字串**，未用於保護任何敏感資料（全專案僅 [mImg.vue](src/components/modules/mImg.vue#L48) 使用）。嚴格說非真機密，但仍列位置供接手者評估是否清理 |
 
 > 本專案無 DB 連線、無後台帳密、無 API key、無第三方 token。
 
@@ -389,11 +389,10 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 5. **`mImg` 的 `lazy=false` 不會載入圖片**：初始 `src` 為 `shared/blank.svg`，只有 IntersectionObserver 那段會換成真實路徑，`lazy=false` 會跳過它。目前全專案沒有傳 `false` 的地方。
 6. **`mIcon` 的 prop 寫成 `require: true`**：正確選項是 `required`，Vue 會忽略不認得的選項，所以 `icon` 實際上不是必填。
 7. **作品列表渲染兩次**：`WorksSection` 在平板 / 桌機用分頁滑軌、手機另有一份完整列表（`pt:hidden`），同一批作品在 DOM 中出現兩次。
-8. **斷點門檻散在多處**：見上方「改斷點 / 裝置判斷」列出的五個位置，改門檻時要逐一同步。
-9. **`/portfolio` 子路徑寫死在三處**：`vite.config.js` 的 `base`、`router/index.js` 的 `createWebHistory('/portfolio/')`、`mIcon` 的 sprite 網址。
-10. **`Index.vue` 帶 UTF-8 BOM**：全專案唯一一支。
-11. **桌機字級流體區只有 2px**：`pMin` 為 1024–1025px，`pMax` 從 1026px 起封頂固定 16px，`vmp` 字級 token 實際上幾乎用不到。
-12. **未使用的設定**：`config.js` 的 `ws`、`rootDirectory`、`fonts` 欄位目前無程式使用；各 `.env` 的 `VITE_APP_APIPATH` 為空字串、未使用。
+8. **`/portfolio` 子路徑寫死在三處**：`vite.config.js` 的 `base`、`router/index.js` 的 `createWebHistory('/portfolio/')`、`mIcon` 的 sprite 網址。
+9. **`Index.vue` 帶 UTF-8 BOM**：全專案唯一一支。
+10. **桌機字級流體區只有 2px**：`pMin` 為 1024–1025px（其中的 1024 是 `tailwind.config.js` 裡唯一留下的字面數字，與全域骨架相同），`pMax` 從 1026px 起封頂固定 16px，`vmp` 字級 token 實際上幾乎用不到。
+11. **未使用的設定**：`config.js` 的 `ws`、`rootDirectory`、`fonts` 欄位目前無程式使用；各 `.env` 的 `VITE_APP_APIPATH` 為空字串、未使用。
 
 **已處理（原列於本節）**
 
@@ -402,6 +401,7 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 - `og:image` 原本串出雙重 `/portfolio/`；因沒有 1200×630 的分享圖，改為整組不放（分享時為純文字卡）。
 - favicon 路徑確認沒有問題：Vite 建置時會自動加上 base，產物為 `/portfolio/static/img/favicon.ico`。
 - `jsconfig.json` 的 `@container` / `@fonts` 已移除，alias 在 `vite.config.js`、`vitest.config.js`、`jsconfig.json` 三處一致。
+- 斷點門檻集中到 [\_breakpoints.js](src/scripts/_breakpoints.js)；`config.js` 的 `mobileMaxWidth`（門檻的第二份拷貝）、`ieVersion`，以及沒人用的 `notsupport` / `firefox` / `IE` screen 已移除。
 
 ### 聯絡資訊
 網站公開顯示之製作者聯絡方式（屬網站公開內容，非機密）：
@@ -427,13 +427,14 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 | 項目 | 值 | 出處 |
 | --- | --- | --- |
 | dev server 埠 | `2026` | [config.js:2](config.js#L2) |
-| `desktopMinWidth` | `1025` | [config.js:4](config.js#L4) |
-| `mobileMaxWidth` | `740` | [config.js:5](config.js#L5) |
-| `basicMobileWidth` | `375` | [config.js:6](config.js#L6) |
+| 平板起始寬 `TABLET_MIN_WIDTH` | `740` | [\_breakpoints.js:24](src/scripts/_breakpoints.js#L24) |
+| 電腦門檻 `PC_MIN_WIDTH` | `1025` | [\_breakpoints.js:25](src/scripts/_breakpoints.js#L25) |
+| 桌機設計基準寬 `desktopMinWidth` | `1025` | [config.js:5](config.js#L5) |
+| 手機設計基準寬 `basicMobileWidth` | `375` | [config.js:6](config.js#L6) |
 | base 路徑 | `/portfolio/` | [vite.config.js:62](vite.config.js#L62) |
 | 預設 theme | `f2e` | [global.js:5](src/stores/global.js#L5) |
-| 桌機 / 平板每頁筆數 | `14` | [Index.vue:57](src/views/Home/Index.vue#L57) |
-| 手機每頁筆數 | `100` | [Index.vue:57](src/views/Home/Index.vue#L57) |
+| 桌機 / 平板每頁筆數 | `14` | [Index.vue:58](src/views/Home/Index.vue#L58) |
+| 手機每頁筆數 | `100` | [Index.vue:58](src/views/Home/Index.vue#L58) |
 | 正式網址 | `https://brian224.github.io/portfolio/` | [index.html:27](index.html#L27) |
 
 ### theme → 區塊對照

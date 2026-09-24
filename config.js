@@ -1,9 +1,9 @@
 export default {
   port: 2026,
-  ieVersion: 0, // 10 或 0
-  desktopMinWidth: 1025,
-  mobileMaxWidth: 740,
-  basicMobileWidth: 375,
+  // ⚠️ 以下是「設計基準寬」＝ px→vw 字級的分母，不是斷點門檻。
+  //    門檻（幾 px 開始算平板 / 電腦）的單一真值在 src/scripts/_breakpoints.js。
+  desktopMinWidth: 1025, // 桌機設計基準寬（vmp 字級、pMin / pMax 用）
+  basicMobileWidth: 375, // 手機設計基準寬（vmm / vmmls 字級用）
   https: true,
   ws: 'ip',
   // 本案不走容器部署（沒有 src/docker/，改由 GitHub Actions 發布）

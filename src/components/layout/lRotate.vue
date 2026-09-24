@@ -11,12 +11,9 @@
   - `l-lock` 以 `fixed inset-0` 覆蓋全螢幕，顯示提示文字
 - 同時將 `html / body` 字體切換為橫式縮放尺寸（`text-vmmls`）
 
-## 斷點定義（tailwind.config.js）
+## 斷點定義
 
-```
-mLandscape: (max-width: 739px) and (orientation: landscape) and (min-width: 480px)
-          , (max-width: 999px) and (max-height: 428px)
-```
+`mLandscape` 的條件是 `src/scripts/_breakpoints.js` 的 `MQ_ROTATE_LOCK`：窄於平板起始寬的橫向視窗，或矮的視窗。
 
 ## 使用方式
 
