@@ -53,9 +53,8 @@ npm run build
 # 建置（部署環境）
 npm run deploy
 
-# 預覽 deploy 產物（dist/）。--mode 不能省：vite preview 預設 mode 是 production，
-# 本案沒有對應的 .env，輸出目錄會被算成不存在的 production/
-npm run preview -- --mode deploy
+# 預覽 deploy 產物（dist/，要先跑過 npm run deploy）
+npm run preview
 ```
 
 ## 建置輸出

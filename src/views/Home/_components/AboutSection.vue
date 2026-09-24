@@ -132,27 +132,27 @@ const global = globalStore()
               Experience
             </h3>
             <ul
-              class="flex flex-col flex-wrap leading-[1.5em] tracking-[1px] text-[#fff] m:text-[14px] t:text-[12px] pt:h-[6em] p:text-[16px]"
+              class="leading-[1.5em] tracking-[1px] text-[#fff] m:text-[14px] t:text-[12px] pt:columns-2 pt:gap-x-0 p:text-[16px]"
             >
-              <li class="flex items-stretch pt:w-1/2">
+              <li class="flex items-stretch break-inside-avoid">
                 <span class="min-w-[10em]">2015.12~NOW</span><span>方形糖創意數位</span>
               </li>
-              <li class="flex items-stretch pt:w-1/2">
+              <li class="flex items-stretch break-inside-avoid">
                 <span class="min-w-[10em]">2013.04~2015.11</span><span>永慶房產集團</span>
               </li>
-              <li class="flex items-stretch pt:w-1/2">
+              <li class="flex items-stretch break-inside-avoid">
                 <span class="min-w-[10em]">2012.08~2013.03</span><span>安捷達顧問</span>
               </li>
-              <li class="flex items-stretch pt:w-1/2">
+              <li class="flex items-stretch break-inside-avoid">
                 <span class="min-w-[10em]">2012.03~2012.07</span><span>學學文創志業</span>
               </li>
-              <li class="flex items-stretch pt:w-1/2">
+              <li class="flex items-stretch break-inside-avoid">
                 <span class="min-w-[10em]">2009.12~2012.03</span><span>華藝數位</span>
               </li>
-              <li class="flex items-stretch pt:w-1/2">
+              <li class="flex items-stretch break-inside-avoid">
                 <span class="min-w-[10em]">2009.03~2009.07</span><span>玉馬門創意設計</span>
               </li>
-              <li class="flex items-stretch pt:w-1/2">
+              <li class="flex items-stretch break-inside-avoid">
                 <span class="min-w-[10em]">2008.05~2009.01</span><span>詩米亞媒體</span>
               </li>
             </ul>

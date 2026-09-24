@@ -7,7 +7,7 @@
     "dev": "vite --mode dev",
     "deploy": "vite build --mode deploy",
     "build": "vite build --mode build",
-    "preview": "vite preview",
+    "preview": "vite preview --mode deploy",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run",

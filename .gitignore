@@ -1,3 +1,5 @@
 /node_modules
 /build
 /dockerimage
+# 建置產物：CI 每次重新 build 並上傳 ./dist，repo 內不需要一份
+/dist
