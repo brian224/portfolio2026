@@ -51,7 +51,7 @@
 | 改個人資料 / 經歷 / 技能文字 | [§4](#sec4)、[AboutSection.vue](src/views/Home/_components/AboutSection.vue)、[SkillSection.vue](src/views/Home/_components/SkillSection.vue) | 多為寫死在 template 的靜態文字 |
 | 改 RWD / 斷點 | [§4 RWD](#sec4)、[\_breakpoints.js](src/scripts/_breakpoints.js)、[tailwind.config.js](tailwind.config.js#L16-L30) | 斷點用 `(pointer: coarse/fine)` 判斷觸控 / 滑鼠，非單純寬度；hover 樣式一律掛 `p:` 前綴。門檻只改 `_breakpoints.js` 一支，改完要硬重啟 dev server |
 | 改部署 / 環境 | [§5 建置與環境](#sec5)、[§7 環境網域對照](#sec7)、[§8](#sec8) | `npm run deploy` 輸出到 `dist/`（目錄名取自 `.env.deploy` 的 `VITE_APP_MODE`）；CI 部署前會先跑 lint 與測試，任一失敗就不會部署 |
-| 清理剩餘殘留 | [§8 程式碼觀察事項](#sec8) | proxy、LINE LIFF 變數、`deCrypto()` 已清除；剩下未使用的設定與圖片列在 §8 |
+| 清理剩餘殘留 | [§8 程式碼觀察事項](#sec8) | proxy、LINE LIFF 變數、`deCrypto()` 已清除；剩下未使用的設定列在 §8 |
 
 ---
 
@@ -116,7 +116,7 @@ portfolio2026/
 │   │   └── modules/               # mImg（圖片元件）/ mIcon（SVG sprite 圖示）
 │   ├── scripts/                   # _breakpoints.js（斷點單一真值）_crypto.js _env.js _prototype.js（+ __tests__）
 │   ├── assets/css/                # _library.css + _common/framework.css
-│   ├── assets/img/                # shared/（共用）、home/（作品）、about/、skill/、n-sup/
+│   ├── assets/img/                # shared/（共用）、home/（作品）、about/
 │   └── _svg/                      # 9 個 SVG icon（spritemap 來源）
 ├── dist/                          # 建置輸出（已被 commit，見 §8 觀察）
 └── coverage/                      # 測試覆蓋率報告（已被 commit）
@@ -260,7 +260,7 @@ repo 內**無 Figma / 設計流程連結**。設計與決策由製作者（Brian
   - **lazy load**：`IntersectionObserver` 進視窗才換 `src`。
   - **快取破壞**：URL 後接 `?{hashHex(VITE_APP_HASH,8)}`（每次 build 變動）。
   - **找不到圖**：`console.warn` 並回 `shared/blank.svg`。
-  - ⚠️ eager glob 會把 `src/assets/img/` 底下**所有**圖片都打包，沒被引用的圖也會出現在產物裡（見 [§8](#sec8)）。
+  - ⚠️ eager glob 會把 `src/assets/img/` 底下**所有**圖片都打包，沒被引用的圖也會出現在產物裡；停用一張圖時要連檔案一起刪掉。
 - **SVG**：`src/_svg/*.svg` 經 `@spiriit/vite-plugin-svg-spritemap` 合併為 `assets/img/svg/spritemap.svg`，由 [mIcon.vue](src/components/modules/mIcon.vue) 以 `<use href="/portfolio{spritemap}#icon">` 引用。共 9 個 icon（見 [§9](#sec9)）。
 - **建置壓縮**（[plugins/vite-plugin-image-minimizer-sharp.js](plugins/vite-plugin-image-minimizer-sharp.js)，僅 `apply: 'build'`）：JPEG q75 mozjpeg progressive、PNG q80 壓縮等級 9、SVG SVGO multipass（排除 spritemap）。
 
@@ -384,15 +384,13 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 
 1. **`dist/` 與 `coverage/` 已 commit**：[.gitignore](.gitignore) 僅忽略 `/node_modules`、`/build`、`/dockerimage`，故建置產物 `dist/` 與測試報告 `coverage/` 被納入版控。CI 會重新 build 並上傳 `./dist`（[deploy.yml:52](.github/workflows/deploy.yml#L52)），repo 內的 `dist/` 不會被部署使用，且可能與最新原始碼不同步。（ESLint 已忽略 `coverage/`。）
 2. **「專長技能」中的 API 字樣是能力宣告，非本站整合**：[SkillSection.vue:78](src/views/Home/_components/SkillSection.vue#L78) 顯示「Facebook API / LINE LIFF API / Google Maps API」——這是作品集「個人技能」展示文字，**非本 repo 實際串接**，勿誤解為本站使用這些服務。
-3. **未被引用的圖片仍會被打包**：`mImg` 以 eager glob 收集 `src/assets/img/` 下所有檔案，沒被程式引用的圖也會出現在產物裡。目前確認未被引用的有 `shared/profile.png`、`about/photo.gif`、`about/photo.svg`、`skill/skill_bg.png`、`n-sup/` 的三張（chrome / edge / firefox）。作品圖（`home/`）由資料驅動，未逐一比對。
-4. **專長技能區的背景設定沒有對應的背景圖**：`SkillSection` 的 `.skill-wrap` 有 `bg-center bg-no-repeat` 與桌機的 `background-size: 696px auto`，但沒有任何地方設定 `background-image`（原本的 `skill/skill_bg.png` 已停用）。
-5. **`mImg` 的 `lazy=false` 不會載入圖片**：初始 `src` 為 `shared/blank.svg`，只有 IntersectionObserver 那段會換成真實路徑，`lazy=false` 會跳過它。目前全專案沒有傳 `false` 的地方。
-6. **`mIcon` 的 prop 寫成 `require: true`**：正確選項是 `required`，Vue 會忽略不認得的選項，所以 `icon` 實際上不是必填。
-7. **作品列表渲染兩次**：`WorksSection` 在平板 / 桌機用分頁滑軌、手機另有一份完整列表（`pt:hidden`），同一批作品在 DOM 中出現兩次。
-8. **`/portfolio` 子路徑寫死在三處**：`vite.config.js` 的 `base`、`router/index.js` 的 `createWebHistory('/portfolio/')`、`mIcon` 的 sprite 網址。
-9. **`Index.vue` 帶 UTF-8 BOM**：全專案唯一一支。
-10. **桌機字級流體區只有 2px**：`pMin` 為 1024–1025px（其中的 1024 是 `tailwind.config.js` 裡唯一留下的字面數字，與全域骨架相同），`pMax` 從 1026px 起封頂固定 16px，`vmp` 字級 token 實際上幾乎用不到。
-11. **未使用的設定**：`config.js` 的 `ws`、`rootDirectory`、`fonts` 欄位目前無程式使用；各 `.env` 的 `VITE_APP_APIPATH` 為空字串、未使用。
+3. **`mImg` 的 `lazy=false` 不會載入圖片**：初始 `src` 為 `shared/blank.svg`，只有 IntersectionObserver 那段會換成真實路徑，`lazy=false` 會跳過它。目前全專案沒有傳 `false` 的地方。
+4. **`mIcon` 的 prop 寫成 `require: true`**：正確選項是 `required`，Vue 會忽略不認得的選項，所以 `icon` 實際上不是必填。
+5. **作品列表渲染兩次**：`WorksSection` 在平板 / 桌機用分頁滑軌、手機另有一份完整列表（`pt:hidden`），同一批作品在 DOM 中出現兩次。
+6. **`/portfolio` 子路徑寫死在三處**：`vite.config.js` 的 `base`、`router/index.js` 的 `createWebHistory('/portfolio/')`、`mIcon` 的 sprite 網址。
+7. **`Index.vue` 帶 UTF-8 BOM**：全專案唯一一支。
+8. **桌機字級流體區只有 2px**：`pMin` 為 1024–1025px（其中的 1024 是 `tailwind.config.js` 裡唯一留下的字面數字，與全域骨架相同），`pMax` 從 1026px 起封頂固定 16px，`vmp` 字級 token 實際上幾乎用不到。
+9. **未使用的設定**：`config.js` 的 `ws`、`rootDirectory`、`fonts` 欄位目前無程式使用；各 `.env` 的 `VITE_APP_APIPATH` 為空字串、未使用。
 
 **已處理（原列於本節）**
 
@@ -402,6 +400,8 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 - favicon 路徑確認沒有問題：Vite 建置時會自動加上 base，產物為 `/portfolio/static/img/favicon.ico`。
 - `jsconfig.json` 的 `@container` / `@fonts` 已移除，alias 在 `vite.config.js`、`vitest.config.js`、`jsconfig.json` 三處一致。
 - 斷點門檻集中到 [\_breakpoints.js](src/scripts/_breakpoints.js)；`config.js` 的 `mobileMaxWidth`（門檻的第二份拷貝）、`ieVersion`，以及沒人用的 `notsupport` / `firefox` / `IE` screen 已移除。
+- 未被引用的 7 張圖已刪除：`shared/profile.png`、`about/photo.gif`、`about/photo.svg`、`skill/skill_bg.png`、`n-sup/` 三張（chrome / edge / firefox）。`n-sup/` 是起始範本帶進來的「不支援瀏覽器提示」圖示，本專案沒有實作該提示。作品圖（`home/`）由資料驅動，未逐一比對。
+- 專長技能區沒有背景圖的背景設定（`skill-wrap`、`bg-center`、`bg-no-repeat`、桌機的 `background-size`）已移除。
 
 ### 聯絡資訊
 網站公開顯示之製作者聯絡方式（屬網站公開內容，非機密）：

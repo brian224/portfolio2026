@@ -28,7 +28,7 @@ const global = globalStore()
         <span>專長技能</span>
       </h2>
       <div
-        class="skill-wrap flex items-start justify-center bg-center bg-no-repeat m:flex-col m:px-[20px] t:mt-[32px] t:w-[810px] t:px-[26px] p:mt-[48px] p:w-[990px]"
+        class="flex items-start justify-center m:flex-col m:px-[20px] t:mt-[32px] t:w-[810px] t:px-[26px] p:mt-[48px] p:w-[990px]"
       >
         <ul class="m:mt-[20px] m:flex m:w-full m:flex-wrap t:mr-[20px] pt:w-1/2 p:mr-[30px]">
           <li class="flex items-center justify-center m:w-full tm:mb-[10px] p:mb-[15px]">
@@ -192,11 +192,3 @@ const global = globalStore()
     </div>
   </Transition>
 </template>
-
-<style lang="postcss">
-@screen p {
-  .skill-wrap {
-    background-size: 696px auto;
-  }
-}
-</style>
