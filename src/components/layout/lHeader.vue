@@ -1,11 +1,3 @@
-<script setup>
-import ImgSrc from '@components/ImgSrc.vue'
-
-import { globalStore } from '@stores/global.js'
-
-const global = globalStore()
-</script>
-
 <spec lang="md">
 # lHeader
 
@@ -15,7 +7,7 @@ const global = globalStore()
 
 ```
 header.l-header
-  ├── h1.logo        Logo 圖片（ImgSrc）
+  ├── h1.logo        Logo 圖片（mImg）
   └── nav
         └── ul.menu
               ├── 01. [設計作品]  → changeTheme('f2e')
@@ -32,7 +24,7 @@ header.l-header
 | 項目          | 說明                                                                             |
 | ------------- | -------------------------------------------------------------------------------- |
 | `globalStore` | 呼叫 `changeTheme(theme)` 切換目前顯示區塊，並掛載 `.curr` 至對應的 `.menu-link` |
-| `ImgSrc`      | 響應式圖片元件，載入 `common/logo.png`                                           |
+| `mImg`        | 響應式圖片元件，載入 `shared/logo.png`                                           |
 
 ## 選取狀態
 
@@ -48,14 +40,22 @@ header.l-header
 | 桌機（`p:`） | 189px | `absolute`，距底部 20px |
 </spec>
 
+<script setup>
+import mImg from '@components/modules/mImg.vue'
+
+import { globalStore } from '@stores/global.js'
+
+const global = globalStore()
+</script>
+
 <template>
   <header
     class="l-header show z-[3] w-full flex-col items-center justify-start bg-repeat-x m:fixed m:bottom-[24px] m:h-[63px] m:bg-[#5894DD] t:bottom-[24px] t:h-[126px] pt:absolute p:bottom-[20px] p:h-[189px]"
   >
     <h1 class="logo pointer-events-none z-[1] m:relative">
       <em class="sr-only">Brian Lin 作品集</em>
-      <ImgSrc
-        src="common/logo.png"
+      <mImg
+        src="shared/logo.png"
         alt="Brian Lin 作品集"
         :setClass="{
           main: 'flex-shrink-0 p:w-[688px] t:w-[458px] m:w-[229px] p:h-[291px] t:h-[194px] m:h-[97px] p:mt-[-9px] t:mt-[-6px] m:mt-[-3px]',
@@ -73,7 +73,7 @@ header.l-header
             @click="global.changeTheme('f2e')"
           >
             01.
-            <span class="tracking-[3px] text-[#fff] transition-all duration-300 ease-in-out"
+            <span class="tracking-[3px] text-[#fff] transition-colors duration-300 ease-in-out"
               >[過往作品]</span
             >
           </button>
@@ -85,7 +85,7 @@ header.l-header
             @click="global.changeTheme('about')"
           >
             02.
-            <span class="tracking-[3px] text-[#fff] transition-all duration-300 ease-in-out"
+            <span class="tracking-[3px] text-[#fff] transition-colors duration-300 ease-in-out"
               >[關於我]</span
             >
           </button>
@@ -97,7 +97,7 @@ header.l-header
             @click="global.changeTheme('skill')"
           >
             03.
-            <span class="tracking-[3px] text-[#fff] transition-all duration-300 ease-in-out"
+            <span class="tracking-[3px] text-[#fff] transition-colors duration-300 ease-in-out"
               >[專長技能]</span
             >
           </button>
@@ -109,7 +109,7 @@ header.l-header
 
 <style lang="postcss">
 .l-header {
-  background-image: url('@imgs/common/bg-header-p.png');
+  background-image: url('@imgs/shared/bg-header-p.png');
   background-size: auto 100%;
 
   &.show {
@@ -121,14 +121,23 @@ header.l-header
   &.curr {
     @apply pointer-events-none;
 
-    span,
-    &:hover span {
+    span {
       @apply text-[#ff0];
     }
   }
+}
 
-  &:hover span {
-    @apply text-[#accaee];
+/* hover 只給真滑鼠：p 的 MQ 已含 (pointer: fine)，觸控裝置不會留下黏住的 hover 態。
+   目前分頁的 .curr 樣式與 hover 無關，必須留在上面那段，否則平板看不出目前在哪一頁。 */
+@screen p {
+  .menu-link {
+    &:hover span {
+      @apply text-[#accaee];
+    }
+
+    &.curr:hover span {
+      @apply text-[#ff0];
+    }
   }
 }
 </style>

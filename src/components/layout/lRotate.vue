@@ -1,5 +1,3 @@
-<script setup></script>
-
 <spec lang="md">
 # lRotate
 
@@ -25,6 +23,8 @@ mLandscape: (max-width: 739px) and (orientation: landscape) and (min-width: 480p
 在 `App.vue` 根層級放置一次，不需傳入任何 props。
 `Rotate` 須置於 `l-wrap` 之外，確保橫置時隱藏主內容後遮罩仍可顯示。
 </spec>
+
+<script setup></script>
 
 <template>
   <div class="l-lock">

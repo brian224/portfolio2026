@@ -8,6 +8,8 @@
     "deploy": "vite build --mode deploy",
     "build": "vite build --mode build",
     "preview": "vite preview",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage"
   },

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { deCrypto, enCrypto, hashHex } from '../_crypto'
+import { enCrypto, hashHex } from '../_crypto'
 
 describe('enCrypto', () => {
   it('字串加密後應為大寫十六進位', () => {
@@ -11,20 +11,6 @@ describe('enCrypto', () => {
   it('物件應先序列化再加密', () => {
     const result = enCrypto({ name: 'Brian' })
     expect(result).toMatch(/^[0-9A-F]+$/)
-  })
-})
-
-describe('deCrypto', () => {
-  it('加密後應可還原為原始字串', () => {
-    const original = 'hello world'
-    const encrypted = enCrypto(original)
-    expect(deCrypto(encrypted)).toBe(original)
-  })
-
-  it('物件加密後應可還原為原始物件', () => {
-    const original = { name: 'Brian', age: 30 }
-    const encrypted = enCrypto(original)
-    expect(deCrypto(encrypted)).toEqual(original)
   })
 })
 

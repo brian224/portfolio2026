@@ -12,19 +12,9 @@ import { viteStaticCopy } from 'vite-plugin-static-copy'
 import VueDevTools from 'vite-plugin-vue-devtools'
 
 import { imageMinimizerSharpPlugin } from './plugins/vite-plugin-image-minimizer-sharp'
+import { vueSpecPlugin } from './plugins/vue-spec-plugin'
 
 const SPRITEMAP_ROUTE_URL = `/${CONFIG.imgs}/svg/spritemap.svg`
-
-function ignoreSpecBlock() {
-  return {
-    name: 'ignore-spec-block',
-    transform(code, id) {
-      if (id.includes('?vue&type=spec')) {
-        return { code: 'export default {}' }
-      }
-    },
-  }
-}
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -73,7 +63,7 @@ export default defineConfig(({ mode }) => {
     cacheDir: 'node_modules/.vite',
     plugins: [
       vue(),
-      ignoreSpecBlock(),
+      vueSpecPlugin(),
       basicSsl(),
       viteStaticCopy({
         targets: [
@@ -175,8 +165,9 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: undefined,
-          // entryFileNames: `${CONFIG.js}/[name].js`,
-          // chunkFileNames: `${CONFIG.js}/[name].js`,
+          // 保留 [hash]：本案沒有替 index.html 資產加 ?v= 的 plugin，檔名 hash 是 JS 唯一的破快取手段
+          entryFileNames: `${CONFIG.js}/[name]-[hash].js`,
+          chunkFileNames: `${CONFIG.js}/[name]-[hash].js`,
           assetFileNames: (assetInfo) => {
             const { name } = assetInfo
             if (!name) return `${CONFIG.imgs}/[name][extname]`
@@ -201,8 +192,8 @@ export default defineConfig(({ mode }) => {
               return `${CONFIG.css}/[name].[hash][extname]`
               // return `${CONFIG.css}/[name].[extname]`
             } else if (/\.(woff|woff2|eot|ttf|otf)$/i.test(name)) {
-              return `${CONFIG.fonts}/[name].[hash][extname]`
-              // return `${CONFIG.fonts}/[name].[extname]`
+              // 產物層是單數 assets/font/；CONFIG.fonts（assets/fonts）指的是 src 下的來源資料夾
+              return `assets/font/[name].[hash][extname]`
             }
             return `${CONFIG.imgs}/[name][extname]`
           },

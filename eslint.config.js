@@ -6,8 +6,8 @@ import plugPrettier from '@vue/eslint-config-prettier'
 export default [
   // 忽略範圍
   {
-    // 忽略編譯後的檔案和型別定義檔
-    ignores: ['dist/**', 'build/**', 'types/**'],
+    // 忽略編譯後的檔案、覆蓋率報告和型別定義檔
+    ignores: ['dist/**', 'build/**', 'coverage/**', 'types/**'],
   },
 
   // JS 基礎規則
@@ -30,6 +30,8 @@ export default [
     rules: {
       // 元件不需要使用兩個以上單字命名
       'vue/multi-word-component-names': 'off',
+      // SFC 區塊順序：spec（元件說明）一律排最前，再 script / template / style
+      'vue/block-order': ['error', { order: ['spec', 'script', 'template', 'style'] }],
     },
   },
 

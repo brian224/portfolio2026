@@ -1,17 +1,47 @@
+<spec lang="md">
+# mImg
+
+圖片元件。專案內的圖片一律走這支，不直接寫原生 img 標籤（全域 hook `enforce-img-component` 會擋）。
+
+## Props
+
+| prop       | 型別             | 預設 | 說明                                                         |
+| ---------- | ---------------- | ---- | ------------------------------------------------------------ |
+| `src`      | String / Object  | 必填 | 相對於 `src/assets/img/` 的路徑；要手機版圖時見下方「手機圖」 |
+| `alt`      | String           | null | 有給時會在後面接上網站標題（`VITE_APP_TITLE`）               |
+| `lazy`     | Boolean          | true | 進入視窗才寫入真實路徑                                       |
+| `setClass` | Object           | {}   | `{ main, img }`：`main` 掛在外層 figure，`img` 掛在圖片本身  |
+
+## 路徑解析
+
+- 本地圖：以 `import.meta.glob` 預先收集 `src/assets/img/` 下所有圖片；找不到時 console.warn 並改用 `shared/blank.svg`
+- 破快取：本地圖網址加 `?{hash}`（種子 `VITE_APP_HASH`，每次建置不同）；外部 http 網址改用檔名算 hash
+- `data:` / `blob:` 原樣使用
+
+## 手機圖
+
+`src` 傳 `{ p, m }` 物件，或在字串後加 `?m=1`（手機圖檔名自動在副檔名前插 `_m`）。
+切換條件是 `(max-width: 428px)`。
+
+## 載入
+
+- 初始 src 是 `shared/blank.svg`，IntersectionObserver 偵測進入視窗後才換成真實路徑，另加原生 `loading="lazy"`
+- 載入失敗（`@error`）時整個換成 404 佔位，顯示 mIcon 的 `image_404`
+</spec>
+
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 
-import blankUrl from '@imgs/common/blank.svg'
+import blankUrl from '@imgs/shared/blank.svg'
 
 import { hashHex } from '@js/_crypto.js'
 import { ENV } from '@js/_env.js'
-import CONFIG from '/config.js'
 
-// ✅ 用字面字串，固定抓 assets/img
+// import.meta.glob 只吃字面字串（建置期靜態分析），不能用變數組路徑
 const MAP = import.meta.glob('/src/assets/img/**/*', { eager: true, import: 'default' })
 
-// 將相對檔名（相對於 CONFIG.imgs = 'assets/img'）轉成 glob key
-const toKey = (p) => `/src/${CONFIG.imgs}/${p}`
+// 相對檔名 → glob key。前綴必須與上面那行字面一致，所以同樣寫死，不從 config.js 取
+const toKey = (p) => `/src/assets/img/${p}`
 
 // 依照你的需求：回傳 URL + ?[hash]（用 VITE_APP_HASH）
 const bust = (url) => `${url}?${hashHex(import.meta.env.VITE_APP_HASH, 8)}`
@@ -33,7 +63,7 @@ const resolveBundledImg = (raw) => {
   const hit = MAP[toKey(raw)]
   if (hit) return bust(hit)
 
-  console.warn('[ImgSrc] not found:', toKey(raw))
+  console.warn('[mImg] not found:', toKey(raw))
   return blankUrl // 找不到就用佔位圖
 }
 
@@ -115,7 +145,7 @@ onMounted(() => onLazy())
 </script>
 
 <template>
-  <component :is="as" class="m-figure" :class="setClass.main, status === 200 ? '' : 'is-loading'" v-if="status === 200">
+  <component :is="as" class="m-figure" :class="setClass.main" v-if="status === 200">
     <picture v-if="mobilePath && hasMobile">
       <source :srcset="mobilePath" media="(max-width: 428px)" />
       <img
@@ -141,7 +171,7 @@ onMounted(() => onLazy())
 
   <div class="m-figure" :class="setClass.main" v-else>
     <div class="m-figure-error relative z-[1] flex items-center justify-center">
-      <SvgIcon class="m:h-[36px] m:w-[36px] pt:h-[54px] pt:w-[54px]" icon="image_404" />
+      <mIcon class="m:h-[36px] m:w-[36px] pt:h-[54px] pt:w-[54px]" icon="image_404" />
     </div>
   </div>
 </template>
@@ -149,24 +179,5 @@ onMounted(() => onLazy())
 <style lang="postcss">
 .m-figure {
   @apply relative;
-
-  &.is-loading::before {
-    animation: loading 0.75s 0s linear infinite;
-    @apply absolute left-1/2 top-1/2 z-[0] ml-[-12px] mt-[-12px] h-[24px] w-[24px] rounded-full border-[2px] border-solid border-[#fff] border-b-transparent bg-transparent content-default;
-  }
-}
-
-@keyframes loading {
-  0% {
-    transform: rotate(0deg) scale(1);
-  }
-
-  50% {
-    transform: rotate(180deg) scale(0.6);
-  }
-
-  100% {
-    transform: rotate(360deg) scale(1);
-  }
 }
 </style>

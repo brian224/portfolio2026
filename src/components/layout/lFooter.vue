@@ -1,5 +1,3 @@
-<script setup></script>
-
 <spec lang="md">
 # lFooter
 
@@ -21,6 +19,8 @@
 
 `z-[4]`，高於 `lHeader`（`z-[3]`），確保手機版頁尾不被頁首蓋住。
 </spec>
+
+<script setup></script>
 
 <template>
   <footer

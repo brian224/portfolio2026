@@ -1,22 +1,3 @@
-<script setup>
-import Footer from '@components/Layout/lFooter.vue'
-import Header from '@components/Layout/lHeader.vue'
-import Rotate from '@components/Layout/lRotate.vue'
-
-import { onBeforeMount, onMounted, provide } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-
-const route = useRoute()
-const router = useRouter()
-
-provide('route', route)
-provide('router', router)
-
-onBeforeMount(() => {})
-
-onMounted(() => {})
-</script>
-
 <spec lang="md">
 # App.vue
 
@@ -50,6 +31,25 @@ Rotate                   lRotate — 手機橫置遮罩（獨立於 l-wrap 之�
 | 平板（`t:`） | 固定 640px                       |
 | 桌機（`p:`） | 固定 960px                       |
 </spec>
+
+<script setup>
+import Footer from '@components/layout/lFooter.vue'
+import Header from '@components/layout/lHeader.vue'
+import Rotate from '@components/layout/lRotate.vue'
+
+import { onBeforeMount, onMounted, provide } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
+
+provide('route', route)
+provide('router', router)
+
+onBeforeMount(() => {})
+
+onMounted(() => {})
+</script>
 
 <template>
   <div

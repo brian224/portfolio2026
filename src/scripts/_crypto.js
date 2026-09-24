@@ -13,19 +13,7 @@ export const enCrypto = (string) => {
   return encrypted.ciphertext.toString().toUpperCase()
 }
 
-export const deCrypto = (string) => {
-  const encryptedHexStr = CryptoJS.enc.Hex.parse(string)
-  const srcs = CryptoJS.enc.Base64.stringify(encryptedHexStr)
-  const decrypt = CryptoJS.AES.decrypt(srcs, KEY, {
-    iv: IV,
-    mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7,
-  })
-  const decryptedStr = decrypt.toString(CryptoJS.enc.Utf8)
-  const decryptContent = decryptedStr.toString()
-  return /^({|\[).*(}|\])$/.test(decryptContent) ? JSON.parse(decryptContent) : decryptContent
-}
-
+/** 產生資產破快取用的短 hash（mImg 的 ?v= 與 vite.config 共用同一支） */
 export const hashHex = (string, length) => {
   return enCrypto(string).toLocaleLowerCase().split('').reverse().join('').slice(0, length)
 }
