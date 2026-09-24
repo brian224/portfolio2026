@@ -8,7 +8,7 @@
 
 - 平板 / 桌機：顯示第 `currentDetailIndex` 張；右側書籤列切換圖片編號，BACK 回作品列表
 - 手機：所有截圖依序直向排開，書籤列不顯示
-- 截圖路徑：`home/{CaseType}/detail/{CaseType}{CaseID}_0{n}.png`
+- 截圖路徑：`home/WorkDetail/{CaseType}/{CaseType}{CaseID}_0{n}.png`（`n` 從 1 到 `PhotoCount`，檔案數要與 `PhotoCount` 一致）
 
 ## 連結
 
@@ -44,7 +44,7 @@ const { currentPage, currentIndex, currentDetailIndex, caseGroups } = inject('wo
               class="relative flex h-full w-full flex-col justify-center m:mb-[10px] pt:items-center"
             >
               <mImg
-                :src="`home/${caseGroups[currentPage][currentIndex].CaseType}/detail/${caseGroups[currentPage][currentIndex].CaseType}${caseGroups[currentPage][currentIndex].CaseID}_0${currentDetailIndex}.png`"
+                :src="`home/WorkDetail/${caseGroups[currentPage][currentIndex].CaseType}/${caseGroups[currentPage][currentIndex].CaseType}${caseGroups[currentPage][currentIndex].CaseID}_0${currentDetailIndex}.png`"
                 :alt="`${caseGroups[currentPage][currentIndex].webDesc}`"
                 :setClass="{
                   main: 'flex-shrink-0 flex items-center justify-center p:h-[544px] p:w-[835px] t:h-[334px] t:w-[556px] m:hidden',
@@ -53,7 +53,7 @@ const { currentPage, currentIndex, currentDetailIndex, caseGroups } = inject('wo
                 v-if="caseGroups[currentPage][currentIndex]"
               />
               <mImg
-                :src="`home/${caseGroups[currentPage][currentIndex].CaseType}/detail/${caseGroups[currentPage][currentIndex].CaseType}${caseGroups[currentPage][currentIndex].CaseID}_0${index}.png`"
+                :src="`home/WorkDetail/${caseGroups[currentPage][currentIndex].CaseType}/${caseGroups[currentPage][currentIndex].CaseType}${caseGroups[currentPage][currentIndex].CaseID}_0${index}.png`"
                 :alt="`${caseGroups[currentPage][currentIndex].webDesc}`"
                 :setClass="{
                   main: 'm:wrap-shadow m:mb-[3px] flex-shrink-0 flex items-center justify-center m:w-full pt:hidden border-solid border-[#98cbe1] bg-[#4e5ca5] m:border-[3px]',

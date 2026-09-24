@@ -1,20 +1,29 @@
 import CONFIG from './config.js'
 
-import { existsSync } from 'node:fs'
 import { fileURLToPath, URL } from 'node:url'
 import path from 'path'
 
 import VitePluginSvgSpritemap from '@spiriit/vite-plugin-svg-spritemap'
 import basicSsl from '@vitejs/plugin-basic-ssl'
 import vue from '@vitejs/plugin-vue'
+import browserslistToEsbuild from 'browserslist-to-esbuild'
 import { defineConfig, loadEnv } from 'vite'
-import { viteStaticCopy } from 'vite-plugin-static-copy'
 import VueDevTools from 'vite-plugin-vue-devtools'
 
 import { imageMinimizerSharpPlugin } from './plugins/vite-plugin-image-minimizer-sharp'
 import { vueSpecPlugin } from './plugins/vue-spec-plugin'
+// 破快取的雜湊必須與 mImg 的 bust() 用同一支，否則同一顆種子會產出兩種值。
+// 它只依賴 crypto-js、沒有瀏覽器 API，在 Node 端 import 是安全的
+import { hashHex } from './src/scripts/_crypto.js'
 
-const SPRITEMAP_ROUTE_URL = `/${CONFIG.imgs}/svg/spritemap.svg`
+/** spritemap 在產物內的路徑（由 sprite plugin 的 output.filename 決定，不走 assetFileNames） */
+const SPRITEMAP_FILE = `${CONFIG.imgs}/svg/spritemap.svg`
+
+/** dev 用：sprite plugin 以這個 URL 掛一條 route，必須是絕對路徑 */
+const SPRITEMAP_ROUTE_URL = `/${SPRITEMAP_FILE}`
+
+/** build 用：從 JS 產物所在目錄（CONFIG.js）換算到 spritemap 的相對路徑，mIcon 再以 import.meta.url 解析 */
+const SPRITEMAP_REL = path.posix.relative(CONFIG.js, SPRITEMAP_FILE)
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -27,6 +36,10 @@ export default defineConfig(({ mode }) => {
     VITE_APP_HASH: `SUGARFUN_${process.pid}_${process.ppid}_${+new Date()}`,
     VITE_APP_MODE: appMode,
   }
+
+  // index.html 與 CSS 的 ?v= 破快取戳記。沿用 VITE_APP_HASH 當種子、用與 mImg 相同的 hashHex(seed, 8)，
+  // 兩邊才會是同一個值（另造一顆就變成第二份真值）
+  const ASSET_HASH = hashHex(process.env.VITE_APP_HASH, 8)
 
   /**
    * 自動替換代理路徑中的環境變數
@@ -59,28 +72,15 @@ export default defineConfig(({ mode }) => {
   }
 
   return {
-    base: '/portfolio/',
+    // 部署子目錄（/portfolio）由 .env 的 VITE_APP_ROUTEPATH 交給 router 處理，base 維持 '/'，
+    // 資產路徑再由下方兩支 relative-* plugin 與 renderBuiltUrl 轉成相對路徑，產物不綁死在子目錄名稱上。
+    // ⚠️ 不要把子目錄改寫進 base：base 與 ROUTEPATH 兩個都設時，router 剝掉 base 後比不到任何 route，會落到 catch-all
+    base: '/',
     cacheDir: 'node_modules/.vite',
     plugins: [
       vue(),
       vueSpecPlugin(),
       basicSsl(),
-      viteStaticCopy({
-        targets: [
-          ...(CONFIG.docker && appMode !== 'dev'
-            ? [
-                ...(existsSync(path.resolve(process.cwd(), `./src/docker/${appMode}`))
-                  ? [
-                      {
-                        src: `./src/docker/${appMode}/[!.]*`,
-                        dest: './',
-                      },
-                    ]
-                  : []),
-              ]
-            : []),
-        ],
-      }),
       VitePluginSvgSpritemap(`./src/${CONFIG.svg}/*.svg`, {
         prefix: '',
         svgo: false,
@@ -135,6 +135,47 @@ export default defineConfig(({ mode }) => {
           },
         ],
       }),
+      // build / deploy：index.html 的 script / link 由「開頭斜線的絕對路徑」改成相對路徑 + ?v= 破快取。
+      // index.html 輸出在產物根層，所以相對路徑 = 去掉開頭斜線。
+      // ⚠️ 前綴白名單必須含 rollupOptions.output 產出的每個頂層目錄（scripts / assets）與 public 的 static，
+      //    少一個，那個目錄的檔案就會留著絕對路徑、也不帶 ?v=。
+      // ⚠️ 只改「開頭緊接斜線」的形式：og:url / canonical / JSON-LD 是帶網域的絕對網址，不可一起改
+      // ⚠️ JS（CONFIG.js 目錄）只轉相對、不加 ?v=：路由是動態 import，Index chunk 會回頭 import 入口
+      //    `./index-[hash].js`（不帶 query）。入口若以 `?v=` 載入，瀏覽器視為兩個不同的模組 → 入口執行兩次、
+      //    app 掛載兩次。JS 檔名已帶 [hash]，破快取不需要 ?v=
+      {
+        name: 'sugarfun:relative-html-assets',
+        apply: 'build',
+        enforce: 'post',
+        transformIndexHtml(html) {
+          return html.replace(
+            new RegExp(`(src|href)="\\/((?:${CONFIG.js}|assets|static)\\/[^"]+?)"`, 'g'),
+            (_m, attr, target) =>
+              target.startsWith(`${CONFIG.js}/`)
+                ? `${attr}="${target}"`
+                : `${attr}="${target}?v=${ASSET_HASH}"`
+          )
+        },
+      },
+      // build / deploy：CSS 內的 url() 以「該 CSS 產物自身所在目錄」換算相對路徑（assets/css/ → ../img/…），
+      // 不能硬去掉開頭前綴，否則會解析成 assets/css/img/… 而 404。
+      // regex 要求開頭斜線，data: URI 與 url(#id) 自然不會命中
+      {
+        name: 'sugarfun:relative-css-assets',
+        apply: 'build',
+        enforce: 'post',
+        generateBundle(_options, bundle) {
+          for (const file of Object.values(bundle)) {
+            if (file.type !== 'asset' || !file.fileName.endsWith('.css')) continue
+            if (typeof file.source !== 'string') continue
+            const from = path.posix.dirname(file.fileName)
+            file.source = file.source.replace(
+              new RegExp(`url\\(('|"|)\\/((?:${CONFIG.js}|assets|static)\\/[^)'"]+)\\1\\)`, 'g'),
+              (_m, q, target) => `url(${q}${path.posix.relative(from, target)}?v=${ASSET_HASH}${q})`
+            )
+          }
+        },
+      },
       VueDevTools(),
     ],
     resolve: {
@@ -149,8 +190,20 @@ export default defineConfig(({ mode }) => {
         '@js': path.resolve(process.cwd(), `src/${CONFIG.js}`),
       },
     },
+    experimental: {
+      // 打包 JS 內的資產 URL（import 的圖、mImg 的 import.meta.glob）也改成相對：
+      // 產出 new URL('../assets/…', import.meta.url)，以 JS 檔自身位址為基準。上面兩支 plugin 只管 index.html 與 CSS，管不到這一類。
+      // spritemap 不經過這裡（它是 define 注入的字串，不是 Vite 資產），見下方 define
+      renderBuiltUrl(filename, { hostType }) {
+        if (hostType === 'js') return { relative: true }
+
+        return undefined
+      },
+    },
     define: {
-      __SPRITEMAP_URL__: JSON.stringify(SPRITEMAP_ROUTE_URL),
+      // dev 與 build 必須是兩種值：dev 是 sprite plugin 掛的 route（必須絕對），build 是相對路徑。
+      // 這裡只能注入字串（esbuild 的 define 不接受 new URL(…) 運算式），由 mIcon 以 import.meta.url 解析
+      __SPRITEMAP_URL__: JSON.stringify(appMode === 'dev' ? SPRITEMAP_ROUTE_URL : SPRITEMAP_REL),
     },
     esbuild: {
       drop: appMode === 'build' ? ['console', 'debugger'] : ['debugger'],
@@ -161,11 +214,14 @@ export default defineConfig(({ mode }) => {
         return !/\.(woff|woff2|eot|ttf|otf|png|jpe?g|gif|svg|webp)$/i.test(filePath)
       },
       minify: true,
+      // JS 轉譯底線跟隨 .browserslistrc（與 autoprefixer 的 CSS 前綴吃同一份）
+      target: browserslistToEsbuild(),
       outDir: path.join(__dirname, appMode),
       rollupOptions: {
         output: {
           manualChunks: undefined,
-          // 保留 [hash]：本案沒有替 index.html 資產加 ?v= 的 plugin，檔名 hash 是 JS 唯一的破快取手段
+          // 保留 [hash]：這是 JS 唯一的破快取手段 —— relative-html-assets 刻意不替 JS 加 ?v=（理由見該 plugin），
+          // 動態 import 的 chunk 也不經過 index.html
           entryFileNames: `${CONFIG.js}/[name]-[hash].js`,
           chunkFileNames: `${CONFIG.js}/[name]-[hash].js`,
           assetFileNames: (assetInfo) => {
@@ -192,7 +248,6 @@ export default defineConfig(({ mode }) => {
               return `${CONFIG.css}/[name].[hash][extname]`
               // return `${CONFIG.css}/[name].[extname]`
             } else if (/\.(woff|woff2|eot|ttf|otf)$/i.test(name)) {
-              // 產物層是單數 assets/font/；CONFIG.fonts（assets/fonts）指的是 src 下的來源資料夾
               return `assets/font/[name].[hash][extname]`
             }
             return `${CONFIG.imgs}/[name][extname]`

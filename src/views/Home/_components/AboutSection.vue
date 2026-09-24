@@ -36,7 +36,7 @@ const global = globalStore()
           <ul class="m:relative m:flex m:flex-col m:items-center m:pt-[32px] tm:mt-[5px]">
             <li class="flex m:justify-center pt:justify-end">
               <mImg
-                src="about/photo.png"
+                src="home/AboutSection/photo.png"
                 alt="Brian Lin`s photo"
                 :setClass="{
                   main: 'tm:w-[133px] p:w-[200px] m:h-[133px] m:rounded-full overflow-hidden m:bg-[#fff]',

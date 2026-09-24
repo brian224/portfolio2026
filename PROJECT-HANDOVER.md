@@ -6,12 +6,12 @@
 | 執行 / 製作 | Brian Lin（前端工程師；任職 方形糖創意數位 Sugarfun，來源 [index.html](index.html#L57-L60) JSON-LD `worksFor`）|
 | 前端技術 | Vue 3.5（Composition API）+ Vite 7 + Pinia 2 + Vue Router 4 + Tailwind CSS 3 + PostCSS + crypto-js |
 | 後端技術 | 無（純前端靜態網站，部署於 GitHub Pages）|
-| 平台 / 環境 | 手機 / 平板 / 桌機 RWD 單頁式網站（SPA）；base 路徑 `/portfolio/`（[vite.config.js:62](vite.config.js#L62)）|
+| 平台 / 環境 | 手機 / 平板 / 桌機 RWD 單頁式網站（SPA）；部署在 `/portfolio/` 子目錄，由 `.env` 的 `VITE_APP_ROUTEPATH` 決定，vite `base` 為 `/`（[vite.config.js:78](vite.config.js#L78)）|
 | 文件產生日 | 2026-06-11 |
 
 > **文件用途**：當散落文件找不到、原始製作者已聯絡不上時，這份說明書能讓人快速掌握本專案用什麼技術、如何與使用者互動、前端如何組裝。內容皆取自原始碼，未加臆測；無法從程式碼確認者明確標示「需向相關人員確認」。
 
-> **機密遮罩聲明**：本文件不收錄任何真實機密。本專案無 DB／後台／API key；唯一硬編碼的加解密 KEY/IV 位於 [src/scripts/_crypto.js](src/scripts/_crypto.js#L3-L4)，僅用於非敏感的圖片快取破壞雜湊（見 [§8](#sec8)），文件中以 `<已遮罩>` 呈現並僅標示位置。
+> **機密遮罩聲明**：本文件不收錄任何真實機密。本專案無 DB／後台／API key；唯一硬編碼的加解密 KEY/IV 位於 [src/scripts/_crypto.js](src/scripts/_crypto.js#L3-L4)，僅用於非敏感的資產快取破壞雜湊（圖片、CSS、favicon 網址上的 `?hash` / `?v=`，見 [§8](#sec8)），文件中以 `<已遮罩>` 呈現並僅標示位置。
 
 > **本專案性質提醒**：這是一個**純前端、無後端、無資料庫、無行銷追蹤、無表單留資**的個人作品集網站。範本中針對「活動網站」設計的章節（後端、前後端配合、追蹤碼、活動辦法、報表）在本專案多數為「不適用」，但仍保留章節骨架並逐一註明，方便日後若擴充時對照。
 
@@ -46,12 +46,12 @@
 ### 前端接手任務索引
 | 我要處理的任務 | 優先查看 | 風險提醒 |
 | --- | --- | --- |
-| 改 / 新增作品（縮圖、連結、燈箱張數）| [§3 網站地圖](#sec3)、[§5 核心互動](#sec5)、[§9 對照表](#sec9) | 作品資料寫死在 [\_data/works.js](src/views/Home/_data/works.js#L14-L1222) 的 `datas` 陣列；圖片需依命名規則放到 `src/assets/img/home/...`，否則會顯示 404 佔位圖 |
+| 改 / 新增作品（縮圖、連結、燈箱張數）| [§3 網站地圖](#sec3)、[§5 核心互動](#sec5)、[§9 對照表](#sec9) | 作品資料寫死在 [\_data/works.js](src/views/Home/_data/works.js#L14-L1222) 的 `datas` 陣列；圖片需依命名規則放到 `src/assets/img/home/...`，否則該格為空白（`shared/blank.svg`）並在 console 出 `[mImg] not found` 警告；`image_404` 佔位圖只在圖檔載入失敗（`@error`）時出現 |
 | 改三大區塊切換 / 動線 | [§3](#sec3)、[§5 狀態管理](#sec5) | 區塊切換不是路由，而是 `globalStore.theme`；改錯會影響 `sessionStorage` 還原 |
 | 改個人資料 / 經歷 / 技能文字 | [§4](#sec4)、[AboutSection.vue](src/views/Home/_components/AboutSection.vue)、[SkillSection.vue](src/views/Home/_components/SkillSection.vue) | 多為寫死在 template 的靜態文字 |
 | 改 RWD / 斷點 | [§4 RWD](#sec4)、[\_breakpoints.js](src/scripts/_breakpoints.js)、[tailwind.config.js](tailwind.config.js#L16-L30) | 斷點用 `(pointer: coarse/fine)` 判斷觸控 / 滑鼠，非單純寬度；hover 樣式一律掛 `p:` 前綴。門檻只改 `_breakpoints.js` 一支，改完要硬重啟 dev server |
 | 改部署 / 環境 | [§5 建置與環境](#sec5)、[§7 環境網域對照](#sec7)、[§8](#sec8) | `npm run deploy` 輸出到 `dist/`（目錄名取自 `.env.deploy` 的 `VITE_APP_MODE`）；CI 部署前會先跑 lint 與測試，任一失敗就不會部署 |
-| 清理剩餘殘留 | [§8 程式碼觀察事項](#sec8) | proxy、LINE LIFF 變數、`deCrypto()` 已清除；剩下未使用的設定列在 §8 |
+| 清理剩餘殘留 | [§8 程式碼觀察事項](#sec8) | proxy、LINE LIFF 變數、`deCrypto()`、未使用的 `config.js` 欄位與 `VITE_APP_APIPATH` 都已清除（[§8](#sec8)「已處理」）|
 
 ---
 
@@ -77,12 +77,12 @@
 | 前端框架 | Vue 3.5（Composition API、`<script setup>`）| [package.json](package.json#L19) |
 | 建置工具 | Vite 7 | 含自訂 SVG spritemap、影像壓縮、SSL 外掛 |
 | 狀態管理 | Pinia 2 | 兩個 store：`global`（區塊 theme）、`common`（loading）|
-| 路由 | Vue Router 4（`createWebHistory('/portfolio/')`）| 單一路由 `/`，其餘導回 `/`（[router/index.js](src/router/index.js#L8-L23)）|
+| 路由 | Vue Router 4（`createWebHistory(ENV.BASE_URL)`，base 為 `/`）| 單一路由 `VITE_APP_ROUTEPATH`（`/portfolio`），其餘導回同一路徑（[router/index.js](src/router/index.js#L9-L28)）|
 | 樣式 | Tailwind CSS 3 + PostCSS（nesting / pxtorem / functions / calc / hexrgba / autoprefixer）| [postcss.config.js](postcss.config.js)、[tailwind.config.js](tailwind.config.js) |
-| 雜湊 | crypto-js（AES）| 僅用於圖片 URL 快取破壞雜湊（[mImg.vue:48](src/components/modules/mImg.vue#L48)）|
+| 雜湊 | crypto-js（AES）| 只用來產生資產快取破壞字串，兩處共用同一顆種子 `VITE_APP_HASH`：mImg 的圖片網址 `?hash`（[mImg.vue:49](src/components/modules/mImg.vue#L49)）、vite.config.js 的 index.html / CSS `?v=`（[vite.config.js:42](vite.config.js#L42)）|
 | 程式品質 | ESLint 9（flat config）+ Prettier | `npm run lint`；含 `vue/block-order` 強制 SFC 區塊順序 `spec → script → template → style` |
 | 後端 / 資料庫 | 無 | 純靜態前端 |
-| 平台 / 環境 | RWD 網頁（手機 / 平板 / 桌機）| base `/portfolio/` |
+| 平台 / 環境 | RWD 網頁（手機 / 平板 / 桌機）| 子目錄 `/portfolio`（`VITE_APP_ROUTEPATH`），資產為相對路徑 |
 | 部署 | GitHub Pages + GitHub Actions | push 到 `main` 自動 lint → 測試 → build → 部署（[deploy.yml](.github/workflows/deploy.yml)）|
 | 測試 | Vitest + @vue/test-utils + jsdom | 單元測試 stores 與 scripts，含 coverage |
 | 行銷追蹤 | 無 | 全專案查無 GA / Meta / Taboola / OneAD 等任何追蹤碼 |
@@ -92,8 +92,9 @@
 portfolio2026/
 ├── .github/workflows/deploy.yml   # CI/CD：lint → 測試 → build → 部署到 GitHub Pages
 ├── .env.dev / .env.build / .env.deploy   # 各模式環境變數
+├── .browserslistrc                # 支援的瀏覽器範圍（autoprefixer 與 vite build.target 共用）
 ├── config.js                      # 專案參數（埠號、設計基準寬、輸出資料夾名…）
-├── vite.config.js                 # Vite 設定（alias、影像壓縮、SVG spritemap、輸出）
+├── vite.config.js                 # Vite 設定（alias、影像壓縮、SVG spritemap、輸出、資產相對路徑）
 ├── vitest.config.js               # 測試設定（alias 與 vite 一致、掛 <spec> plugin）
 ├── eslint.config.js               # ESLint（含 SFC 區塊順序 vue/block-order）
 ├── tailwind.config.js             # screens（MQ 來自 _breakpoints.js）、字級、外掛
@@ -116,7 +117,7 @@ portfolio2026/
 │   │   └── modules/               # mImg（圖片元件）/ mIcon（SVG sprite 圖示）
 │   ├── scripts/                   # _breakpoints.js（斷點單一真值）_crypto.js _env.js _prototype.js（+ __tests__）
 │   ├── assets/css/                # _library.css + _common/framework.css
-│   ├── assets/img/                # shared/（共用）、home/（作品）、about/
+│   ├── assets/img/                # shared/（共用）、home/<元件名>/（WorksSection / WorkDetail / AboutSection 專用圖）
 │   └── _svg/                      # 9 個 SVG icon（spritemap 來源）
 ├── dist/                          # 建置輸出（已被 commit，見 §8 觀察）
 └── coverage/                      # 測試覆蓋率報告（已被 commit）
@@ -130,7 +131,7 @@ portfolio2026/
 ```
 ┌─────────────┐     靜態檔（HTML/JS/CSS/IMG）      ┌──────────────────────┐
 │  使用者瀏覽器  │  ◀───────────────────────────  │  GitHub Pages (CDN)   │
-│  Vue SPA     │     base: /portfolio/            │  由 GitHub Actions 部署 │
+│  Vue SPA     │     子目錄 /portfolio/           │  由 GitHub Actions 部署 │
 └─────────────┘                                   └──────────────────────┘
       │
       └─ 瀏覽器端狀態：Pinia（記憶體）+ sessionStorage（theme / type / page / index）
@@ -161,12 +162,12 @@ portfolio2026/
 
 | 路由 | 路徑 | 行為 |
 | --- | --- | --- |
-| 首頁（name `HomeIndex`）| `/` | 載入 [Home/Index.vue](src/views/Home/Index.vue)（lazy import）|
-| 萬用 | `/:pathMatch(.*)*` | `redirect: '/'`（任何未知路徑導回首頁）|
+| 首頁（name `HomeIndex`）| `VITE_APP_ROUTEPATH`（`/portfolio`）| 載入 [Home/Index.vue](src/views/Home/Index.vue)（lazy import）|
+| 萬用 | `/:pathMatch(.*)*` | `redirect` 到首頁路徑（任何未知路徑導回首頁）|
 
 ### 使用者流程與路由守衛
-- **路由守衛**：[router/index.js:25-29](src/router/index.js#L25-L29) 的 `beforeEach` 僅呼叫 `common.reset()`（把 loading 還原為 true）；`afterEach` 為空。**沒有任何進入條件 / 權限守衛**（本專案不需要）。
-- **實際動線**：進站預設顯示 `f2e`（過往作品）→ 點導覽切 `about` / `skill` → 在作品區點縮圖進 `detail` 燈箱 → 燈箱「BACK」回 `f2e`。
+- **路由守衛**：[router/index.js:30-34](src/router/index.js#L30-L34) 的 `beforeEach` 僅呼叫 `common.reset()`（把 loading 還原為 true）；`afterEach` 為空。**沒有任何進入條件 / 權限守衛**（本專案不需要）。
+- **實際動線**：進站預設顯示 `f2e`（過往作品）→ 點導覽切 `about` / `skill` → 在作品區點縮圖進 `detail` 燈箱 → 燈箱「BACK」回 `f2e`（BACK 在書籤列上，只有平板 / 桌機有；手機沒有書籤列，回作品區靠 header 導覽）。
 - **作品分頁動線（平板 / 桌機）**：每頁 14 筆，左右箭頭以 `scrollLeft` 水平捲動切頁；手機則一頁顯示全部（`amount = 100`）。
 
 ### 站台 / 狀態機
@@ -179,7 +180,7 @@ portfolio2026/
 | 目前作品 | `currentIndex`（同上）| 數字 | 存 `sessionStorage.index` |
 | 燈箱圖序 | `currentDetailIndex`（同上）| 從 1 起 | 不持久化 |
 
-> 後四項由 `Home/Index.vue` 以 `provide('works')` 傳給 `WorksSection` 與 `WorkDetail`（見 [§5 核心互動](#sec5)）。視窗寬度跨越 740px（手機 ↔ 非手機）時自動 `sessionStorage.clear()`，避免分頁狀態污染（[Index.vue:95-107](src/views/Home/Index.vue#L95-L107)）。
+> 後四項由 `Home/Index.vue` 以 `provide('works')` 傳給 `WorksSection` 與 `WorkDetail`（見 [§5 核心互動](#sec5)）。`MQ_MOBILE` 的命中狀態改變時（跨越 740px，或進出矮的橫向手機）自動 `sessionStorage.clear()`，避免分頁狀態污染（[Index.vue:95-107](src/views/Home/Index.vue#L95-L107)）。
 
 ### 身分識別
 **不適用**。無登入 / 註冊 / 匿名 GUID / token。
@@ -216,21 +217,21 @@ repo 內**無 Figma / 設計流程連結**。設計與決策由製作者（Brian
 ### 主視覺 KV
 - **Logo**：`shared/logo.png`（[lHeader.vue:57-63](src/components/layout/lHeader.vue#L57-L63)），桌機 688×291、平板 458×194、手機 229×97。
 - **Header 背景**：`shared/bg-header-p.png` 橫向平鋪（[lHeader.vue:111-113](src/components/layout/lHeader.vue#L111-L113)）。
-- **關於我照片**：`about/photo.png`（手機版圓框）。
+- **關於我照片**：`home/AboutSection/photo.png`（手機版圓框）。
 
 ### 結果 / 狀態變化
 - **作品縮圖 hover**：文字轉 `#accaee`，平滑過場 0.3s（僅桌機滑鼠，`p:hover:`）。
-- **導覽 / 分類 active**：套 `.curr`，文字轉黃（`#ff0`）並 `pointer-events-none`。
-- **空白格**：分頁補滿的 `null` 顯示為帶「×」線條的佔位卡（`.cross`）。
-- **燈箱書籤**：目前頁 `#d5de21`、其餘白底；進場有 `showBookmark` 動畫（桌機由下滑入、手機由右滑入）。
+- **導覽 / 分類 active**：導覽鈕套 `.curr`（lHeader）；分類 Tab 直接以 `:class` 綁 `text-[#ff0] pointer-events-none`（[WorksSection.vue:169](src/views/Home/_components/WorksSection.vue#L169)）。兩者都是文字轉黃並不可再點。
+- **空白格**：分頁補滿的 `null` 顯示為帶「×」線條的佔位卡（`.cross`）；按鈕為 `disabled`，不可點、不進 Tab 順序；手機（`m:hidden`）不顯示。
+- **燈箱書籤**（只有平板 / 桌機顯示，手機 `m:hidden`）：目前頁 `#d5de21`、其餘白底；進場有 `showBookmark` 動畫（由下滑入）。
 
 ### 各頁畫面拆解（由上而下）
 - **共用版面**（[App.vue](src/App.vue#L54-L68)）：`l-wrap > main.l-body`，內含 `Header` → `router-view` → `Footer`；`Rotate` 獨立於 `l-wrap` 外。l-body 高度：手機 `100dvh`、平板固定 640px、桌機固定 960px。
 - **Header**（[lHeader.vue](src/components/layout/lHeader.vue)）：Logo + 三顆導覽鈕（01 過往作品 / 02 關於我 / 03 專長技能）。手機 `fixed` 在底部、平板 / 桌機 `absolute`。
-- **過往作品（f2e）**（[WorksSection.vue](src/views/Home/_components/WorksSection.vue)）：標題列「01. Works & Design 過往作品」→ 分類 Tab（活動 / 專案 / 其他）→ 縮圖牆（桌機 / 平板分頁 + 左右箭頭；手機一次列全部）。
+- **過往作品（f2e）**（[WorksSection.vue](src/views/Home/_components/WorksSection.vue)）：標題列「01. Works & Design 過往作品」→ 分類 Tab（活動 / 專案 / 其他）→ 縮圖牆（同一份 DOM：桌機 / 平板分頁 + 左右箭頭；手機以 `m:contents` 溶解成一次列全部）。
 - **關於我（about）**（[AboutSection.vue](src/views/Home/_components/AboutSection.vue)）：左欄照片 + 基本資料（姓名生日、公司、地點、Email、電話）+ 社群 icon（GitHub / LinkedIn / IG / FB）；右欄 Experience 經歷列表 + Autobiography 自傳三段。
 - **專長技能（skill）**（[SkillSection.vue](src/views/Home/_components/SkillSection.vue)）：左欄「技術專長」（前端開發 / 工程化 / API 整合 / 版控 / 工具）、右欄「專業經歷」（網站開發 / 效能 / SEO / 資安 / 部署）。
-- **作品燈箱（detail）**（[WorkDetail.vue](src/views/Home/_components/WorkDetail.vue)）：中央大圖（依 `PhotoCount` 逐張）+ 右側 / 底部書籤頁籤切換 + 底部外連說明（`webLink` / `webDesc`，支援多連結以逗號分隔）。
+- **作品燈箱（detail）**（[WorkDetail.vue](src/views/Home/_components/WorkDetail.vue)）：平板 / 桌機為中央大圖（依 `PhotoCount` 逐張）+ 右側書籤頁籤切換（含 BACK）；手機把 `PhotoCount` 張圖直向全列、無書籤列；底部外連說明（`webLink` / `webDesc`，支援多連結以逗號分隔）。
 - **Footer**（[lFooter.vue](src/components/layout/lFooter.vue)）：`© 2026 Brian Lin. Portfolio Site.`。
 
 ### 響應式與裝置適配
@@ -256,12 +257,12 @@ repo 內**無 Figma / 設計流程連結**。設計與決策由製作者（Brian
 
 ### 圖片 / 素材管線
 - **`mImg.vue`**（[components/modules/mImg.vue](src/components/modules/mImg.vue)）：用 `import.meta.glob('/src/assets/img/**/*', { eager: true })` 把圖片打包進 bundle；支援
-  - **響應式**：`src` 可帶 `?m=` 或物件 `{ p, m }` 提供手機版圖（`<picture><source media="(max-width:428px)">`）。
-  - **lazy load**：`IntersectionObserver` 進視窗才換 `src`。
+  - **響應式**：`src` 可帶 `?m=` 或物件 `{ p, m }` 提供手機版圖（`<picture><source>`，media 為 `_breakpoints.js` 的 `MQ_MOBILE`）。
+  - **lazy load**：`IntersectionObserver` 進視窗才換 `src`；`lazy=false` 時掛載後直接換。
   - **快取破壞**：URL 後接 `?{hashHex(VITE_APP_HASH,8)}`（每次 build 變動）。
   - **找不到圖**：`console.warn` 並回 `shared/blank.svg`。
   - ⚠️ eager glob 會把 `src/assets/img/` 底下**所有**圖片都打包，沒被引用的圖也會出現在產物裡；停用一張圖時要連檔案一起刪掉。
-- **SVG**：`src/_svg/*.svg` 經 `@spiriit/vite-plugin-svg-spritemap` 合併為 `assets/img/svg/spritemap.svg`，由 [mIcon.vue](src/components/modules/mIcon.vue) 以 `<use href="/portfolio{spritemap}#icon">` 引用。共 9 個 icon（見 [§9](#sec9)）。
+- **SVG**：`src/_svg/*.svg` 經 `@spiriit/vite-plugin-svg-spritemap` 合併為 `assets/img/svg/spritemap.svg`，由 [mIcon.vue](src/components/modules/mIcon.vue) 以 `new URL(__SPRITEMAP_URL__, import.meta.url)` 解析後 `<use href>` 引用（dev 是絕對路由、build 是相對路徑，不寫死子目錄）。共 9 個 icon（見 [§9](#sec9)）。
 - **建置壓縮**（[plugins/vite-plugin-image-minimizer-sharp.js](plugins/vite-plugin-image-minimizer-sharp.js)，僅 `apply: 'build'`）：JPEG q75 mozjpeg progressive、PNG q80 壓縮等級 9、SVG SVGO multipass（排除 spritemap）。
 
 ### 設計檔
@@ -280,7 +281,7 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 - 每支 `.vue` 開頭可帶 `<spec lang="md">` 區塊寫元件說明；它由 [plugins/vue-spec-plugin.js](plugins/vue-spec-plugin.js) 轉成空模組，vite 與 vitest 都必須掛這支。
 
 ### 路由與守衛
-- 單頁路由（[router/index.js](src/router/index.js)）：`/`（name `HomeIndex`）→ `Home/Index.vue`（動態 import），其餘 `redirect: '/'`。`App.vue` 會把 `route.name` 掛在 `.l-wrap` 上當 class。
+- 單頁路由（[router/index.js](src/router/index.js)）：首頁 path 是 `ENV.VITE_APP_ROUTEPATH`（`/portfolio`，name `HomeIndex`）→ `Home/Index.vue`（動態 import），其餘 `redirect` 到同一路徑；history base 是 `ENV.BASE_URL`（`/`）。⚠️ base 與 `ROUTEPATH` 只能設一個，兩個都設時 router 會比不到任何 route。`App.vue` 會把 `route.name` 掛在 `.l-wrap` 上當 class。
 - `linkActiveClass: 'router-active'`、`linkExactActiveClass: 'router-exact-active'`（目前無 `<router-link>` 實際使用導覽，導覽是 theme 切換）。
 - 守衛：`beforeEach` → `common.reset()`；無權限 / 條件守衛。
 
@@ -295,16 +296,16 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 ### API 層
 **不適用**。全專案 `src/` 查無 `fetch` / `axios` / `XMLHttpRequest`。
 
-> [config.js:17-25](config.js#L17-L25) 的 dev proxy 已清成空物件（不可刪成 `null`，`vite.config.js` 會對它跑 `Object.keys()`）；各 `.env` 的 `VITE_APP_APIPATH` 仍為空字串、未使用。
+> [config.js:12-20](config.js#L12-L20) 的 dev proxy 已清成空物件（不可刪成 `null`，`vite.config.js` 會對它跑 `Object.keys()`）；`.env` 的 `VITE_APP_APIPATH` 已移除。
 
 ### 核心互動 / 功能
 1. **區塊切換**：`global.theme` 決定顯示哪個區塊；各區塊元件自帶 `<Transition name="fade">`（`.fade-*` 樣式在 `Index.vue`）；`f2e/about/skill` 用 `v-show`，`detail` 用 `v-if`。
 2. **作品資料 `datas`**：[\_data/works.js](src/views/Home/_data/works.js) 的靜態三分類陣列（活動 / 專案 / 其他），每筆欄位 `CaseName / CaseID / CaseType / CoverImg / PhotoCount / webLink / webDesc`（對照表見 [§9](#sec9)）。
-3. **分頁**：`Index.vue` 的 `chunkArrayWithFill(array, size)` 將作品切成每頁 `amount` 筆並以 `null` 補滿；`WorksSection` 在桌機 / 平板用水平 `scroll-snap` + `scrollLeft` 翻頁，手機改列不分頁的完整列表。
-4. **燈箱**：`WorksSection` 的 `toDetail(idx)` → `changeTheme('detail')` 並計算 `currentPage/currentIndex`；`WorkDetail` 依 `PhotoCount` 渲染內頁圖 `home/{type}/detail/{type}{id}_0{n}.png`；`webLink` 支援單 / 多連結（逗號分隔，對應各頁籤）。
+3. **分頁**：`Index.vue` 的 `chunkArrayWithFill(array, size)` 將作品切成每頁 `amount` 筆並以 `null` 補滿；`WorksSection` 在桌機 / 平板用水平 `scroll-snap` + `scrollLeft` 翻頁，手機以 `m:contents` 把每頁的 `ul` 溶解、`null` 格 `m:hidden`，接成一份不分頁的列表（同一份 DOM）。
+4. **燈箱**：`WorksSection` 的 `toDetail(idx)`（`idx` 為整份列表索引）→ `changeTheme('detail')`，`currentPage / currentIndex` 一律由 `idx` 算出（手指滑動不會更新頁碼，不沿用）；`WorkDetail` 依 `PhotoCount` 渲染內頁圖 `home/WorkDetail/{type}/{type}{id}_0{n}.png`；`webLink` 支援單 / 多連結（逗號分隔，對應各頁籤）。
 5. **狀態共享**：燈箱在 DOM 上排在「關於我」「專長技能」之後，與作品列表不是父子，所以共用狀態放在 `Index.vue`，以 `provide` / `inject` 傳給兩者。四個區塊的 DOM 順序不要調動（平板 / 桌機疊在同一格、手機上下排，切換時的淡入淡出次序由它決定）。
 6. **狀態還原**：`type/page/index/theme` 寫入 `sessionStorage`，重整或返回時還原並 `scrollToCurrentPage()`。
-7. **裝置判斷**：`onDevice()` 決定每頁筆數；跨 740px 自動清 `sessionStorage`。
+7. **裝置判斷**：`onDevice()` 決定每頁筆數；`MQ_MOBILE` 命中狀態改變（跨 740px 或進出矮橫向）時自動清 `sessionStorage`。
 
 ### 表單與驗證
 **不適用**（站內無任何表單 / 輸入欄位）。
@@ -316,16 +317,18 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 | 指令 | 模式 | `VITE_APP_MODE` | 輸出目錄 | 備註 |
 | --- | --- | --- | --- | --- |
 | `npm run dev` | dev | `dev` | —（dev server, 埠 2026, HTTPS）| 啟用 VueDevTools、basicSsl |
-| `npm run build` | build | `build` | `build/` | **移除** `console` 與 `debugger`（[vite.config.js:156](vite.config.js#L156)）|
+| `npm run build` | build | `build` | `build/` | **移除** `console` 與 `debugger`（[vite.config.js:209](vite.config.js#L209)）|
 | `npm run deploy` | deploy | `dist`（由 [.env.deploy](.env.deploy#L1) 設定）| **`dist/`** | 部署用；保留 console |
 | `npm run preview` | — | — | — | 預覽建置結果 |
 | `npm run lint` / `lint:fix` | — | — | — | ESLint 檢查 / 自動修正；CI 部署前執行 |
 | `npm run test` / `test:coverage` | — | — | — | Vitest 單元測試 / 覆蓋率 |
 
-- **環境變數**（`.env.{mode}`）：`VITE_APP_MODE / TITLE / DESCRIPTION / URL / ROUTEPATH / APIPATH`。`VITE_APP_HASH` 於 [vite.config.js:27](vite.config.js#L27) 動態產生（`SUGARFUN_{pid}_{ppid}_{timestamp}`）供快取破壞。
-- **alias**：`@ @router @stores @components @views @imgs @css @js`（[vite.config.js:141-150](vite.config.js#L141-L150)），與 [vitest.config.js](vitest.config.js)、[jsconfig.json](jsconfig.json) 三處一致。
+- **環境變數**（`.env.{mode}`）：`VITE_APP_MODE / TITLE / DESCRIPTION / URL / ROUTEPATH`。`VITE_APP_HASH` 於 [vite.config.js:36](vite.config.js#L36) 動態產生（`SUGARFUN_{pid}_{ppid}_{timestamp}`）供快取破壞。
+- **alias**：`@ @router @stores @components @views @imgs @css @js`（[vite.config.js:182-191](vite.config.js#L182-L191)），與 [vitest.config.js](vitest.config.js)、[jsconfig.json](jsconfig.json) 三處一致。
 - **樣式管線**：Tailwind + PostCSS（import / pxtorem / nesting / functions / calc / hexrgba / autoprefixer）。
-- **產出檔名規則**（[vite.config.js:165-202](vite.config.js#L165-L202)）：JS `scripts/[name]-[hash].js`、CSS `assets/css/[name].[hash].css`、字型 `assets/font/`、圖片 `assets/img/` 並保留原始層級（如 `home/web/detail/web01_01.png`）。JS 保留檔名 hash 是因為本案沒有替資產加 `?v=` 的 plugin，hash 是 JS 唯一的破快取手段。
+- **產出檔名規則**（[vite.config.js:225-254](vite.config.js#L225-L254)）：JS `scripts/[name]-[hash].js`、CSS `assets/css/[name].[hash].css`、字型 `assets/font/`、圖片 `assets/img/` 並保留原始層級（如 `home/WorkDetail/web/web01_01.png`）。
+- **相對路徑與破快取**（[vite.config.js:146-178](vite.config.js#L146-L178)、[:197](vite.config.js#L197)）：build 時 `index.html` 與 CSS 內以斜線開頭的資產路徑由 `sugarfun:relative-html-assets` / `relative-css-assets` 轉成相對路徑並加 `?v=hash`；JS 內 import 的圖由 `renderBuiltUrl` 轉成 `new URL('../assets/…', import.meta.url)`。JS 檔刻意不加 `?v=`：路由 chunk 會以 `./index-[hash].js` 回頭 import 入口，帶 query 會被當成兩個模組而執行兩次，檔名 hash 已足夠破快取。
+- **瀏覽器支援範圍**：[.browserslistrc](.browserslistrc) 是單一真值，autoprefixer 與 `build.target`（[vite.config.js:218](vite.config.js#L218)，經 `browserslist-to-esbuild`）都讀它。
 
 ---
 
@@ -336,7 +339,7 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 
 - 無 API 端點、無資料表 / ORM、無資料庫、無後台 / 報表、無伺服器端加密。
 - 唯一的「部署設定」是 GitHub Pages（見 [§7](#sec7)、[§8](#sec8)）。
-- `config.js` 的 proxy 為空物件、`.env` 的 `VITE_APP_APIPATH` 為空字串，皆非實際後端（[§8](#sec8)）。
+- `config.js` 的 proxy 為空物件，非實際後端；`.env` 原有的 `VITE_APP_APIPATH` 已移除。
 
 ---
 
@@ -347,13 +350,13 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 
 僅保留**環境網域對照**：
 
-| 模式 | `VITE_APP_URL` | base | 部署目標 |
+| 模式 | `VITE_APP_URL` | `VITE_APP_ROUTEPATH` | 部署目標 |
 | --- | --- | --- | --- |
-| dev | `https://brian224.github.io/portfolio` | `/portfolio/` | 本機 dev server（埠 2026，HTTPS）|
-| build | `https://brian224.github.io/portfolio` | `/portfolio/` | 一般建置（`build/`）|
-| deploy | `https://brian224.github.io/portfolio` | `/portfolio/` | GitHub Pages（`dist/`）|
+| dev | `https://brian224.github.io` | `/portfolio` | 本機 dev server（埠 2026，HTTPS）|
+| build | `https://brian224.github.io` | `/portfolio` | 一般建置（`build/`）|
+| deploy | `https://brian224.github.io` | `/portfolio` | GitHub Pages（`dist/`）|
 
-> 正式網址：`https://brian224.github.io/portfolio/`（[index.html JSON-LD](index.html#L27)、canonical）。三個模式的 `VITE_APP_URL` 一致，dev 模式產出的 canonical 也指向正式站。
+> 正式網址 = `VITE_APP_URL` + `VITE_APP_ROUTEPATH` = `https://brian224.github.io/portfolio`；`index.html` 的 og:url / canonical / JSON-LD 都以 `%VITE_APP_URL%%VITE_APP_ROUTEPATH%` 組出（[index.html:17-27](index.html#L17-L27)）。三個模式的值一致，dev 模式產出的 canonical 也指向正式站。
 
 ---
 
@@ -363,7 +366,7 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 ### 常見維運操作
 | 需求 | 怎麼做 |
 | --- | --- |
-| 新增 / 修改作品 | 編輯 [\_data/works.js](src/views/Home/_data/works.js#L14-L1222) 的 `datas` 陣列；縮圖放 `src/assets/img/home/{CaseType}/{CoverImg}`，內頁圖放 `.../home/{CaseType}/detail/{CaseType}{CaseID}_0{n}.png`，並設定正確 `PhotoCount`。圖片缺漏會顯示 404 佔位圖 |
+| 新增 / 修改作品 | 編輯 [\_data/works.js](src/views/Home/_data/works.js#L14-L1222) 的 `datas` 陣列；縮圖放 `src/assets/img/home/WorksSection/{CaseType}/{CoverImg}`，內頁圖放 `.../home/WorkDetail/{CaseType}/{CaseType}{CaseID}_0{n}.png`，並設定正確 `PhotoCount`。圖片缺漏時該格為空白（`shared/blank.svg`）並在 console 出 `[mImg] not found` 警告，不會出現 404 佔位圖 |
 | 改個資 / 經歷 / 自傳 / 技能 | 編輯 [AboutSection.vue](src/views/Home/_components/AboutSection.vue) / [SkillSection.vue](src/views/Home/_components/SkillSection.vue) 對應 template；同步 [index.html](index.html#L21-L89) 的 JSON-LD（jobTitle / 經歷 / skills）|
 | 改聯絡方式 / 社群 | 編輯關於我區塊（[AboutSection.vue:51-127](src/views/Home/_components/AboutSection.vue#L51-L127)）|
 | 重新部署 | push 到 `main` 分支即觸發 [GitHub Actions](.github/workflows/deploy.yml)：lint → 跑測試 → `npm run deploy` → 上傳 `./dist` → 部署 Pages |
@@ -373,7 +376,7 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 ### 機密清單（位置，值一律不收錄）
 | 機密 | 存放位置 | 說明 |
 | --- | --- | --- |
-| AES `KEY` / `IV` | [src/scripts/_crypto.js:3-4](src/scripts/_crypto.js#L3-L4) `<已遮罩>` | **硬編碼於原始碼**。實際**僅供 `hashHex()` 產生圖片快取破壞字串**，未用於保護任何敏感資料（全專案僅 [mImg.vue](src/components/modules/mImg.vue#L48) 使用）。嚴格說非真機密，但仍列位置供接手者評估是否清理 |
+| AES `KEY` / `IV` | [src/scripts/_crypto.js:3-4](src/scripts/_crypto.js#L3-L4) `<已遮罩>` | **硬編碼於原始碼**。實際**僅供 `hashHex()` 產生資產快取破壞字串**，未用於保護任何敏感資料（全專案兩處使用：[mImg.vue:49](src/components/modules/mImg.vue#L49) 的圖片網址、[vite.config.js:42](vite.config.js#L42) 的 index.html / CSS `?v=`）。嚴格說非真機密，但仍列位置供接手者評估是否清理 |
 
 > 本專案無 DB 連線、無後台帳密、無 API key、無第三方 token。
 
@@ -384,24 +387,26 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 
 1. **`dist/` 與 `coverage/` 已 commit**：[.gitignore](.gitignore) 僅忽略 `/node_modules`、`/build`、`/dockerimage`，故建置產物 `dist/` 與測試報告 `coverage/` 被納入版控。CI 會重新 build 並上傳 `./dist`（[deploy.yml:52](.github/workflows/deploy.yml#L52)），repo 內的 `dist/` 不會被部署使用，且可能與最新原始碼不同步。（ESLint 已忽略 `coverage/`。）
 2. **「專長技能」中的 API 字樣是能力宣告，非本站整合**：[SkillSection.vue:78](src/views/Home/_components/SkillSection.vue#L78) 顯示「Facebook API / LINE LIFF API / Google Maps API」——這是作品集「個人技能」展示文字，**非本 repo 實際串接**，勿誤解為本站使用這些服務。
-3. **`mImg` 的 `lazy=false` 不會載入圖片**：初始 `src` 為 `shared/blank.svg`，只有 IntersectionObserver 那段會換成真實路徑，`lazy=false` 會跳過它。目前全專案沒有傳 `false` 的地方。
-4. **`mIcon` 的 prop 寫成 `require: true`**：正確選項是 `required`，Vue 會忽略不認得的選項，所以 `icon` 實際上不是必填。
-5. **作品列表渲染兩次**：`WorksSection` 在平板 / 桌機用分頁滑軌、手機另有一份完整列表（`pt:hidden`），同一批作品在 DOM 中出現兩次。
-6. **`/portfolio` 子路徑寫死在三處**：`vite.config.js` 的 `base`、`router/index.js` 的 `createWebHistory('/portfolio/')`、`mIcon` 的 sprite 網址。
-7. **`Index.vue` 帶 UTF-8 BOM**：全專案唯一一支。
-8. **桌機字級流體區只有 2px**：`pMin` 為 1024–1025px（其中的 1024 是 `tailwind.config.js` 裡唯一留下的字面數字，與全域骨架相同），`pMax` 從 1026px 起封頂固定 16px，`vmp` 字級 token 實際上幾乎用不到。
-9. **未使用的設定**：`config.js` 的 `ws`、`rootDirectory`、`fonts` 欄位目前無程式使用；各 `.env` 的 `VITE_APP_APIPATH` 為空字串、未使用。
 
 **已處理（原列於本節）**
 
 - 樣板殘留：`config.js` 的 dev proxy 清成空物件、`.env` 的 LINE LIFF / OA 變數移除、未使用的 `deCrypto()` 移除（`enCrypto` 仍被 `hashHex` 使用而保留）。
 - README 的部署輸出目錄與斷點表已改成與實作一致。
 - `og:image` 原本串出雙重 `/portfolio/`；因沒有 1200×630 的分享圖，改為整組不放（分享時為純文字卡）。
-- favicon 路徑確認沒有問題：Vite 建置時會自動加上 base，產物為 `/portfolio/static/img/favicon.ico`。
+- favicon：產物為相對路徑 `static/img/favicon.ico?v=hash`（由 `relative-html-assets` 轉出）。
 - `jsconfig.json` 的 `@container` / `@fonts` 已移除，alias 在 `vite.config.js`、`vitest.config.js`、`jsconfig.json` 三處一致。
 - 斷點門檻集中到 [\_breakpoints.js](src/scripts/_breakpoints.js)；`config.js` 的 `mobileMaxWidth`（門檻的第二份拷貝）、`ieVersion`，以及沒人用的 `notsupport` / `firefox` / `IE` screen 已移除。
-- 未被引用的 7 張圖已刪除：`shared/profile.png`、`about/photo.gif`、`about/photo.svg`、`skill/skill_bg.png`、`n-sup/` 三張（chrome / edge / firefox）。`n-sup/` 是起始範本帶進來的「不支援瀏覽器提示」圖示，本專案沒有實作該提示。作品圖（`home/`）由資料驅動，未逐一比對。
+- 未被引用的 7 張圖已刪除：`shared/profile.png`、`about/photo.gif`、`about/photo.svg`、`skill/skill_bg.png`、`n-sup/` 三張（chrome / edge / firefox）。`n-sup/` 是起始範本帶進來的「不支援瀏覽器提示」圖示，本專案沒有實作該提示。作品圖（`home/`）的比對見下方。
 - 專長技能區沒有背景圖的背景設定（`skill-wrap`、`bg-center`、`bg-no-repeat`、桌機的 `background-size`）已移除。
+- `mImg` 的 `lazy=false`（或瀏覽器沒有 IntersectionObserver）改為掛載後直接載入；`mIcon` 的 `require` 錯字改為 `required`。
+- 作品列表改為同一份 DOM：手機以 `m:contents` 溶解分頁 `ul`、`null` 格 `m:hidden`；補位格按鈕加 `disabled`（原本鍵盤可聚焦並觸發，第 2 頁以後會讀到空資料）；`toDetail` 改傳整份列表索引、頁碼一律由索引算出（手指滑動滑軌不會更新頁碼）；移除會蓋掉作品名稱的 `aria-label`。
+- `/portfolio` 不再寫死：vite `base` 改 `/`，子目錄由 `VITE_APP_ROUTEPATH` 提供給 router；新增 `sugarfun:relative-html-assets` / `relative-css-assets` plugin 與 `renderBuiltUrl`，產物資產全部相對路徑；`mIcon` 以 `import.meta.url` 解析 sprite；`index.html` 的網址改用 `%VITE_APP_URL%%VITE_APP_ROUTEPATH%`（`VITE_APP_URL` 因此只留網域）。
+- 圖片依元件分層：`home/WorksSection/{type}/`（封面）、`home/WorkDetail/{type}/`（內頁）、`home/AboutSection/photo.png`；以 `git mv` 搬移，歷史保留。
+- `Index.vue` 的 UTF-8 BOM 已移除。
+- 新增 [.browserslistrc](.browserslistrc)（近 5 年主流瀏覽器）與 `browserslist-to-esbuild`，`build.target` 與 autoprefixer 共用同一份支援範圍。
+- 未使用設定清除：`config.js` 的 `ws` / `rootDirectory` / `fonts` / `docker`、`viteStaticCopy` 與 `vite-plugin-static-copy` 套件、`.env` 的 `VITE_APP_APIPATH`。
+- 作品圖已逐一比對 `works.js`：web42 / web58 / web73 的 `PhotoCount` 少算，補正為 4 / 3 / 2；web35 兩張（資料中無此作品）已刪除。現在 `home/` 底下每張圖都有被引用。
+- `pMin` 只涵蓋 1024–1025px、桌機幾乎固定 16px：已確認為刻意設計，不再列為待確認。
 
 ### 聯絡資訊
 網站公開顯示之製作者聯絡方式（屬網站公開內容，非機密）：
@@ -431,11 +436,11 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 | 電腦門檻 `PC_MIN_WIDTH` | `1025` | [\_breakpoints.js:25](src/scripts/_breakpoints.js#L25) |
 | 桌機設計基準寬 `desktopMinWidth` | `1025` | [config.js:5](config.js#L5) |
 | 手機設計基準寬 `basicMobileWidth` | `375` | [config.js:6](config.js#L6) |
-| base 路徑 | `/portfolio/` | [vite.config.js:62](vite.config.js#L62) |
+| 部署子目錄 `VITE_APP_ROUTEPATH` | `/portfolio` | 三支 `.env`（vite `base` 為 `/`，[vite.config.js:78](vite.config.js#L78)）|
 | 預設 theme | `f2e` | [global.js:5](src/stores/global.js#L5) |
 | 桌機 / 平板每頁筆數 | `14` | [Index.vue:58](src/views/Home/Index.vue#L58) |
 | 手機每頁筆數 | `100` | [Index.vue:58](src/views/Home/Index.vue#L58) |
-| 正式網址 | `https://brian224.github.io/portfolio/` | [index.html:27](index.html#L27) |
+| 正式網址 | `https://brian224.github.io/portfolio` | `VITE_APP_URL` + `VITE_APP_ROUTEPATH`（[index.html:17](index.html#L17)）|
 
 ### theme → 區塊對照
 | theme | 區塊 | 元件 | 渲染方式 |
@@ -453,8 +458,8 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 | `CaseName` | 顯示名稱（允許 `<br>`）|
 | `CaseID` | 識別 ID（對應圖檔編號）|
 | `CaseType` | 圖片分類：`web` / `ad` / `other` |
-| `CoverImg` | 封面圖檔名，路徑 `home/{CaseType}/{CoverImg}` |
-| `PhotoCount` | 燈箱內頁圖數量；內頁圖路徑 `home/{CaseType}/detail/{CaseType}{CaseID}_0{n}.png` |
+| `CoverImg` | 封面圖檔名，路徑 `home/WorksSection/{CaseType}/{CoverImg}` |
+| `PhotoCount` | 燈箱內頁圖數量；內頁圖路徑 `home/WorkDetail/{CaseType}/{CaseType}{CaseID}_0{n}.png`（數量要與檔案一致）|
 | `webLink` | 外連網址（多個以 `,` 分隔；空字串＝無連結）|
 | `webDesc` | 連結說明（多個以 `,` 分隔，對應各頁籤）|
 
@@ -474,9 +479,10 @@ repo 內無 Figma / 設計連結。→ **需向製作者（Brian Lin）確認**�
 | --- | --- | --- | --- |
 | `VITE_APP_MODE` | `dev` | `build` / `dist` | 模式判斷、是否 drop console |
 | `VITE_APP_TITLE` | `:: Brian Lin 作品集 ::` | 同左 | 標題 / OG |
-| `VITE_APP_URL` | `https://brian224.github.io/portfolio` | 同左 | canonical / OG |
-| `VITE_APP_APIPATH` | 空 | 空 | （未使用）|
+| `VITE_APP_DESCRIPTION` | 關鍵字文案（見 `index.html` 的 `og:description`）| 同左 | og:description / meta description |
+| `VITE_APP_URL` | `https://brian224.github.io` | 同左 | 網域；與 `ROUTEPATH` 組成 canonical / OG / JSON-LD 網址 |
+| `VITE_APP_ROUTEPATH` | `/portfolio` | 同左 | 部署子目錄：router 首頁 path、網址組合 |
 
 ---
 
-> **待向製作者（Brian Lin）確認的項目**：① 是否有 Figma / 設計檔可追溯（[§3](#sec3)、[§4](#sec4)）；② `dist/` / `coverage/` 是否改為不納入版控（[§8](#sec8)）；③ [§8](#sec8)「仍待確認」的其餘各項。
+> **待向製作者（Brian Lin）確認的項目**：① 是否有 Figma / 設計檔可追溯（[§3](#sec3)、[§4](#sec4)）；② `dist/` / `coverage/` 是否改為不納入版控（[§8](#sec8)）。

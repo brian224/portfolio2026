@@ -6,18 +6,20 @@
 
 ## 分頁邏輯
 
-- 平板 / 桌機（`pt:`）：每頁 14 筆，最後一頁不足時補 `null`，補出來的格子顯示為帶 × 樣式的佔位卡（`.cross`）
-- 手機（`m:`）：隱藏滑軌，改顯示下方不分頁的完整列表（`amount` 為 100，燈箱換算頁碼時等同不分頁）
+- 平板 / 桌機：每頁 14 筆，最後一頁不足時補 `null`，補出來的格子顯示為帶 × 樣式的佔位卡（`.cross`），按鈕為 `disabled`（不可點、不進 Tab 順序）
+- 手機（`m:`）：同一份 DOM。每頁的 `ul` 以 `m:contents` 溶解、`null` 格 `m:hidden`，所有作品接成一份不分頁的列表（`amount` 為 100，只有一頁）
+- 封面圖路徑：`home/WorksSection/{CaseType}/{CoverImg}`
 - 翻頁以滑軌的 `scrollLeft` 水平捲動，搭配 `scroll-smooth`
 - 切回本區塊（theme 變回 `'f2e'`）或分類內容改變時，捲回 `currentPage` 那一頁
 
 ## 作品燈箱進入
 
-點擊作品縮圖呼叫 `toDetail(idx)`：
+點擊作品縮圖呼叫 `toDetail(idx)`，`idx` 是整份列表的索引（`groupIndex * amount + index`）：
 
 1. 呼叫 `global.changeTheme('detail')` 切換至燈箱
 2. `currentDetailIndex` 重設為 1
-3. 計算 `currentPage` 與 `currentIndex` 並寫入 sessionStorage
+3. `currentPage = Math.floor(idx / amount)`、`currentIndex = idx % amount`，兩者寫入 sessionStorage。
+   頁碼一律由 `idx` 算出，不沿用 `currentPage`：手指滑動滑軌不會更新它
 </spec>
 
 <script setup>
@@ -124,15 +126,12 @@ const toDetail = (idx) => {
   global.changeTheme('detail')
   currentDetailIndex.value = 1
 
-  if (idx >= amount) {
-    currentIndex.value = Math.floor(idx % amount)
-    currentPage.value = Math.floor(idx / amount)
-    sessionStorage.setItem('index', currentIndex.value)
-    sessionStorage.setItem('page', currentPage.value)
-  } else {
-    currentIndex.value = idx
-    sessionStorage.setItem('index', currentIndex.value)
-  }
+  // idx 是整份列表的索引（groupIndex * amount + index），頁碼一律由它算出：
+  // 手指滑動滑軌不會更新 currentPage，不能沿用它
+  currentIndex.value = idx % amount
+  currentPage.value = Math.floor(idx / amount)
+  sessionStorage.setItem('index', currentIndex.value)
+  sessionStorage.setItem('page', currentPage.value)
 }
 
 onMounted(async () => {
@@ -176,29 +175,31 @@ onMounted(async () => {
       </ul>
       <div class="tm:mt-[32px] p:mt-[48px]">
         <div class="relative m:w-[306px] t:w-[780px] t:px-[26px] p:w-[1162px] p:px-[45px]">
+          <!-- 平板 / 桌機：每頁一個 ul 的分頁滑軌。手機：ul 以 m:contents 溶解，所有作品接成一個不分頁的列表，補位的 null 格隱藏 -->
           <div
             ref="sliderRef"
-            class="no-scrollbar snap-x snap-mandatory overflow-x-auto scroll-smooth m:hidden"
+            class="no-scrollbar snap-x snap-mandatory overflow-x-auto scroll-smooth m:overflow-visible"
           >
-            <div class="flex">
+            <div class="flex m:flex-wrap m:items-start">
               <ul
                 v-for="(caseGroup, groupIndex) in caseGroups"
                 :key="groupIndex"
-                class="flex w-full shrink-0 snap-start flex-wrap items-start justify-center"
+                class="flex w-full shrink-0 snap-start flex-wrap items-start justify-center m:contents"
               >
                 <li
                   v-for="(item, index) in caseGroup"
                   :key="`${groupIndex}-${index}`"
                   class="flex flex-col items-center justify-center tm:w-[102px] tm:px-[5px] p:w-[152px] p:px-[8px]"
+                  :class="item ? '' : 'm:hidden'"
                 >
                   <button
                     class="flex flex-col items-center justify-center text-[#fff] transition-colors duration-300 ease-in-out p:hover:text-[#accaee]"
-                    aria-label="了解更多此作品"
-                    @click="toDetail(index)"
+                    :disabled="!item"
+                    @click="toDetail(groupIndex * amount + index)"
                     :class="item ? '' : 'pointer-events-none'"
                   >
                     <mImg
-                      :src="`home/${item.CaseType}/${item.CoverImg}`"
+                      :src="`home/WorksSection/${item.CaseType}/${item.CoverImg}`"
                       :alt="`${item.CaseName}`"
                       :setClass="{
                         main: 'shadow-md flex-shrink-0 flex items-center justify-center p:w-[126px] tm:w-[84px] p:h-[126px] tm:h-[84px] p:border-[4px] tm:border-[3px] border-[#98cbe1] border-solid p:m-[5px] tm:m-[3px] px-[1px] bg-[#4e5ca5]',
@@ -237,41 +238,6 @@ onMounted(async () => {
           >
             <span class="sr-only">下一頁</span>
           </button>
-          <ul class="flex w-full shrink-0 flex-wrap items-start pt:hidden pt:justify-center">
-            <li
-              v-for="(item, index) in datas[currentType].case"
-              :key="index"
-              class="flex flex-col items-center justify-center tm:w-[102px] tm:px-[5px] p:w-[152px] p:px-[8px]"
-            >
-              <button
-                class="flex flex-col items-center justify-center text-[#fff] transition-colors duration-300 ease-in-out p:hover:text-[#accaee]"
-                @click="toDetail(index)"
-                :class="item ? '' : 'pointer-events-none'"
-              >
-                <mImg
-                  :src="`home/${item.CaseType}/${item.CoverImg}`"
-                  :alt="`${item.CaseType}/${item.CaseName}`"
-                  :setClass="{
-                    main: 'shadow-md flex-shrink-0 flex items-center justify-center p:w-[126px] tm:w-[84px] p:h-[126px] tm:h-[84px] p:border-[4px] tm:border-[3px] border-[#98cbe1] border-solid p:m-[5px] tm:m-[3px] px-[1px] bg-[#4e5ca5]',
-                    img: 'w-full',
-                  }"
-                  v-if="item"
-                />
-                <div
-                  class="flex flex-shrink-0 items-center justify-center border-solid border-[#98cbe1] bg-[#addee3] px-[1px] shadow-md tm:m-[3px] tm:h-[84px] tm:w-[84px] tm:border-[3px] p:m-[5px] p:h-[126px] p:w-[126px] p:border-[4px]"
-                  v-else
-                >
-                  <i
-                    class="cross relative overflow-hidden border-[1px] border-solid border-[#6ba6e0] tm:h-[77px] tm:w-[77px] p:h-[116px] p:w-[116px]"
-                  ></i>
-                </div>
-                <em
-                  class="min-h-[3em] whitespace-nowrap text-center leading-[1.5em] tracking-[2px] tm:mb-[5px] tm:text-[12px] p:mb-[8px] p:text-[18px]"
-                  v-html="item?.CaseName || ''"
-                ></em>
-              </button>
-            </li>
-          </ul>
         </div>
       </div>
     </div>

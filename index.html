@@ -14,18 +14,18 @@
     <meta property="og:description" name="description" content="%VITE_APP_DESCRIPTION%" />
     <meta property="og:site_name" content="%VITE_APP_TITLE%" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="%VITE_APP_URL%" />
+    <meta property="og:url" content="%VITE_APP_URL%%VITE_APP_ROUTEPATH%" />
     <title>%VITE_APP_TITLE%</title>
     <link rel="icon" href="/static/img/favicon.ico" />
-    <link rel="canonical" href="%VITE_APP_URL%" />
+    <link rel="canonical" href="%VITE_APP_URL%%VITE_APP_ROUTEPATH%" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "Brian Lin",
         "alternateName": "林子仁",
-        "url": "https://brian224.github.io/portfolio/",
-        "image": "https://brian224.github.io/portfolio/assets/img/about/photo.png",
+        "url": "%VITE_APP_URL%%VITE_APP_ROUTEPATH%/",
+        "image": "%VITE_APP_URL%%VITE_APP_ROUTEPATH%/assets/img/home/AboutSection/photo.png",
         "jobTitle": "Associate Front-End Engineer Director",
         "inLanguage": "zh-TW",
         "description": "前端工程師（Front-End Engineer），具有十年以上 Vue.js、互動網站、SEO 與網頁效能優化經驗。",
@@ -76,13 +76,13 @@
         },
         "mainEntityOfPage": {
           "@type": "WebPage",
-          "@id": "https://brian224.github.io/portfolio/"
+          "@id": "%VITE_APP_URL%%VITE_APP_ROUTEPATH%/"
         },
         "subjectOf": [
           {
             "@type": "CreativeWork",
             "name": "Front-End Portfolio Website",
-            "url": "https://brian224.github.io/portfolio/"
+            "url": "%VITE_APP_URL%%VITE_APP_ROUTEPATH%/"
           }
         ]
       }

@@ -13,7 +13,7 @@
 
 ## 斷點定義
 
-`mLandscape` 的條件是 `src/scripts/_breakpoints.js` 的 `MQ_ROTATE_LOCK`：窄於平板起始寬的橫向視窗，或矮的視窗。
+`mLandscape` 的條件是 `src/scripts/_breakpoints.js` 的 `MQ_ROTATE_LOCK`：480–739px 的橫向視窗（寬 < 480px 的橫向視窗不鎖，見 `ROTATE_LOCK_MIN_WIDTH`），或 ≤ 999px 且高 ≤ 428px 的矮視窗。
 
 ## 使用方式
 

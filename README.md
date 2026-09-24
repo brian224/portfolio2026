@@ -15,7 +15,7 @@
 
 單頁應用，導覽列分三個區塊：
 
-- **[設計作品]** — 活動網頁、大型專案網站的前端作品展示，以及早期非前端 (網站設計、平面設計、展場等) 作品
+- **[過往作品]** — 活動網頁、大型專案網站的前端作品展示，以及早期非前端 (網站設計、平面設計、展場等) 作品
 - **[關於我]** — 個人簡介
 - **[專長技能]** — 技術能力說明
 
@@ -53,8 +53,9 @@ npm run build
 # 建置（部署環境）
 npm run deploy
 
-# 預覽建置結果
-npm run preview
+# 預覽 deploy 產物（dist/）。--mode 不能省：vite preview 預設 mode 是 production，
+# 本案沒有對應的 .env，輸出目錄會被算成不存在的 production/
+npm run preview -- --mode deploy
 ```
 
 ## 建置輸出
@@ -65,7 +66,18 @@ npm run preview
 | `npm run deploy` | `dist/`  | 部署環境，GitHub Actions 發布的就是這一份  |
 
 輸出目錄名取自各 `.env.<mode>` 的 `VITE_APP_MODE`（`.env.deploy` 填的是 `dist`），
-不是指令名稱；靜態資源路徑基底為 `/portfolio/`。
+不是指令名稱。
+
+部署子目錄 `/portfolio` 由各 `.env` 的 `VITE_APP_ROUTEPATH` 決定（router 的首頁路徑）；
+Vite 的 `base` 維持 `/`，產物內的 JS / CSS / 圖片一律轉成相對路徑、不綁死子目錄名稱；
+換子目錄只改 `.env` 的 `VITE_APP_ROUTEPATH` 再重新建置，不必改程式。
+
+## 瀏覽器支援範圍
+
+[.browserslistrc](.browserslistrc) 是支援範圍的單一真值：autoprefixer 的 CSS 前綴與
+`vite.config.js` 的 `build.target`（經 `browserslist-to-esbuild`）都讀這一份。
+政策是「近 5 年釋出的主流瀏覽器」，以 `since` 日期錨定；重新發布前把 `since` 上抬到「當年 − 5」的同月，
+再跑 `npx update-browserslist-db@latest` 更新 caniuse 資料。
 
 ## 圖片最佳化
 

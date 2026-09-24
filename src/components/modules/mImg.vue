@@ -26,6 +26,7 @@
 ## 載入
 
 - 初始 src 是 `shared/blank.svg`，IntersectionObserver 偵測進入視窗後才換成真實路徑，另加原生 `loading="lazy"`
+- `lazy=false`（或瀏覽器沒有 IntersectionObserver）時，掛載後直接換成真實路徑
 - 載入失敗（`@error`）時整個換成 404 佔位，顯示 mIcon 的 `image_404`
 </spec>
 
@@ -128,11 +129,17 @@ const onEnterView = (entries, observer) => {
 }
 
 const onLazy = () => {
+  const el = imageRef.value
+  if (!el) return
+
   if (hasLazy.value && 'IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver(onEnterView)
-    const el = imageRef.value
-    if (el) imageObserver.observe(el)
+    new IntersectionObserver(onEnterView).observe(el)
+    return
   }
+
+  // 不 lazy（或瀏覽器沒有 IntersectionObserver）時直接換成真實路徑。
+  // 初始 src 是佔位圖，沒有這段的話圖永遠不會載入
+  if (path.value) el.setAttribute('src', path.value)
 }
 
 watch(path, (newValue) => {

@@ -6,8 +6,8 @@
  * - CaseName   顯示名稱（允許 br 換行，以 v-html 輸出）
  * - CaseID     識別用 ID，也是燈箱截圖檔名的一部分
  * - CaseType   圖片路徑分類（web / ad / other）
- * - CoverImg   封面圖檔名，路徑為 home/{CaseType}/{CoverImg}
- * - PhotoCount 燈箱內圖片數量
+ * - CoverImg   封面圖檔名，路徑為 home/WorksSection/{CaseType}/{CoverImg}
+ * - PhotoCount 燈箱內圖片數量；圖檔在 home/WorkDetail/{CaseType}/{CaseType}{CaseID}_0{n}.png，數量要與實際檔案一致
  * - webLink    連結（多個以 , 分隔；空字串表示無連結）
  * - webDesc    連結說明（多個以 , 分隔）
  */
@@ -283,7 +283,7 @@ export const datas = [
         CaseID: '73',
         CaseType: 'web',
         CoverImg: 'web_73.png',
-        PhotoCount: '1',
+        PhotoCount: '2',
         webLink: 'https://f2e.sugarfun.com.tw/Taishin/Richart/friend/event2/Views/Home/index.html',
         webDesc: '毛孩告急！救援浪浪 不再忽視',
       },
@@ -328,7 +328,7 @@ export const datas = [
         CaseID: '58',
         CaseType: 'web',
         CoverImg: 'web_58.png',
-        PhotoCount: '1',
+        PhotoCount: '3',
         webLink: 'https://f2e.sugarfun.com.tw/Cartier/CNY2023/index.html',
         webDesc: '來自卡地亞的新春祝福 (手機版網站)',
       },
@@ -627,7 +627,7 @@ export const datas = [
         CaseID: '42',
         CaseType: 'web',
         CoverImg: 'web_42.png',
-        PhotoCount: '1',
+        PhotoCount: '4',
         webLink: '',
         webDesc: '',
       },

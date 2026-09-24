@@ -1,0 +1,8 @@
+# 支援範圍的單一真值：autoprefixer（CSS 前綴）與 vite.config 的 build.target（經 browserslist-to-esbuild）都讀這一份。
+# 政策：近 5 年釋出的主流瀏覽器，以日期錨定。since 要隨時間上抬到「當年 − 5」的同月（重新發布前順手改）。
+since 2021-09
+not dead
+not op_mini all
+not kaios > 0
+not and_qq > 0
+not and_uc > 0

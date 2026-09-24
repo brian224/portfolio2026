@@ -10,7 +10,7 @@ header.l-header
   ├── h1.logo        Logo 圖片（mImg）
   └── nav
         └── ul.menu
-              ├── 01. [設計作品]  → changeTheme('f2e')
+              ├── 01. [過往作品]  → changeTheme('f2e')
               ├── 02. [關於我]    → changeTheme('about')
               └── 03. [專長技能]  → changeTheme('skill')
 ```
